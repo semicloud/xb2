@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Xb2.Entity.Business
+﻿namespace Xb2.Entity.Business
 {
     public class XbUser
     {
