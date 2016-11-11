@@ -1,0 +1,454 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{47ABB51D-4180-49F5-AD0B-0CCB00AB2D7D}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Xb2</RootNamespace>
+    <AssemblyName>Xb2</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Accord">
+      <HintPath>..\packages\Accord.3.3.0\lib\net45\Accord.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math">
+      <HintPath>..\packages\Accord.Math.3.3.0\lib\net45\Accord.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Math.Core">
+      <HintPath>..\packages\Accord.Math.3.3.0\lib\net45\Accord.Math.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics">
+      <HintPath>..\packages\MathNet.Numerics.3.13.1\lib\net40\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Windows.Forms.DataVisualization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Algorithms\Core\CalcDescription.cs" />
+    <Compile Include="Algorithms\Core\CalcResult.cs" />
+    <Compile Include="Algorithms\Core\DateValue.cs" />
+    <Compile Include="Algorithms\Numberical\ProcessLogger.cs" />
+    <Compile Include="Algorithms\Numberical\Processmethod.cs" />
+    <Compile Include="Config\Xb2Config.cs" />
+    <Compile Include="Entity\Business\Catalog\Q01File.cs" />
+    <Compile Include="Entity\Business\XbUser.cs" />
+    <Compile Include="GUI\Catalog\FrmChooseSubDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmChooseSubDatabase.designer.cs">
+      <DependentUpon>FrmChooseSubDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmCreateEditRecord.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmCreateEditRecord.designer.cs">
+      <DependentUpon>FrmCreateEditRecord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmDelSubDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmDelSubDatabase.designer.cs">
+      <DependentUpon>FrmDelSubDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmEditLabelDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmEditLabelDatabase.designer.cs">
+      <DependentUpon>FrmEditLabelDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmGenLabelDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmGenLabelDatabase.designer.cs">
+      <DependentUpon>FrmGenLabelDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmGenSubDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmGenSubDatabase.designer.cs">
+      <DependentUpon>FrmGenSubDatabase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmManageCatalog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmManageCatalog.Designer.cs">
+      <DependentUpon>FrmManageCatalog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmQueryQuakeCmd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmQueryQuakeCmd.designer.cs">
+      <DependentUpon>FrmQueryQuakeCmd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmShowLabelChart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmShowLabelChart.designer.cs">
+      <DependentUpon>FrmShowLabelChart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Computing\FrmDisplayCharts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Computing\FrmDisplayCharts.Designer.cs">
+      <DependentUpon>FrmDisplayCharts.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Controls\CircleQuery.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\CircleQuery.designer.cs">
+      <DependentUpon>CircleQuery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Controls\CtnlMFieldSelect.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\CtnlMFieldSelect.designer.cs">
+      <DependentUpon>CtnlMFieldSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Controls\RectQuery.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\RectQuery.designer.cs">
+      <DependentUpon>RectQuery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Main\FrmBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Main\FrmBase.Designer.cs">
+      <DependentUpon>FrmBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Main\FrmFirst.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Main\FrmFirst.Designer.cs">
+      <DependentUpon>FrmFirst.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Main\FrmLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Main\FrmLogin.designer.cs">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Item\FrmEditMItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Item\FrmEditMItem.designer.cs">
+      <DependentUpon>FrmEditMItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmInputPeriod.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmInputPeriod.Designer.cs">
+      <DependentUpon>FrmInputPeriod.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmManageProcessedData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmManageProcessedData.Designer.cs">
+      <DependentUpon>FrmManageProcessedData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmSaveProcessedData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmSaveProcessedData.designer.cs">
+      <DependentUpon>FrmSaveProcessedData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Item\FrmSelectMItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Item\FrmSelectMItem.designer.cs">
+      <DependentUpon>FrmSelectMItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Item\ToolWindow\FrmExportFields.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Item\ToolWindow\FrmExportFields.designer.cs">
+      <DependentUpon>FrmExportFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Item\ToolWindow\FrmPlotDWT.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Item\ToolWindow\FrmPlotDWT.designer.cs">
+      <DependentUpon>FrmPlotDWT.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Item\ToolWindow\FrmQueryMItemCmd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Item\ToolWindow\FrmQueryMItemCmd.designer.cs">
+      <DependentUpon>FrmQueryMItemCmd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Item\ToolWindow\FrmRegionSelectMItem.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Item\ToolWindow\FrmRegionSelectMItem.designer.cs">
+      <DependentUpon>FrmRegionSelectMItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Item\ToolWindow\FrmShowSelectFields.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Item\ToolWindow\FrmShowSelectFields.designer.cs">
+      <DependentUpon>FrmShowSelectFields.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmInterpolation.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmInterpolation.designer.cs">
+      <DependentUpon>FrmInterpolation.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmInterpolation2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmInterpolation2.designer.cs">
+      <DependentUpon>FrmInterpolation2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmInterpolation3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmInterpolation3.designer.cs">
+      <DependentUpon>FrmInterpolation3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmProcessData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmProcessData.designer.cs">
+      <DependentUpon>FrmProcessData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmShowLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmShowLog.Designer.cs">
+      <DependentUpon>FrmShowLog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmShowProcessedDataDb.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\ProcessedData\FrmShowProcessedDataDb.Designer.cs">
+      <DependentUpon>FrmShowProcessedDataDb.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\Rawdata\FrmDisplayRawData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\Rawdata\FrmDisplayRawData.designer.cs">
+      <DependentUpon>FrmDisplayRawData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\Rawdata\FrmEditRawData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\Rawdata\FrmEditRawData.designer.cs">
+      <DependentUpon>FrmEditRawData.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\M\Val\Rawdata\FrmRawDataManage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\M\Val\Rawdata\FrmRawDataManage.designer.cs">
+      <DependentUpon>FrmRawDataManage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestAndDemos\FrmMSChartDemo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmMSChartDemo.Designer.cs">
+      <DependentUpon>FrmMSChartDemo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestAndDemos\RegressionTest.cs" />
+    <Compile Include="TestAndDemos\SimpleTest.cs" />
+    <Compile Include="Utils\Control\ChartHelper.cs" />
+    <Compile Include="Utils\Control\ControlHelper.cs" />
+    <Compile Include="Utils\Database\Db.cs" />
+    <Compile Include="Utils\Database\DbHelper.cs" />
+    <Compile Include="Utils\Database\XbDao.cs" />
+    <Compile Include="Utils\DataHelper.cs" />
+    <Compile Include="Utils\ExtendMethods.cs" />
+    <EmbeddedResource Include="GUI\Catalog\FrmChooseSubDatabase.resx">
+      <DependentUpon>FrmChooseSubDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Catalog\FrmCreateEditRecord.resx">
+      <DependentUpon>FrmCreateEditRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Catalog\FrmDelSubDatabase.resx">
+      <DependentUpon>FrmDelSubDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Catalog\FrmEditLabelDatabase.resx">
+      <DependentUpon>FrmEditLabelDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Catalog\FrmGenLabelDatabase.resx">
+      <DependentUpon>FrmGenLabelDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Catalog\FrmGenSubDatabase.resx">
+      <DependentUpon>FrmGenSubDatabase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Catalog\FrmManageCatalog.resx">
+      <DependentUpon>FrmManageCatalog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Catalog\FrmQueryQuakeCmd.resx">
+      <DependentUpon>FrmQueryQuakeCmd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Catalog\FrmShowLabelChart.resx">
+      <DependentUpon>FrmShowLabelChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Computing\FrmDisplayCharts.resx">
+      <DependentUpon>FrmDisplayCharts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\CircleQuery.resx">
+      <DependentUpon>CircleQuery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\CtnlMFieldSelect.resx">
+      <DependentUpon>CtnlMFieldSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\RectQuery.resx">
+      <DependentUpon>RectQuery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Main\FrmBase.resx">
+      <DependentUpon>FrmBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Main\FrmFirst.resx">
+      <DependentUpon>FrmFirst.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Main\FrmLogin.resx">
+      <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Item\FrmEditMItem.resx">
+      <DependentUpon>FrmEditMItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\ProcessedData\FrmInputPeriod.resx">
+      <DependentUpon>FrmInputPeriod.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\ProcessedData\FrmManageProcessedData.resx">
+      <DependentUpon>FrmManageProcessedData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\ProcessedData\FrmSaveProcessedData.resx">
+      <DependentUpon>FrmSaveProcessedData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Item\FrmSelectMItem.resx">
+      <DependentUpon>FrmSelectMItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Item\ToolWindow\FrmExportFields.resx">
+      <DependentUpon>FrmExportFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Item\ToolWindow\FrmPlotDWT.resx">
+      <DependentUpon>FrmPlotDWT.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Item\ToolWindow\FrmQueryMItemCmd.resx">
+      <DependentUpon>FrmQueryMItemCmd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Item\ToolWindow\FrmRegionSelectMItem.resx">
+      <DependentUpon>FrmRegionSelectMItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Item\ToolWindow\FrmShowSelectFields.resx">
+      <DependentUpon>FrmShowSelectFields.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\ProcessedData\FrmInterpolation.resx">
+      <DependentUpon>FrmInterpolation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\ProcessedData\FrmInterpolation2.resx">
+      <DependentUpon>FrmInterpolation2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\ProcessedData\FrmInterpolation3.resx">
+      <DependentUpon>FrmInterpolation3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\ProcessedData\FrmProcessData.resx">
+      <DependentUpon>FrmProcessData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\ProcessedData\FrmShowLog.resx">
+      <DependentUpon>FrmShowLog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\ProcessedData\FrmShowProcessedDataDb.resx">
+      <DependentUpon>FrmShowProcessedDataDb.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\Rawdata\FrmDisplayRawData.resx">
+      <DependentUpon>FrmDisplayRawData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\Rawdata\FrmEditRawData.resx">
+      <DependentUpon>FrmEditRawData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\M\Val\Rawdata\FrmRawDataManage.resx">
+      <DependentUpon>FrmRawDataManage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <EmbeddedResource Include="TestAndDemos\FrmMSChartDemo.resx">
+      <DependentUpon>FrmMSChartDemo.cs</DependentUpon>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entity\Computing\" />
+    <Folder Include="GUI\User\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\Accord.3.3.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.3.0\build\Accord.targets')" />
+  <PropertyGroup>
+    <PreBuildEvent>if not exist "$Q01Files" mkdir "$Q01Files"</PreBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
