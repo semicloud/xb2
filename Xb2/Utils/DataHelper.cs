@@ -5,6 +5,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using Xb2.Algorithms.Core;
+using Xb2.Algorithms.Core.Entity;
 
 namespace Xb2.Utils
 {
@@ -71,7 +72,7 @@ namespace Xb2.Utils
         /// </summary>
         /// <param name="dataTable"></param>
         /// <returns></returns>
-        public static List<DateValue> RetrieveDateValues(DataTable dataTable)
+        public static List<DateValue> RetrieveDateValues(this DataTable dataTable)
         {
             var answer = new List<DateValue>();
             if (dataTable != null)

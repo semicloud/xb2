@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Xb2.Algorithms.Core
+namespace Xb2.Algorithms.Core.Entity
 {
     public class DateValue
     {
@@ -19,7 +19,7 @@ namespace Xb2.Algorithms.Core
 
         public override string ToString()
         {
-            return string.Format("【{0}, {1}】",Date.ToString("yyyy-MM-dd"), Value.ToString("#0.00"));
+            return string.Format("【{0}, {1}】",this.Date.ToString("yyyy-MM-dd"), this.Value.ToString("#0.00"));
         }
 
         public static string Desc(DateValue dv1, DateValue dv2)

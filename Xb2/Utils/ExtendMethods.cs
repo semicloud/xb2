@@ -75,5 +75,17 @@ namespace Xb2.Utils
         }
 
 
+        //External method for algorithms
+        /// <summary>
+        /// 该日期是否为该月的最后一天
+        /// </summary>
+        /// <param name="dateTime"></param>
+        /// <returns></returns>
+        public static bool isMonLastDay(this DateTime dateTime)
+        {
+            var o = dateTime.AddDays(1);
+            return dateTime.Month != o.Month;
+        }
+
     }
 }

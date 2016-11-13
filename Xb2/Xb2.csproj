@@ -67,9 +67,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\Core\CalcDescription.cs" />
-    <Compile Include="Algorithms\Core\CalcResult.cs" />
-    <Compile Include="Algorithms\Core\DateValue.cs" />
+    <Compile Include="Algorithms\Core\Entity\CalcDescription.cs" />
+    <Compile Include="Algorithms\Core\Entity\CalcResult.cs" />
+    <Compile Include="Algorithms\Core\Entity\DateRange.cs" />
+    <Compile Include="Algorithms\Core\Entity\DateUnit.cs" />
+    <Compile Include="Algorithms\Core\Entity\DateValue.cs" />
+    <Compile Include="Algorithms\Core\Entity\DateValues.cs" />
+    <Compile Include="Algorithms\Core\Entity\Window.cs" />
+    <Compile Include="Algorithms\Core\Methods\Xb2BaseInput.cs" />
+    <Compile Include="Algorithms\Core\Methods\Regression\Xb2Regression.cs" />
+    <Compile Include="Algorithms\Core\Methods\Regression\Xb2RegressionInput.cs" />
+    <Compile Include="Algorithms\Core\Methods\YearChange\Xb2YearChange.cs" />
+    <Compile Include="Algorithms\Core\Methods\YearChange\Xb2YearChangeInput.cs" />
     <Compile Include="Algorithms\Numberical\ProcessLogger.cs" />
     <Compile Include="Algorithms\Numberical\Processmethod.cs" />
     <Compile Include="Config\Xb2Config.cs" />
@@ -436,6 +445,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Algorithms\Core\Utils\" />
     <Folder Include="Entity\Computing\" />
     <Folder Include="GUI\User\" />
   </ItemGroup>

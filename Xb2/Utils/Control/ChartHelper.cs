@@ -12,6 +12,7 @@ using Accord.Math;
 using MathNet.Numerics;
 using MathNet.Numerics.Statistics;
 using Xb2.Algorithms.Core;
+using Xb2.Algorithms.Core.Entity;
 using Xb2.Algorithms.Numberical;
 using Xb2.Config;
 using Xb2.GUI.M.Val.ProcessedData;
