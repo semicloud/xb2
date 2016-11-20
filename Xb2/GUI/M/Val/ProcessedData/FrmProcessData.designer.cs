@@ -80,6 +80,7 @@
             this.重做ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.保存ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.testToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.panel1.SuspendLayout();
@@ -217,7 +218,7 @@
             this.重做ToolStripMenuItem,
             this.保存ToolStripMenuItem});
             this.contextMenuStrip1.Name = "ContextMenuStrip";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 214);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 236);
             // 
             // 突跳处理ToolStripMenuItem
             // 
@@ -230,7 +231,7 @@
             this.数学模型法ToolStripMenuItem,
             this.对比法ToolStripMenuItem});
             this.突跳处理ToolStripMenuItem.Name = "突跳处理ToolStripMenuItem";
-            this.突跳处理ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.突跳处理ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.突跳处理ToolStripMenuItem.Text = "突跳处理";
             // 
             // 图解法ToolStripMenuItem
@@ -330,7 +331,7 @@
             this.多点平均平移法ToolStripMenuItem,
             this.多点趋势平移法ToolStripMenuItem});
             this.台阶处理ToolStripMenuItem.Name = "台阶处理ToolStripMenuItem";
-            this.台阶处理ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.台阶处理ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.台阶处理ToolStripMenuItem.Text = "台阶处理";
             // 
             // 图解法ToolStripMenuItem1
@@ -410,111 +411,119 @@
             this.平均值法插值ToolStripMenuItem,
             this.线性法插值ToolStripMenuItem,
             this.多项式法插值ToolStripMenuItem,
-            this.对比法插值ToolStripMenuItem});
+            this.对比法插值ToolStripMenuItem,
+            this.testToolStripMenuItem});
             this.缺数处理ToolStripMenuItem.Name = "缺数处理ToolStripMenuItem";
-            this.缺数处理ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.缺数处理ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.缺数处理ToolStripMenuItem.Text = "缺数处理";
             // 
             // 常数差值ToolStripMenuItem
             // 
             this.常数差值ToolStripMenuItem.Name = "常数差值ToolStripMenuItem";
-            this.常数差值ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.常数差值ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.常数差值ToolStripMenuItem.Text = "常数插值";
             this.常数差值ToolStripMenuItem.Click += new System.EventHandler(this.常数插值ToolStripMenuItem_Click);
             // 
             // 拉格朗日插值ToolStripMenuItem
             // 
             this.拉格朗日插值ToolStripMenuItem.Name = "拉格朗日插值ToolStripMenuItem";
-            this.拉格朗日插值ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.拉格朗日插值ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.拉格朗日插值ToolStripMenuItem.Text = "拉格朗日插值";
             this.拉格朗日插值ToolStripMenuItem.Click += new System.EventHandler(this.拉格朗日插值ToolStripMenuItem_Click);
             // 
             // 等间距插值ToolStripMenuItem
             // 
             this.等间距插值ToolStripMenuItem.Name = "等间距插值ToolStripMenuItem";
-            this.等间距插值ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.等间距插值ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.等间距插值ToolStripMenuItem.Text = "等间距插值";
             this.等间距插值ToolStripMenuItem.Click += new System.EventHandler(this.等间距插值ToolStripMenuItem_Click);
             // 
             // 平均值法插值ToolStripMenuItem
             // 
             this.平均值法插值ToolStripMenuItem.Name = "平均值法插值ToolStripMenuItem";
-            this.平均值法插值ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.平均值法插值ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.平均值法插值ToolStripMenuItem.Text = "平均值法插值";
             this.平均值法插值ToolStripMenuItem.Click += new System.EventHandler(this.平均值法插值ToolStripMenuItem_Click);
             // 
             // 线性法插值ToolStripMenuItem
             // 
             this.线性法插值ToolStripMenuItem.Name = "线性法插值ToolStripMenuItem";
-            this.线性法插值ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.线性法插值ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.线性法插值ToolStripMenuItem.Text = "线性法插值";
             this.线性法插值ToolStripMenuItem.Click += new System.EventHandler(this.线性法插值ToolStripMenuItem_Click);
             // 
             // 多项式法插值ToolStripMenuItem
             // 
             this.多项式法插值ToolStripMenuItem.Name = "多项式法插值ToolStripMenuItem";
-            this.多项式法插值ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.多项式法插值ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.多项式法插值ToolStripMenuItem.Text = "多项式法插值";
             this.多项式法插值ToolStripMenuItem.Click += new System.EventHandler(this.多项式法插值ToolStripMenuItem_Click);
             // 
             // 对比法插值ToolStripMenuItem
             // 
             this.对比法插值ToolStripMenuItem.Name = "对比法插值ToolStripMenuItem";
-            this.对比法插值ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.对比法插值ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.对比法插值ToolStripMenuItem.Text = "对比法插值";
             this.对比法插值ToolStripMenuItem.Click += new System.EventHandler(this.对比法插值ToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(149, 6);
             // 
             // 变符号处理ToolStripMenuItem
             // 
             this.变符号处理ToolStripMenuItem.Name = "变符号处理ToolStripMenuItem";
-            this.变符号处理ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.变符号处理ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.变符号处理ToolStripMenuItem.Text = "变符号处理";
             this.变符号处理ToolStripMenuItem.Click += new System.EventHandler(this.变符号处理ToolStripMenuItem_Click);
             // 
             // 减最大值处理ToolStripMenuItem
             // 
             this.减最大值处理ToolStripMenuItem.Name = "减最大值处理ToolStripMenuItem";
-            this.减最大值处理ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.减最大值处理ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.减最大值处理ToolStripMenuItem.Text = "减最大值处理";
             this.减最大值处理ToolStripMenuItem.Click += new System.EventHandler(this.减最大值处理ToolStripMenuItem_Click);
             // 
             // 减最小值处理ToolStripMenuItem
             // 
             this.减最小值处理ToolStripMenuItem.Name = "减最小值处理ToolStripMenuItem";
-            this.减最小值处理ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.减最小值处理ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.减最小值处理ToolStripMenuItem.Text = "减最小值处理";
             this.减最小值处理ToolStripMenuItem.Click += new System.EventHandler(this.减最小值处理ToolStripMenuItem_Click);
             // 
             // 添加趋势线ToolStripMenuItem
             // 
             this.添加趋势线ToolStripMenuItem.Name = "添加趋势线ToolStripMenuItem";
-            this.添加趋势线ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.添加趋势线ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.添加趋势线ToolStripMenuItem.Text = "添加趋势线";
             this.添加趋势线ToolStripMenuItem.Click += new System.EventHandler(this.添加趋势线ToolStripMenuItem_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(145, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
             // 
             // 重做ToolStripMenuItem
             // 
             this.重做ToolStripMenuItem.Name = "重做ToolStripMenuItem";
-            this.重做ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.重做ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.重做ToolStripMenuItem.Text = "重做";
             this.重做ToolStripMenuItem.Click += new System.EventHandler(this.重做ToolStripMenuItem_Click);
             // 
             // 保存ToolStripMenuItem
             // 
             this.保存ToolStripMenuItem.Name = "保存ToolStripMenuItem";
-            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.保存ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.保存ToolStripMenuItem.Text = "保存";
             this.保存ToolStripMenuItem.Click += new System.EventHandler(this.保存ToolStripMenuItem_Click);
+            // 
+            // testToolStripMenuItem
+            // 
+            this.testToolStripMenuItem.Name = "testToolStripMenuItem";
+            this.testToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.testToolStripMenuItem.Text = "Test";
+            this.testToolStripMenuItem.Click += new System.EventHandler(this.testToolStripMenuItem_Click);
             // 
             // FrmProcessData
             // 
@@ -589,5 +598,6 @@
         private System.Windows.Forms.ToolStripMenuItem 保存ToolStripMenuItem;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.ToolStripMenuItem testToolStripMenuItem;
     }
 }

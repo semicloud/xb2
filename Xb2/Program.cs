@@ -14,7 +14,7 @@ namespace Xb2
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new FrmMSChartDemo());
+            //Application.Run(new FrmLagrangeInterpolationDemo());
 
             FrmLogin frmLogin = new FrmLogin();
             frmLogin.ShowDialog();

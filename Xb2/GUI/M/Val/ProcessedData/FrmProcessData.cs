@@ -490,7 +490,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
                     var value = Processmethod.GetLagrangeInterpolationResult(dataPoints, date);
                     value = Math.Round(value, Xb2Config.GetPrecision());
                     Debug.Print("interpolation date:{0}, value:{1}", date.ToShortDateString(), value);
-                    //在这里将插值的数据入栈了
+                    //在这里将插值的数据入栈了，用于撤销
                     if (this.GetCurrentChart().Interpolation(date, value, "缺数处理→朗格朗日插值"))
                     {
                         MessageBox.Show("插值成功！");
@@ -645,6 +645,16 @@ namespace Xb2.GUI.M.Val.ProcessedData
                 this.label1.Text = "添加趋势线";
                 ChangeChart(ChartHelper.GetRegressionLineChart());
             }
+        }
+
+        /// <summary>
+        /// 图解拉格朗日插值
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void testToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

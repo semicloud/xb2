@@ -263,6 +263,16 @@ namespace Xb2.Algorithms.Numberical
             return ans;
         }
 
+        /// <summary>
+        /// 等间距低次拉格朗日插值
+        /// </summary>
+        /// <returns></returns>
+        public static List<DateValue> EqualDistLagInterpolation(List<DataPoint> points, int period)
+        {
+            //询问甲方究竟用哪几个点做拉格朗日差值
+            throw new NotImplementedException();
+        }
+
         [Test]
         public void TestLangrange()
         {

@@ -172,6 +172,11 @@ namespace Xb2.Utils.Control
         public static Chart BindChartWithData(Chart chart, DataTable dt)
         {
             if (chart == null) throw new NullReferenceException("Chart not be null!");
+            chart.ChartAreas[0].BackColor = Color.Transparent;
+            chart.ChartAreas[0].AxisX.LabelStyle.Format = X_FORMAT;
+            chart.ChartAreas[0].AxisY.LabelStyle.Format = Y_FORMAT;
+            chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
             var maxy = (double) dt.Compute(string.Format("MAX({0})", Y_TITLE), "");
             var miny = (double) dt.Compute(string.Format("MIN({0})", Y_TITLE), "");
             var maxx = (DateTime) dt.Compute(string.Format("MAX({0})", X_TITLE), "");
@@ -2398,7 +2403,7 @@ namespace Xb2.Utils.Control
         }
 
         /// <summary>
-        /// 将算法的计算结果封装为Chart控件
+        /// 将算法的计算结果封装为Chart控件，重要的方法！
         /// 该方法比较重要，包括分幅图管理中对于图件的重要操作
         /// </summary>
         /// <param name="results"></param>
@@ -2485,17 +2490,23 @@ namespace Xb2.Utils.Control
                     if (c != null)
                     {
                         Chart otherChart = (Chart) c;
-
                         //获取数据源和标题，生成ChartArea和Series对象插入到目标Chart控件中
                         var dt = otherChart.Series[0].Points.ToDataTable();
                         var chartArea = GetChartArea(dt, otherChart.Titles[0].Text);
                         var series = GetSeries(dt, otherChart.Titles[0].Text);
-
                         chart.ChartAreas.Add(chartArea);
                         chart.Series.Add(series);
                         chart.Titles.Add(chartArea.Name);
-                        chart.Size = new Size(width, chart.ChartAreas.Count*(heightPerArea+2));
-                        var chartAreaHeightPercent = (int) Math.Floor(100.0/chart.ChartAreas.Count);
+                        var n = chart.ChartAreas.Count;
+                        //chart.Size = new Size(width, n*heightPerArea + (n - 1)*span + startY);
+                        chart.Size = new Size(width,n*heightPerArea);
+                        //每个ChartArea之间的间距，设置每个图之间的距离是10px，由于图的Size不断变化， 所以每次都要更新span和StartY
+                        //这样StartY就不是一个比例了，就成了px
+                        var span = 5/chart.Height;
+                        startY = startY/chart.Height;
+                        //计算每个ChartArea应占的高度比例
+                        var chartAreaHeightPercent = (int) Math.Floor((double) ((100 - startY - span*(n - 1))/n)); 
+                        Debug.Print("Per height:" + chartAreaHeightPercent);
                         for (int i = 0; i < chart.ChartAreas.Count; i++)
                         {
                             var area = chart.ChartAreas[i];
@@ -2503,23 +2514,33 @@ namespace Xb2.Utils.Control
                             area.Position.Width = chartAreaWidthPercent;
                             area.Position.Height = chartAreaHeightPercent;
                             area.AxisX.Enabled = AxisEnabled.False;
-                            //令绘图区域的Y轴对齐
-                            area.Position.X = 5;
+                            area.BorderDashStyle  = ChartDashStyle.Solid;
+                            area.BorderColor = Color.Red;
+                            //令绘图区域对齐
+                            area.AlignmentOrientation = AreaAlignmentOrientations.Vertical;
+                            area.AlignmentStyle = AreaAlignmentStyles.All;
                             if (i == 0)
                             {
-                                area.Position.Y = (chart.ChartAreas.Count - 1)*chartAreaHeightPercent + startY + 1;
+                                //最下面一条曲线
+                                area.Position.Y = (n - 1)*chartAreaHeightPercent + startY + span;
+                                Debug.Print("i=0,y=" + area.Position.Y);
                                 area.AxisX.Enabled = AxisEnabled.True;
                             }
                             //除第1条和最后1条曲线外，其他曲线的处理
                             else if (i != chart.ChartAreas.Count - 1)
                             {
-                                area.Position.Y = (chart.ChartAreas.Count - 1 - i)*chartAreaHeightPercent + startY + 1;
+                                area.Position.Y = (n - i - 1)*chartAreaHeightPercent + startY + span;
+                                area.AlignWithChartArea = chart.ChartAreas[0].Name;
+                                Debug.Print("i={0},y={1}" ,i,area.Position.Y);
                             }
-                            //最后一条曲线的处理
+                            //最后一条曲线的处理（最上面一条的曲线）
                             else
                             {
                                 area.Position.Y = startY;
-                                area.AxisY.ArrowStyle = AxisArrowStyle.SharpTriangle;
+                                //设置Y轴的标签头，暂不处理啦
+                                //area.AxisY.ArrowStyle = AxisArrowStyle.SharpTriangle;
+                                area.AlignWithChartArea = chart.ChartAreas[0].Name;
+                                Debug.Print("i={0},max,y={1}", i, area.Position.Y);
                             }
                             chart.Titles[i].DockedToChartArea = area.Name;
                         }
@@ -2760,6 +2781,8 @@ namespace Xb2.Utils.Control
         /// <param name="chart"></param>
         public static void SubtractMaxValue(this Chart chart)
         {
+            //获取Stack用于操作撤销
+            //增加数据记录
             var stack = chart.GetStack();
             stack.Push(chart.GetTable().Copy());
             LogPushStack(stack);
