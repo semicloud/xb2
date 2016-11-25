@@ -16,5 +16,10 @@ namespace Xb2.GUI.Main
         {
             InitializeComponent();
         }
+
+        public FrmFirst GetMainForm()
+        {
+            return (FrmFirst) this.MdiParent;
+        }
     }
 }

@@ -22,8 +22,10 @@ namespace Xb2.GUI.Computing
             this.CUser = user;
         }
 
-        private void FrmDisplayCharts_Load(object sender, System.EventArgs e)
+        private void FrmDisplayCharts_Load(object sender, EventArgs e)
         {
+            this.GetMainForm().toolStripContainer1.TopToolStripPanel.Controls.Add(ToolStripHelper.GetChartToolStrip());
+            this.GetMainForm().toolStripContainer1.TopToolStripPanel.Visible = true;
             panel1.ContextMenuStrip = contextMenuStrip1;
         }
 
@@ -43,7 +45,7 @@ namespace Xb2.GUI.Computing
             FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser);
             frmSelectMItem.StartPosition = FormStartPosition.CenterScreen;
             DialogResult dlRslt = frmSelectMItem.ShowDialog();
-            int x = 10, y = 10;
+            int x = 5, y = 27+5;
             if (dlRslt == DialogResult.OK)
             {
                 var dt = frmSelectMItem.Result;
@@ -74,14 +76,15 @@ namespace Xb2.GUI.Computing
             //行列之间的距离
             var rowMargin = 5;
             var colMargin = 5;
-            var totalCount = panel1.Controls.Count;
+            var charts = GetAllCharts();
+            var totalCount = charts.Count;
             //分幅图的列数
             var colNumber = 3;
             var rowNumber = (int) Math.Ceiling((float) totalCount/(float) colNumber);
-            var width = panel1.Controls[0].Width;
-            var height = panel1.Controls[0].Height;
+            var width = charts[0].Width;
+            var height = charts[0].Height;
             var locations = new List<Point>();
-            int x0 = 5, y0 = 5;
+            int x0 = 5, y0 = 27+5 ;
             for (int i = 0; i < rowNumber; i++)
             {
                 for (int j = 0; j < colNumber; j++)
@@ -90,11 +93,27 @@ namespace Xb2.GUI.Computing
                     locations.Add(point);
                 }
             }
-            for (int i = 0; i < panel1.Controls.Count; i++)
+            for (int i = 0; i < charts.Count; i++)
             {
-                panel1.Controls[i].Location = locations[i];
+                charts[i].Location = locations[i];
             }
             panel1.Focus();
+        }
+
+        private List<Chart> GetAllCharts()
+        {
+            var charts = new List<Chart>();
+            if (panel1.Controls.Count > 1)
+            {
+                for (int i = 0; i < panel1.Controls.Count; i++)
+                {
+                    if (panel1.Controls[i] is Chart)
+                    {
+                        charts.Add((Chart) panel1.Controls[i]);
+                    }
+                }
+            }
+            return charts;
         }
 
         private void clearToolStripMenuItem_Click(object sender, EventArgs e)

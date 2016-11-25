@@ -6,7 +6,6 @@ using System.Windows.Forms.DataVisualization.Charting;
 using Accord.Math;
 using MathNet.Numerics;
 using NUnit.Framework;
-using Xb2.Algorithms.Core;
 using Xb2.Algorithms.Core.Entity;
 
 namespace Xb2.Algorithms.Numberical
@@ -279,7 +278,7 @@ namespace Xb2.Algorithms.Numberical
             var x = new double[] { 6109, 6130, 6161, 6191, 7509, 7539, 7574, 7606, 7632 };
             var y = new double[] { 723.5, 724.5, 724.02, 723.7, 720.36, 722.34, 724.71, 725.27, 725.08 };
             var x1 = 6940;
-            Debug.Print(LagrangeInterploation(x,y,x1).ToString());
+            Console.Write(LagrangeInterploation(x,y,x1).ToString());
             Assert.True(true);
         }
 

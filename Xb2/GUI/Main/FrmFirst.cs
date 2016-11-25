@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows.Forms;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
@@ -7,7 +6,7 @@ using Xb2.GUI.Computing;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.M.Val.ProcessedData;
 using Xb2.GUI.M.Val.Rawdata;
-using XbApp.View.M.Item.ToolWindow;
+using Xb2.Utils.Control;
 
 namespace Xb2.GUI.Main
 {
@@ -99,6 +98,7 @@ namespace Xb2.GUI.Main
         {
             FrmDisplayCharts frmDisplayCharts = new FrmDisplayCharts(this.CUser);
             frmDisplayCharts.MdiParent = this;
+            frmDisplayCharts.StartPosition = FormStartPosition.CenterScreen;
             frmDisplayCharts.Show();
         }
 
