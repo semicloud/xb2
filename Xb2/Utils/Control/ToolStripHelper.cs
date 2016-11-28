@@ -5,7 +5,6 @@
 // 初次编写时间：2016-11-25
 // 功能：
 
-using System.Drawing;
 using System.Windows.Forms;
 
 namespace Xb2.Utils.Control
@@ -15,18 +14,33 @@ namespace Xb2.Utils.Control
         public static ToolStrip GetChartToolStrip()
         {
             ToolStrip toolStrip = new ToolStrip() {Name = "ChartToolStrip"};
+            ToolStripItem item0 = new ToolStripButton()
+            {
+                Text = "调整大小",
+                DisplayStyle = ToolStripItemDisplayStyle.Text,
+                ToolTipText = "调整大小"
+            };
+
             ToolStripItem item1 = new ToolStripButton
             {
-                Text = "合并",
-                DisplayStyle = ToolStripItemDisplayStyle.Text
+                Text = "合并(1X,dY)",
+                DisplayStyle = ToolStripItemDisplayStyle.Text,
+                ToolTipText = "将多个图合并到一个X轴多个Y轴下"
             };
             ToolStripItem item2 = new ToolStripButton
             {
-                Text = "拼图",
-                DisplayStyle = ToolStripItemDisplayStyle.Text
+                Text = "合并(1X,1Y)",
+                DisplayStyle = ToolStripItemDisplayStyle.Text,
+                ToolTipText = "将多个图合并到一个X轴一个Y轴下"
             };
-            ToolStripItem item3 = new ToolStripSeparator();
-            toolStrip.Items.AddRange(new[] { item1, item2, item3 });
+            toolStrip.Items.AddRange(new[]
+            {
+                item0,
+                new ToolStripSeparator(),
+                item1,
+                item2,
+                new ToolStripSeparator()
+            });
             return toolStrip;
         }
     }

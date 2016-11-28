@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
+using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using MySql.Data.MySqlClient;
@@ -20,13 +22,37 @@ namespace Xb2.GUI.Computing
         {
             InitializeComponent();
             this.CUser = user;
+            this.Closed += FrmDisplayCharts_Closed;
+            this.Load += FrmDisplayCharts_Load;
         }
 
-        private void FrmDisplayCharts_Load(object sender, EventArgs e)
+        void FrmDisplayCharts_Load(object sender, EventArgs e)
         {
-            this.GetMainForm().toolStripContainer1.TopToolStripPanel.Controls.Add(ToolStripHelper.GetChartToolStrip());
-            this.GetMainForm().toolStripContainer1.TopToolStripPanel.Visible = true;
+            var toolStripContainer = this.GetMainForm().toolStripContainer1.TopToolStripPanel;
+            toolStripContainer.Controls.Add(ToolStripHelper.GetChartToolStrip());
+
             panel1.ContextMenuStrip = contextMenuStrip1;
+        }
+
+        void FrmDisplayCharts_Closed(object sender, EventArgs e)
+        {
+            this.GetMainForm().toolStripContainer1.TopToolStripPanel.Controls.Clear();
+        }
+
+        /// <summary>
+        /// 1X轴多个y轴合并
+        /// </summary>
+        public void Merage1XdY()
+        {
+
+        }
+
+        /// <summary>
+        /// 1X轴1个y轴合并
+        /// </summary>
+        public void Merge1X1Y()
+        {
+
         }
 
         public static DataTable GetDataTable(int id)
@@ -45,7 +71,7 @@ namespace Xb2.GUI.Computing
             FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser);
             frmSelectMItem.StartPosition = FormStartPosition.CenterScreen;
             DialogResult dlRslt = frmSelectMItem.ShowDialog();
-            int x = 5, y = 27+5;
+            int x = 5, y = 27 + 5;
             if (dlRslt == DialogResult.OK)
             {
                 var dt = frmSelectMItem.Result;
@@ -84,7 +110,7 @@ namespace Xb2.GUI.Computing
             var width = charts[0].Width;
             var height = charts[0].Height;
             var locations = new List<Point>();
-            int x0 = 5, y0 = 27+5 ;
+            int x0 = 5, y0 = 27 + 5;
             for (int i = 0; i < rowNumber; i++)
             {
                 for (int j = 0; j < colNumber; j++)
@@ -130,11 +156,90 @@ namespace Xb2.GUI.Computing
                 if (c.Checked())
                 {
                     var title = c.Titles[0];
-                    c.SaveImage(@"c:\" + title + ".png" ,ChartImageFormat.Png);
+                    c.SaveImage(@"c:\" + title + ".png", ChartImageFormat.Png);
                 }
             }
         }
 
+        private void sizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (GetCheckedCharts().Count == 0)
+            {
+                MessageBox.Show("未选择分幅图！");
+                return;
+            }
+            var chart = GetCheckedCharts().First();
+            var frmConfigChart = new FrmConfigChart();
+            frmConfigChart.Owner = this;
+            frmConfigChart.textBox1.Text = chart.Width.ToString();
+            frmConfigChart.textBox2.Text = chart.Height.ToString();
+            frmConfigChart.Show();
+        }
 
+        public void ResizeChart(int width, int height)
+        {
+            var chart = GetCheckedCharts().First();
+            chart.Height = height;
+            chart.Width = width;
+            chart.Refresh();
+        }
+
+        private List<Chart> GetCheckedCharts()
+        {
+            var ans = new List<Chart>();
+            foreach (var control in panel1.Controls)
+            {
+                if (control is Chart)
+                {
+                    var chart = (Chart) control;
+                    if (chart.Checked())
+                    {
+                        ans.Add(chart);
+                    }
+                }
+            }
+            return ans;
+        }
+
+        //全选
+        private void allToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (var control in panel1.Controls)
+            {
+                if (control is Chart)
+                {
+                    ((Chart) control).GetCheckBox().Checked = true;
+                }
+            }
+        }
+
+        //反选
+        private void invertToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            foreach (var control in panel1.Controls)
+            {
+                if (control is Chart)
+                {
+                    var chart = (Chart) control;
+                    chart.GetCheckBox().Checked = !chart.Checked();
+                }
+            }
+        }
+
+        private void settingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Not Implement yet!");
+        }
+
+        //清除选中
+        private void toolStripMenuItem5_Click(object sender, EventArgs e)
+        {
+            var checkedCharts = GetCheckedCharts();
+            foreach (var checkedChart in checkedCharts)
+            {
+                panel1.Controls.Remove(checkedChart);
+            }
+            panel1.Invalidate();
+        }
     }
 }

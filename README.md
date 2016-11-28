@@ -10,3 +10,8 @@ cross fault data tool for national earthquake response support service of China
 
 # 2016-11-20
 1. 修正分幅图中的Area高度问题和Y轴坐标对齐的问题，分幅图中startY和span的单位现在都是px；
+
+# 2016-11-28
+1. 增加了分幅图可设置大小、正选、反选等功能；
+2. 探寻了更改y轴刻度疏密程度的方法，设置YAxis的Intervals属性即可；目前是使用的`IntervalAutoMode.VariableCount;`来动态调整Y轴刻度疏密程度的；
+3. 需要继续完成合并（2种）等操作；

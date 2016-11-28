@@ -2424,9 +2424,10 @@ namespace Xb2.Utils.Control
             {
                 BackColor = Color.Transparent,
                 Size = new Size(width, results.Count*heightPerArea),
-                BorderlineColor = Color.FromName(ConfigurationManager.AppSettings["DISP_CHART_BORDER_COLOR"]),
-                BorderlineWidth = Convert.ToInt32(ConfigurationManager.AppSettings["DISP_CHART_BORDER_WIDTH"]),
-                BorderDashStyle = ChartDashStyle.Solid,
+                // 用户要求不要边框
+                // BorderlineColor = Color.FromName(ConfigurationManager.AppSettings["DISP_CHART_BORDER_COLOR"]),
+                // BorderlineWidth = Convert.ToInt32(ConfigurationManager.AppSettings["DISP_CHART_BORDER_WIDTH"]),
+                // BorderDashStyle = ChartDashStyle.Solid,
                 Titles = {results[0].Title}
             };
 
@@ -2438,7 +2439,7 @@ namespace Xb2.Utils.Control
                 var parent = (Chart) checkBox.Parent;
                 parent.BorderlineWidth = checkBox.Checked ? 2 : 1;
                 parent.BorderlineColor = checkBox.Checked ? Color.Blue : Color.Black;
-                parent.BorderDashStyle = checkBox.Checked ? ChartDashStyle.Dash : ChartDashStyle.Solid;
+                parent.BorderDashStyle = checkBox.Checked ? ChartDashStyle.Dash : ChartDashStyle.NotSet;
             };
             chart.Controls.Add(checkBox);
 
@@ -2563,6 +2564,8 @@ namespace Xb2.Utils.Control
                 series.ChartArea = chartArea.Name;
                 //如果计算结果中只有一条曲线，那简单了
                 var chartAreaHeightPercent = (int) Math.Floor(100.0/chart.ChartAreas.Count);
+                //下面这行代码可以修改Y轴刻度的疏密程度
+                // var yInverval = (chartArea.AxisY.Maximum - chartArea.AxisY.Minimum)/3;
                 if (results.Count == 1)
                 {
                     chartArea.Position.Auto = false;
@@ -2575,6 +2578,9 @@ namespace Xb2.Utils.Control
                     //chartArea.Tag = 0; 
                     //chartArea.AxisX.ArrowStyle = AxisArrowStyle.SharpTriangle;
                     //chartArea.AxisY.ArrowStyle = AxisArrowStyle.SharpTriangle;
+                    chartArea.AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
+                    //chartArea.AxisY.Interval = yInverval;
+
                     chart.Series.Add(series);
                     chart.ChartAreas.Add(chartArea);
                     chart.Titles[0].DockedToChartArea = chartArea.Name;
@@ -2821,7 +2827,7 @@ namespace Xb2.Utils.Control
 
         #region ChartArea的扩展方法
 
-#endregion
+        #endregion
 
         #region DataPoint等其他扩展方法
 
