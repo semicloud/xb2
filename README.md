@@ -15,3 +15,7 @@ cross fault data tool for national earthquake response support service of China
 1. 增加了分幅图可设置大小、正选、反选等功能；
 2. 探寻了更改y轴刻度疏密程度的方法，设置YAxis的Intervals属性即可；目前是使用的`IntervalAutoMode.VariableCount;`来动态调整Y轴刻度疏密程度的；
 3. 需要继续完成合并（2种）等操作；
+
+# 2016-11-30
+1. 实现了分幅图的编辑，标题、颜色、线的粗细等；听起来不难，但真是个麻烦事儿；
+2. 标地震功能实现了一半，剩下的过几天再做吧，科研ING!

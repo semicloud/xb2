@@ -46,6 +46,8 @@
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem3 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolTip1 = new System.Windows.Forms.ToolTip(this.components);
+            this.toolStripMenuItem7 = new System.Windows.Forms.ToolStripSeparator();
+            this.选定该标注库ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel3.SuspendLayout();
             this.groupBox4.SuspendLayout();
@@ -119,26 +121,26 @@
             this.toolStripMenuItem5,
             this.toolStripMenuItem6});
             this.contextMenuStrip2.Name = "contextMenuStrip2";
-            this.contextMenuStrip2.Size = new System.Drawing.Size(153, 92);
+            this.contextMenuStrip2.Size = new System.Drawing.Size(130, 70);
             // 
             // toolStripMenuItem4
             // 
             this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(129, 22);
             this.toolStripMenuItem4.Text = "加记录(&A)";
             this.toolStripMenuItem4.Click += new System.EventHandler(this.toolStripMenuItem4_Click);
             // 
             // toolStripMenuItem5
             // 
             this.toolStripMenuItem5.Name = "toolStripMenuItem5";
-            this.toolStripMenuItem5.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem5.Size = new System.Drawing.Size(129, 22);
             this.toolStripMenuItem5.Text = "改记录(&E)";
             this.toolStripMenuItem5.Click += new System.EventHandler(this.toolStripMenuItem5_Click);
             // 
             // toolStripMenuItem6
             // 
             this.toolStripMenuItem6.Name = "toolStripMenuItem6";
-            this.toolStripMenuItem6.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem6.Size = new System.Drawing.Size(129, 22);
             this.toolStripMenuItem6.Text = "删记录(&D)";
             this.toolStripMenuItem6.Click += new System.EventHandler(this.toolStripMenuItem6_Click);
             // 
@@ -188,9 +190,11 @@
             this.toolStripMenuItem1,
             this.toolStripSeparator1,
             this.toolStripMenuItem2,
-            this.toolStripMenuItem3});
+            this.toolStripMenuItem3,
+            this.toolStripMenuItem7,
+            this.选定该标注库ToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 76);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 126);
             // 
             // toolStripMenuItem1
             // 
@@ -217,6 +221,18 @@
             this.toolStripMenuItem3.Size = new System.Drawing.Size(152, 22);
             this.toolStripMenuItem3.Text = "序列图(&X)";
             this.toolStripMenuItem3.Click += new System.EventHandler(this.toolStripMenuItem3_Click);
+            // 
+            // toolStripMenuItem7
+            // 
+            this.toolStripMenuItem7.Name = "toolStripMenuItem7";
+            this.toolStripMenuItem7.Size = new System.Drawing.Size(149, 6);
+            // 
+            // 选定该标注库ToolStripMenuItem
+            // 
+            this.选定该标注库ToolStripMenuItem.Name = "选定该标注库ToolStripMenuItem";
+            this.选定该标注库ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.选定该标注库ToolStripMenuItem.Text = "选定该标注库";
+            this.选定该标注库ToolStripMenuItem.Click += new System.EventHandler(this.选定该标注库ToolStripMenuItem_Click);
             // 
             // FrmEditLabelDatabase
             // 
@@ -261,5 +277,7 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem4;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem5;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem6;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem7;
+        private System.Windows.Forms.ToolStripMenuItem 选定该标注库ToolStripMenuItem;
     }
 }

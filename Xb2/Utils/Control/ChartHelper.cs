@@ -15,6 +15,7 @@ using Xb2.Algorithms.Core;
 using Xb2.Algorithms.Core.Entity;
 using Xb2.Algorithms.Numberical;
 using Xb2.Config;
+using Xb2.GUI.Computing;
 using Xb2.GUI.M.Val.ProcessedData;
 using XbApp.View.M.Value.ProcessedData;
 
@@ -2410,6 +2411,8 @@ namespace Xb2.Utils.Control
         /// <returns></returns>
         public static Chart BuildChart(List<CalcResult> results)
         {
+            #region Chart控件的基本设置，BackColor，Size等
+
             //chart控件的默认宽度，下面都是读取配置
             var width = Convert.ToInt32(ConfigurationManager.AppSettings["DISP_CHART_WIDTH"]);
             //每个chartArea的默认高度，使用这两个值计算chart控件的Size
@@ -2431,6 +2434,10 @@ namespace Xb2.Utils.Control
                 Titles = {results[0].Title}
             };
 
+            #endregion
+
+            #region 添加选中的CheckBox
+
             //Chart控件中添加一个CheckBox，使得Chart可以选中
             //Chart控件选中时，边框样式改变
             CheckBox checkBox = new CheckBox {Location = new Point(5, 5), Size = new Size(20, 20)};
@@ -2443,8 +2450,12 @@ namespace Xb2.Utils.Control
             };
             chart.Controls.Add(checkBox);
 
+            #endregion
+
             //Titles加到chart控件中
             //results.ForEach(rslt => chart.Titles.Add(rslt.Title));
+
+            #region 可以按住鼠标拖动Chart控件
 
             //startPos变量和MouseDown、MouseMove两个事件用于用鼠标在界面内拖动chart控件
             Point startPos = new Point();
@@ -2471,6 +2482,10 @@ namespace Xb2.Utils.Control
                     chart.Invalidate();
                 }
             };
+
+            #endregion
+
+            #region 负责Chart之间按住Alt键的拖拽(Drop)，拼图
 
             //-------------------------以下代码负责处理图件的拖放处理--------------------------------
             //下面DragOver和DragDrop方法用于控制Chart控件的拖放，即叠加
@@ -2500,13 +2515,13 @@ namespace Xb2.Utils.Control
                         chart.Titles.Add(chartArea.Name);
                         var n = chart.ChartAreas.Count;
                         //chart.Size = new Size(width, n*heightPerArea + (n - 1)*span + startY);
-                        chart.Size = new Size(width,n*heightPerArea);
+                        chart.Size = new Size(width, n*heightPerArea);
                         //每个ChartArea之间的间距，设置每个图之间的距离是10px，由于图的Size不断变化， 所以每次都要更新span和StartY
                         //这样StartY就不是一个比例了，就成了px
                         var span = 5/chart.Height;
                         startY = startY/chart.Height;
                         //计算每个ChartArea应占的高度比例
-                        var chartAreaHeightPercent = (int) Math.Floor((double) ((100 - startY - span*(n - 1))/n)); 
+                        var chartAreaHeightPercent = (int) Math.Floor((double) ((100 - startY - span*(n - 1))/n));
                         Debug.Print("Per height:" + chartAreaHeightPercent);
                         for (int i = 0; i < chart.ChartAreas.Count; i++)
                         {
@@ -2515,7 +2530,7 @@ namespace Xb2.Utils.Control
                             area.Position.Width = chartAreaWidthPercent;
                             area.Position.Height = chartAreaHeightPercent;
                             area.AxisX.Enabled = AxisEnabled.False;
-                            area.BorderDashStyle  = ChartDashStyle.Solid;
+                            area.BorderDashStyle = ChartDashStyle.Solid;
                             area.BorderColor = Color.Red;
                             //令绘图区域对齐
                             area.AlignmentOrientation = AreaAlignmentOrientations.Vertical;
@@ -2532,7 +2547,7 @@ namespace Xb2.Utils.Control
                             {
                                 area.Position.Y = (n - i - 1)*chartAreaHeightPercent + startY + span;
                                 area.AlignWithChartArea = chart.ChartAreas[0].Name;
-                                Debug.Print("i={0},y={1}" ,i,area.Position.Y);
+                                Debug.Print("i={0},y={1}", i, area.Position.Y);
                             }
                             //最后一条曲线的处理（最上面一条的曲线）
                             else
@@ -2549,6 +2564,10 @@ namespace Xb2.Utils.Control
                 }
             };
             //---------------------------------------------------------------------------------------
+
+            #endregion
+
+            #region 向Chart中添加ChartArea，目前只添加了一个
 
             /**
              * 根据计算结果生成chartArea，
@@ -2580,7 +2599,7 @@ namespace Xb2.Utils.Control
                     //chartArea.AxisY.ArrowStyle = AxisArrowStyle.SharpTriangle;
                     chartArea.AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
                     //chartArea.AxisY.Interval = yInverval;
-
+                    chartArea.Tag = results[i].NumericalTable; //拼图需要
                     chart.Series.Add(series);
                     chart.ChartAreas.Add(chartArea);
                     chart.Titles[0].DockedToChartArea = chartArea.Name;
@@ -2621,6 +2640,9 @@ namespace Xb2.Utils.Control
                 //固定标题
                 chart.Titles[i].DockedToChartArea = chartArea.Name;
             }
+
+            #endregion
+
             return chart;
         }
 

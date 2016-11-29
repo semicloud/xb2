@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
@@ -9,6 +8,7 @@ using System.Windows.Forms.DataVisualization.Charting;
 using MySql.Data.MySqlClient;
 using Xb2.Algorithms.Core;
 using Xb2.Entity.Business;
+using Xb2.GUI.Catalog;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
 using Xb2.Utils.Control;
@@ -169,19 +169,30 @@ namespace Xb2.GUI.Computing
                 return;
             }
             var chart = GetCheckedCharts().First();
-            var frmConfigChart = new FrmConfigChart();
-            frmConfigChart.Owner = this;
-            frmConfigChart.textBox1.Text = chart.Width.ToString();
-            frmConfigChart.textBox2.Text = chart.Height.ToString();
-            frmConfigChart.Show();
+            var frmResizeCharts = new FrmResizeCharts();
+            frmResizeCharts.Owner = this;
+            frmResizeCharts.StartPosition = FormStartPosition.CenterScreen;
+            frmResizeCharts.textBox1.Text = chart.Width.ToString();
+            frmResizeCharts.textBox2.Text = chart.Height.ToString();
+            frmResizeCharts.Show();
         }
 
-        public void ResizeChart(int width, int height)
+        public void ResizeCharts(int width, int height)
         {
-            var chart = GetCheckedCharts().First();
-            chart.Height = height;
-            chart.Width = width;
-            chart.Refresh();
+            var charts = GetCheckedCharts();
+            if (charts.Count > 0)
+            {
+                foreach (var chart in charts)
+                {
+                    chart.Height = height;
+                    chart.Width = width;
+                    chart.Refresh();
+                }
+            }
+            else
+            {
+                MessageBox.Show("请选中分幅图再调整大小！");
+            }
         }
 
         private List<Chart> GetCheckedCharts()
@@ -226,9 +237,38 @@ namespace Xb2.GUI.Computing
             }
         }
 
+        public Point EditedChartLocation { get; private set; }
+
+        /// <summary>
+        /// 图形修改
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void settingToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Not Implement yet!");
+            var charts = GetCheckedCharts();
+            if (charts.Count == 0)
+            {
+                MessageBox.Show("请至少选中一张分幅图！");
+                return;
+            }
+            if (charts.Count > 1)
+            {
+                MessageBox.Show("每次只能编辑一张分幅图！");
+                return;
+            }
+            var chart = charts.First();
+            this.EditedChartLocation = chart.Location;
+            panel1.Controls.Remove(chart);
+            
+            var frmConfigChart = new FrmConfigChart();
+            chart.Dock = DockStyle.Fill;
+            chart.ContextMenuStrip = frmConfigChart.contextMenuStrip1;
+            frmConfigChart.Controls.Add(chart);
+            frmConfigChart.FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            frmConfigChart.Owner = this;
+            frmConfigChart.StartPosition = FormStartPosition.CenterScreen;
+            frmConfigChart.ShowDialog();
         }
 
         //清除选中
@@ -240,6 +280,79 @@ namespace Xb2.GUI.Computing
                 panel1.Controls.Remove(checkedChart);
             }
             panel1.Invalidate();
+        }
+
+        private void 合并1XNYToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var charts = GetCheckedCharts();
+            if (charts.Count < 2)
+            {
+                MessageBox.Show("请至少选中2幅分幅图再合并！");
+                return;
+            }
+            var confirm = MessageBox.Show("确定合并吗？", "提问",
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (confirm == DialogResult.OK)
+            {
+                MessageBox.Show("合并了");
+            }
+
+        }
+
+        private void 合并1X1YToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var charts = GetCheckedCharts();
+            if (charts.Count < 2)
+            {
+                MessageBox.Show("请至少选中2幅分幅图再合并！");
+                return;
+            }
+            var confirm = MessageBox.Show("确定合并吗？", "提问", 
+                MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
+            if (confirm == DialogResult.OK)
+            {
+                charts.ForEach(panel1.Controls.Remove);
+                panel1.Invalidate();
+
+                var chart = new Chart();
+                var titles = charts.Select(c => c.Titles[0]).ToList();
+                var tables = charts.Select(c => (DataTable) c.ChartAreas[0].Tag).ToList();
+                chart.ChartAreas.Add(new ChartArea());
+                chart.Size = charts.First().Size;
+
+            }
+        }
+
+        private void panel1_MouseClick(object sender, MouseEventArgs e)
+        {
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            //如果每个分幅图的大小不一样，排列 菜单项不可用
+            var charts = GetAllCharts();
+            if (charts.Count > 0)
+            {
+                var size = charts.First().Size;
+                var allSizeEqual = true;
+                foreach (var chart in charts)
+                {
+                    if (chart.Size != size)
+                    {
+                        allSizeEqual = false;
+                        break;
+                    }
+                }
+                arrangeToolStripMenuItem.Enabled = allSizeEqual;
+            }
+        }
+
+        private void 标地震ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmEditLabelDatabase frmEditLabelDatabase = new FrmEditLabelDatabase(this.CUser);
+            frmEditLabelDatabase.ShowDialog();
+            var dt = frmEditLabelDatabase.ConfirmedDataTable;
+            MessageBox.Show("有" + dt.Rows.Count + "条数据将被标地震！");
         }
     }
 }

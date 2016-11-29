@@ -144,6 +144,18 @@
     <Compile Include="GUI\Computing\FrmConfigChart.Designer.cs">
       <DependentUpon>FrmConfigChart.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Computing\FrmInputSth.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Computing\FrmInputSth.Designer.cs">
+      <DependentUpon>FrmInputSth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Computing\FrmResizeCharts.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Computing\FrmResizeCharts.Designer.cs">
+      <DependentUpon>FrmResizeCharts.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Computing\FrmDisplayCharts.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -353,6 +365,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Computing\FrmConfigChart.resx">
       <DependentUpon>FrmConfigChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Computing\FrmInputSth.resx">
+      <DependentUpon>FrmInputSth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Computing\FrmResizeCharts.resx">
+      <DependentUpon>FrmResizeCharts.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Computing\FrmDisplayCharts.resx">
       <DependentUpon>FrmDisplayCharts.cs</DependentUpon>

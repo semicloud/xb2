@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Xb2.GUI.Catalog;
 using Xb2.GUI.Main;
 
 namespace Xb2
@@ -14,7 +15,7 @@ namespace Xb2
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new FrmLagrangeInterpolationDemo());
+            //Application.Run(new FrmShowLabelChart());
 
             FrmLogin frmLogin = new FrmLogin();
             frmLogin.ShowDialog();

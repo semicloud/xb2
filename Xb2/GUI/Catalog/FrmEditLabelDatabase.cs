@@ -114,6 +114,21 @@ namespace Xb2.GUI.Catalog
         }
 
         /// <summary>
+        /// 选定进行标地震的地震目录
+        /// </summary>
+        public DataTable ConfirmedDataTable { get; private set; }
+
+        private void 选定该标注库ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (dataGridView2.DataSource != null)
+            {
+                this.ConfirmedDataTable = null;
+                this.ConfirmedDataTable = (DataTable) dataGridView2.DataSource;
+                this.Close();
+            }
+        }
+
+        /// <summary>
         /// 删除标注库
         /// </summary>
         /// <param name="sender"></param>
@@ -306,5 +321,9 @@ namespace Xb2.GUI.Catalog
                 }
             }
         }
+
+       
+
+       
     }
 }
