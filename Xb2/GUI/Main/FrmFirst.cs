@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
+using Accord.Math;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
 using Xb2.GUI.Computing;
+using Xb2.GUI.Computing.Input;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.M.Val.ProcessedData;
 using Xb2.GUI.M.Val.Rawdata;
@@ -102,11 +105,40 @@ namespace Xb2.GUI.Main
             frmDisplayCharts.Show();
         }
 
+        private void 消趋势ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmSingleInput frmSingleInput = new FrmSingleInput(this.CUser);
+            frmSingleInput.StartPosition = FormStartPosition.CenterScreen;
+            frmSingleInput.Show();
+        }
+
+        private void OpenChartForm()
+        {
+            var title = "分幅图";
+            var mdiChildrenTitles = this.MdiChildren.Select(f => f.Text);
+            if (mdiChildrenTitles.Contains(title))
+            {
+                var frmDisplayCharts = (FrmDisplayCharts)this.MdiChildren.ToList().Find(f => f.Text.Equals(title));
+                frmDisplayCharts.BringToFront();
+            }
+            else
+            {
+                var frmDisplayCharts = new FrmDisplayCharts(this.CUser)
+                {
+                    MdiParent = this,
+                    StartPosition = FormStartPosition.CenterScreen,
+                };
+                frmDisplayCharts.Show();
+            }
+        }
+
         private void 管理基础数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             FrmManageProcessedData frmManageProcessedData = new FrmManageProcessedData(this.CUser);
             frmManageProcessedData.MdiParent = this;
             frmManageProcessedData.Show();
         }
+
+
     }
 }

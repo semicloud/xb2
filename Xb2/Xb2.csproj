@@ -194,6 +194,12 @@
     <Compile Include="GUI\Computing\FrmDisplayCharts.Designer.cs">
       <DependentUpon>FrmDisplayCharts.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Computing\Input\FrmSingleInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Computing\Input\FrmSingleInput.Designer.cs">
+      <DependentUpon>FrmSingleInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Controls\CircleQuery.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -406,6 +412,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Computing\FrmDisplayCharts.resx">
       <DependentUpon>FrmDisplayCharts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Computing\Input\FrmSingleInput.resx">
+      <DependentUpon>FrmSingleInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\CircleQuery.resx">
       <DependentUpon>CircleQuery.cs</DependentUpon>

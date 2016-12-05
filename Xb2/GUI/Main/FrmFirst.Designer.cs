@@ -221,6 +221,7 @@
             this.消趋势ToolStripMenuItem.Name = "消趋势ToolStripMenuItem";
             this.消趋势ToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.消趋势ToolStripMenuItem.Text = "消趋势";
+            this.消趋势ToolStripMenuItem.Click += new System.EventHandler(this.消趋势ToolStripMenuItem_Click);
             // 
             // 年周变ToolStripMenuItem
             // 

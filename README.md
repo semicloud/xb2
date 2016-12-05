@@ -19,3 +19,7 @@ cross fault data tool for national earthquake response support service of China
 # 2016-11-30
 1. 实现了分幅图的编辑，标题、颜色、线的粗细等；听起来不难，但真是个麻烦事儿；
 2. 标地震功能实现了一半，剩下的过几天再做吧，科研ING!
+
+#2016-12-5
+1. 集成了核心算法；
+2. 消趋势那个集成的差不多了，现在就是在做软件和算法的图形接口；碎吧~
