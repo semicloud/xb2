@@ -19,7 +19,6 @@ namespace Xb2.Algorithms.Core.Entity
 
         }
 
-        [Obsolete]
         public List<DateRange> Interset_v20150819(List<DateTime> dateTimes)
         {
             var ans = new List<DateRange>();
@@ -42,7 +41,6 @@ namespace Xb2.Algorithms.Core.Entity
             return ans;
         }
 
-        [Obsolete]
         public Window GetPre_v20150821(int delta)
         {
             var lower = this.Lower.AddMonths(-delta);
@@ -59,7 +57,6 @@ namespace Xb2.Algorithms.Core.Entity
             return win;
         }
 
-        [Obsolete]
         public static List<Window> GetWindows(DateTime start, DateTime end, int slen, int wlen)
         {
             var answer = new List<Window>();

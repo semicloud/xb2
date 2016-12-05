@@ -3,9 +3,9 @@ using System.Windows.Forms;
 
 namespace Xb2.GUI.Computing
 {
-    public partial class FrmInputSth : Form
+    public partial class FrmInputSize : Form
     {
-        public FrmInputSth()
+        public FrmInputSize()
         {
             InitializeComponent();
         }

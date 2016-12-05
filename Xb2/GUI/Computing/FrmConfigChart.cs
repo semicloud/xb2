@@ -164,7 +164,7 @@ namespace Xb2.GUI.Computing
 
         private void 标题ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            FrmInputSth frmInputSth = new FrmInputSth();
+            FrmInputSize frmInputSth = new FrmInputSize();
             frmInputSth.Owner = this;
 
             frmInputSth.ShowDialog();

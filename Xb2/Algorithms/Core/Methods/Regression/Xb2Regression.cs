@@ -54,12 +54,12 @@ namespace Xb2.Algorithms.Core.Methods.Regression
 
         public List<DateValue> GetFittingLineData()
         {
-            return DateValues.FromArrays(_dates, _yCap.ToList());
+            return DateValueList.FromArrays(_dates, _yCap.ToList());
         }
 
         public List<DateValue> GetResidualLineData()
         {
-            return DateValues.FromArrays(_dates, (_y - _yCap).ToList());
+            return DateValueList.FromArrays(_dates, (_y - _yCap).ToList());
         }
 
         public string GetFittingLineFormula()
@@ -78,7 +78,7 @@ namespace Xb2.Algorithms.Core.Methods.Regression
         public void Test()
         {
             var input = new Xb2RegressionInput();
-            var dateValues = DateValues.FromRawData(39).GetRange(0, 10);
+            var dateValues = DateValueList.FromRawData(39).GetRange(0, 10);
             Console.WriteLine(String.Join(",", dateValues.Select(p => p.Date.ToOADate())));
             Console.WriteLine(String.Join(",", dateValues.Select(p => p.Value)));
             //25659,25689,25720,25750,25781,25812,25842,25873,25903,25934

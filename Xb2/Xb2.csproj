@@ -33,13 +33,16 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Accord">
+    <Reference Include="Accord, Version=3.3.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Accord.3.3.0\lib\net45\Accord.dll</HintPath>
     </Reference>
-    <Reference Include="Accord.Math">
+    <Reference Include="Accord.Math, Version=3.3.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Accord.Math.3.3.0\lib\net45\Accord.Math.dll</HintPath>
     </Reference>
-    <Reference Include="Accord.Math.Core">
+    <Reference Include="Accord.Math.Core, Version=3.3.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Accord.Math.3.3.0\lib\net45\Accord.Math.Core.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics">
@@ -72,13 +75,42 @@
     <Compile Include="Algorithms\Core\Entity\DateRange.cs" />
     <Compile Include="Algorithms\Core\Entity\DateUnit.cs" />
     <Compile Include="Algorithms\Core\Entity\DateValue.cs" />
-    <Compile Include="Algorithms\Core\Entity\DateValues.cs" />
+    <Compile Include="Algorithms\Core\Entity\DateValueList.cs" />
     <Compile Include="Algorithms\Core\Entity\Window.cs" />
+    <Compile Include="Algorithms\Core\Methods\AbnormalAmplification\Xb2AbAmplification.cs" />
+    <Compile Include="Algorithms\Core\Methods\AbnormalAmplification\Xb2AbAmplificationInput.cs" />
+    <Compile Include="Algorithms\Core\Methods\CoreMethodUtils.cs" />
+    <Compile Include="Algorithms\Core\Methods\Correlation\Xb2Correlation.cs" />
+    <Compile Include="Algorithms\Core\Methods\Correlation\Xb2CorrelationInput.cs" />
+    <Compile Include="Algorithms\Core\Methods\FaultOffset\Xb2DCHDL_M1.cs" />
+    <Compile Include="Algorithms\Core\Methods\FaultOffset\Xb2DCHDL_M2.cs" />
+    <Compile Include="Algorithms\Core\Methods\FaultOffset\Xb2DCHDL_M3.cs" />
+    <Compile Include="Algorithms\Core\Methods\FaultOffset\Xb2DCHDL_M4.cs" />
+    <Compile Include="Algorithms\Core\Methods\PeriodComputer.cs" />
+    <Compile Include="Algorithms\Core\Methods\PeriodComputer2.cs" />
+    <Compile Include="Algorithms\Core\Methods\QuShuDebug.cs" />
+    <Compile Include="Algorithms\Core\Methods\Rate\Xb2SingleRateDiff.cs" />
+    <Compile Include="Algorithms\Core\Methods\Rate\Xb2SingleRateDiffInput.cs" />
+    <Compile Include="Algorithms\Core\Methods\Rate\Xb2SLCF.cs" />
+    <Compile Include="Algorithms\Core\Methods\Rate\Xb2SLCFHC.cs" />
+    <Compile Include="Algorithms\Core\Methods\Rate\Xb2SLLJQD.cs" />
+    <Compile Include="Algorithms\Core\Methods\Rate\Xb2SLLJQDHC.cs" />
+    <Compile Include="Algorithms\Core\Methods\Strain\StrainValueUnit\StrainValueUnitFirst.cs" />
+    <Compile Include="Algorithms\Core\Methods\Strain\StrainValueUnit\StrainValueUnitSecond.cs" />
+    <Compile Include="Algorithms\Core\Methods\Strain\TriangleCalculator\TriangleCalculatorBase.cs" />
+    <Compile Include="Algorithms\Core\Methods\Strain\TriangleCalculator\TriangleCalculatorFirst.cs" />
+    <Compile Include="Algorithms\Core\Methods\Strain\TriangleCalculator\TriangleCalculatorSecond.cs" />
+    <Compile Include="Algorithms\Core\Methods\Strain\Xb2StrainBase.cs" />
+    <Compile Include="Algorithms\Core\Methods\Strain\Xb2YbM1.cs" />
+    <Compile Include="Algorithms\Core\Methods\Strain\Xb2YbM2.cs" />
+    <Compile Include="Algorithms\Core\Methods\Strain\Xb2YBM3.cs" />
+    <Compile Include="Algorithms\Core\Methods\Strain\YbBase.cs" />
     <Compile Include="Algorithms\Core\Methods\Xb2BaseInput.cs" />
     <Compile Include="Algorithms\Core\Methods\Regression\Xb2Regression.cs" />
     <Compile Include="Algorithms\Core\Methods\Regression\Xb2RegressionInput.cs" />
     <Compile Include="Algorithms\Core\Methods\YearChange\Xb2YearChange.cs" />
     <Compile Include="Algorithms\Core\Methods\YearChange\Xb2YearChangeInput.cs" />
+    <Compile Include="Algorithms\Core\Methods\ScatterValues.cs" />
     <Compile Include="Algorithms\Numberical\ProcessLogger.cs" />
     <Compile Include="Algorithms\Numberical\Processmethod.cs" />
     <Compile Include="Config\Xb2Config.cs" />
@@ -144,11 +176,11 @@
     <Compile Include="GUI\Computing\FrmConfigChart.Designer.cs">
       <DependentUpon>FrmConfigChart.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Computing\FrmInputSth.cs">
+    <Compile Include="GUI\Computing\FrmInputSize.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Computing\FrmInputSth.Designer.cs">
-      <DependentUpon>FrmInputSth.cs</DependentUpon>
+    <Compile Include="GUI\Computing\FrmInputSize.Designer.cs">
+      <DependentUpon>FrmInputSize.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Computing\FrmResizeCharts.cs">
       <SubType>Form</SubType>
@@ -366,8 +398,8 @@
     <EmbeddedResource Include="GUI\Computing\FrmConfigChart.resx">
       <DependentUpon>FrmConfigChart.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Computing\FrmInputSth.resx">
-      <DependentUpon>FrmInputSth.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Computing\FrmInputSize.resx">
+      <DependentUpon>FrmInputSize.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Computing\FrmResizeCharts.resx">
       <DependentUpon>FrmResizeCharts.cs</DependentUpon>
@@ -482,6 +514,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Algorithms\Core\Methods\Strain\M2\" />
+    <Folder Include="Algorithms\Core\Methods\Strain\M3\" />
     <Folder Include="Algorithms\Core\Utils\" />
     <Folder Include="Entity\Computing\" />
     <Folder Include="GUI\User\" />
