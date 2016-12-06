@@ -2675,7 +2675,9 @@ namespace Xb2.Utils.Control
                 // BorderlineColor = Color.FromName(ConfigurationManager.AppSettings["DISP_CHART_BORDER_COLOR"]),
                 // BorderlineWidth = Convert.ToInt32(ConfigurationManager.AppSettings["DISP_CHART_BORDER_WIDTH"]),
                 // BorderDashStyle = ChartDashStyle.Solid,
-                Titles = {calcResult.Title}
+                Titles = {calcResult.Title},
+                AntiAliasing = AntiAliasingStyles.All,
+                TextAntiAliasingQuality = TextAntiAliasingQuality.High,
             };
 
             #endregion
@@ -2825,8 +2827,9 @@ namespace Xb2.Utils.Control
             series1.ChartArea = chartArea1.Name;
             //如果计算结果中只有一条曲线，那简单了
             //var chartAreaHeightPercent = (int) Math.Floor(100.0/chart.ChartAreas.Count);
-            //下面这行代码可以修改Y轴刻度的疏密程度
-            // var yInverval = (chartArea.AxisY.Maximum - chartArea.AxisY.Minimum)/3;
+            //下面这2行代码可以修改Y轴刻度的疏密程度，现在先不改 --
+            var yInverval = (chartArea1.AxisY.Maximum - chartArea1.AxisY.Minimum)/4.0;
+            chartArea1.AxisY.Interval = yInverval;
             chartArea1.Position.Auto = false;
             chartArea1.Position.Width = chartAreaWidthPercent;
             chartArea1.Position.Height = 100;

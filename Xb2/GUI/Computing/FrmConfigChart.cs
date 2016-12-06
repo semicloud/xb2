@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
@@ -23,11 +24,6 @@ namespace Xb2.GUI.Computing
             frmDisplayCharts.panel1.Controls.Add(chart);
             frmDisplayCharts.panel1.Invalidate();
             this.Close();
-        }
-
-        private void FrmConfigChart_FormClosing(object sender, FormClosingEventArgs e)
-        {
-           
         }
 
         private void 改标题ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -107,6 +103,17 @@ namespace Xb2.GUI.Computing
             chart.Invalidate();
         }
 
+        private void ChangeAxisIntervals(Object sender, EventArgs args)
+        {
+            var chart = GetChart();
+            var menuItemText = ((ToolStripMenuItem)sender).Text;
+            //先不该X轴的标签间距
+            //chart.ChartAreas[0].AxisX.Interval /= chart.ChartAreas[0].AxisX.Interval;
+            Debug.Print("_oldInterval:" + _oldYInterval);
+            chart.ChartAreas[0].AxisY.Interval = _oldYInterval/Convert.ToSingle(menuItemText);
+            chart.Invalidate();
+        }
+
         private void ChangeAxisFont(Object sender, EventArgs args)
         {
             var chart = GetChart();
@@ -166,11 +173,18 @@ namespace Xb2.GUI.Computing
         {
             FrmInputSize frmInputSth = new FrmInputSize();
             frmInputSth.Owner = this;
-
             frmInputSth.ShowDialog();
 
         }
 
-
+        private double _oldYInterval;
+        private void FrmConfigChart_ControlAdded(object sender, ControlEventArgs e)
+        {
+            if (e.Control is Chart)
+            {
+                _oldYInterval = 0.0f;
+                _oldYInterval = ((Chart) e.Control).ChartAreas[0].AxisY.Interval;
+            }
+        }
     }
 }

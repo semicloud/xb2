@@ -45,7 +45,7 @@
             this.生成基础数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.管理基础数据ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.计算ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.数据绘图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.原始数据绘图ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.消趋势ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.年周变ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.相关系数ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -194,7 +194,7 @@
             // 计算ToolStripMenuItem
             // 
             this.计算ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.数据绘图ToolStripMenuItem,
+            this.原始数据绘图ToolStripMenuItem,
             this.消趋势ToolStripMenuItem,
             this.年周变ToolStripMenuItem,
             this.相关系数ToolStripMenuItem,
@@ -209,12 +209,12 @@
             this.计算ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
             this.计算ToolStripMenuItem.Text = "计算";
             // 
-            // 数据绘图ToolStripMenuItem
+            // 原始数据绘图ToolStripMenuItem
             // 
-            this.数据绘图ToolStripMenuItem.Name = "数据绘图ToolStripMenuItem";
-            this.数据绘图ToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
-            this.数据绘图ToolStripMenuItem.Text = "数据绘图";
-            this.数据绘图ToolStripMenuItem.Click += new System.EventHandler(this.数据绘图ToolStripMenuItem_Click);
+            this.原始数据绘图ToolStripMenuItem.Name = "原始数据绘图ToolStripMenuItem";
+            this.原始数据绘图ToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.原始数据绘图ToolStripMenuItem.Text = "原始数据绘图";
+            this.原始数据绘图ToolStripMenuItem.Click += new System.EventHandler(this.原始数据绘图ToolStripMenuItem_Click);
             // 
             // 消趋势ToolStripMenuItem
             // 
@@ -346,7 +346,7 @@
         private System.Windows.Forms.ToolStripMenuItem 管理原始数据ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 生成基础数据ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 管理基础数据ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 数据绘图ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 原始数据绘图ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 消趋势ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 年周变ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 相关系数ToolStripMenuItem;

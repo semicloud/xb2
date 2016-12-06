@@ -10,7 +10,7 @@ using Xb2.Algorithms.Core.Entity;
 namespace Xb2.Algorithms.Core.Methods.Regression
 {
     /// <summary>
-    /// 跨断层流动形变资料处理软件-算法-消趋势 输入
+    /// 跨断层流动形变资料处理软件-算法-消趋势 输入 单测项输入
     /// </summary>
     public class Xb2RegressionInput : Xb2BaseInput
     {
@@ -22,12 +22,17 @@ namespace Xb2.Algorithms.Core.Methods.Regression
         /// <summary>
         /// 测项编号
         /// </summary>
-        public int MItemID { get; set; }
+        public int MItemId { get; set; }
+
+        /// <summary>
+        /// 测项的字符串表示，观测单位-地名-测项名-方法名-（算法处理名）
+        /// </summary>
+        public string MItemStr { get; set; }
 
         /// <summary>
         /// 基础数据库编号
         /// </summary>
-        public int DatabaseID { get; set; }
+        public int DatabaseId { get; set; }
 
         /// <summary>
         /// 基础数据库名称

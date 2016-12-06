@@ -39,6 +39,30 @@ namespace Xb2.Algorithms.Core.Methods.Regression
             Debug.Print("_yCap:" + string.Join(",",_yCap));
         }
 
+        public CalcResult GetRawLine()
+        {
+            CalcResult calcResult = new CalcResult();
+            calcResult.NumericalTable = _input.List.ToDataTable();
+            calcResult.Title = _input.MItemStr.Split('，')[1] + "-基础数据";
+            return calcResult;
+        }
+
+        public CalcResult GetFittingLine()
+        {
+            CalcResult calcResult = new CalcResult();
+            calcResult.NumericalTable = DateValueList.FromArrays(_dates, _yCap.ToList()).ToDataTable();
+            calcResult.Title = _input.MItemStr.Split('，')[1] + "-拟合线" + "\n\n" + GetFittingLineFormula();
+            return calcResult;
+        }
+
+        public CalcResult GetResidualLine()
+        {
+            CalcResult calcResult = new CalcResult();
+            calcResult.NumericalTable = DateValueList.FromArrays(_dates, (_y - _yCap).ToList()).ToDataTable();
+            calcResult.Title = _input.MItemStr.Split('，')[1] + "-残差线";
+            return calcResult;
+        }
+
         public double GetR()
         {
             var r = GoodnessOfFit.R(_yCap, _y);
@@ -56,20 +80,23 @@ namespace Xb2.Algorithms.Core.Methods.Regression
             throw new NotImplementedException();
         }
 
+        [Obsolete]
         public DateValueList GetFittingLineData()
         {
             return DateValueList.FromArrays(_dates, _yCap.ToList());
         }
 
+        [Obsolete]
         public DateValueList GetResidualLineData()
         {
+            //注意这里使用了Math.Net包中的Vector类进行向量化运算
             return DateValueList.FromArrays(_dates, (_y - _yCap).ToList());
         }
 
         public string GetFittingLineFormula()
         {
             var ab = GetCoff();
-            return "y(x)=" + ab.Item1 + "+" + ab.Item2 + "*x";
+            return "y(x)=" + Math.Round(ab.Item1, 2) + "+" + Math.Round(ab.Item2, 2) + "*x";
         }
     }
 

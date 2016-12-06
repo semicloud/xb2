@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Xb2.Algorithms.Core.Entity;
@@ -11,6 +14,7 @@ using Xb2.GUI.M.Item;
 using Xb2.GUI.M.Val.ProcessedData;
 using Xb2.GUI.M.Val.Rawdata;
 using Xb2.Utils;
+using Xb2.Utils.Control;
 
 namespace Xb2.GUI.Main
 {
@@ -98,41 +102,45 @@ namespace Xb2.GUI.Main
             frmEditMItem.Show();
         }
 
-        private void 数据绘图ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void 原始数据绘图ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmDisplayCharts frmDisplayCharts = new FrmDisplayCharts(this.CUser);
-            frmDisplayCharts.MdiParent = this;
-            frmDisplayCharts.StartPosition = FormStartPosition.CenterScreen;
-            frmDisplayCharts.Show();
+            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser);
+            frmSelectMItem.StartPosition = FormStartPosition.CenterScreen;
+            if (frmSelectMItem.ShowDialog() == DialogResult.OK)
+            {
+                var dt = frmSelectMItem.Result;
+                var calcResults = new List<CalcResult>();
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    var id = Convert.ToInt32(dt.Rows[i]["编号"]);
+                    var title = dt.Rows[i]["观测单位"] + "-" + dt.Rows[i]["地名"] + "-" + dt.Rows[i]["方法名"] + "-" +
+                                dt.Rows[i]["测项名"] + "-" + "原始数据";
+                    var calcResult = new CalcResult();
+                    calcResult.Title = title;
+                    calcResult.NumericalTable = DateValueList.FromRawData(id).ToDataTable();
+                    calcResults.Add(calcResult);
+                }
+                var frmDisplayCharts = OpenChartForm();
+                foreach (var calcResult in calcResults)
+                {
+                    frmDisplayCharts.AddChart(calcResult);
+                }
+            }
         }
 
         private void 消趋势ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmRegressionInput frmSingleInput = new FrmRegressionInput(this.CUser)
-            {
-                StartPosition = FormStartPosition.CenterScreen,
-            };
+            FrmRegressionInput frmSingleInput = new FrmRegressionInput(this.CUser);
+            frmSingleInput.StartPosition = FormStartPosition.CenterScreen;
             var result = frmSingleInput.ShowDialog();
             if (result == DialogResult.OK)
             {
                 var input = frmSingleInput.RegresInput;
                 Xb2Regression regression = new Xb2Regression(input);
-
-                CalcResult calcResult1 = new CalcResult
-                {
-                    NumericalTable = regression.GetResidualLineData().ToDataTable(),
-                    Title = "残差值线"
-                };
-
-                CalcResult calcResult2 = new CalcResult
-                {
-                    NumericalTable = input.List.ToDataTable(),
-                    Title = "基础数据"
-                };
-
                 var frmDisplayCharts = OpenChartForm();
-                frmDisplayCharts.AddChart(calcResult1);
-                frmDisplayCharts.AddChart(calcResult2);
+                frmDisplayCharts.AddChart(regression.GetFittingLine());
+                frmDisplayCharts.AddChart(regression.GetResidualLine());
+                frmDisplayCharts.AddChart(regression.GetRawLine());
             }
         }
 

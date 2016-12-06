@@ -43,6 +43,12 @@
             this.toolStripMenuItem12 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem13 = new System.Windows.Forms.ToolStripMenuItem();
             this.标题ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.间隔ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem14 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem15 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem16 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem17 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem18 = new System.Windows.Forms.ToolStripMenuItem();
             this.数据线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.线型ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.虚线ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -78,26 +84,26 @@
             this.字体ToolStripMenuItem,
             this.颜色ToolStripMenuItem});
             this.标题ToolStripMenuItem.Name = "标题ToolStripMenuItem";
-            this.标题ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.标题ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.标题ToolStripMenuItem.Text = "标题";
             // 
             // 内容ToolStripMenuItem
             // 
             this.内容ToolStripMenuItem.Name = "内容ToolStripMenuItem";
-            this.内容ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.内容ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.内容ToolStripMenuItem.Text = "内容";
             // 
             // 字体ToolStripMenuItem
             // 
             this.字体ToolStripMenuItem.Name = "字体ToolStripMenuItem";
-            this.字体ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.字体ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.字体ToolStripMenuItem.Text = "字体";
             this.字体ToolStripMenuItem.Click += new System.EventHandler(this.字体ToolStripMenuItem_Click);
             // 
             // 颜色ToolStripMenuItem
             // 
             this.颜色ToolStripMenuItem.Name = "颜色ToolStripMenuItem";
-            this.颜色ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.颜色ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.颜色ToolStripMenuItem.Text = "颜色";
             this.颜色ToolStripMenuItem.Click += new System.EventHandler(this.颜色ToolStripMenuItem_Click);
             // 
@@ -106,7 +112,8 @@
             this.坐标轴ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem2,
             this.toolStripMenuItem8,
-            this.标题ToolStripMenuItem1});
+            this.标题ToolStripMenuItem1,
+            this.间隔ToolStripMenuItem});
             this.坐标轴ToolStripMenuItem.Name = "坐标轴ToolStripMenuItem";
             this.坐标轴ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.坐标轴ToolStripMenuItem.Text = "坐标轴";
@@ -172,6 +179,53 @@
             this.标题ToolStripMenuItem1.Text = "标题";
             this.标题ToolStripMenuItem1.Click += new System.EventHandler(this.标题ToolStripMenuItem1_Click);
             // 
+            // 间隔ToolStripMenuItem
+            // 
+            this.间隔ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem14,
+            this.toolStripMenuItem15,
+            this.toolStripMenuItem16,
+            this.toolStripMenuItem17,
+            this.toolStripMenuItem18});
+            this.间隔ToolStripMenuItem.Name = "间隔ToolStripMenuItem";
+            this.间隔ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.间隔ToolStripMenuItem.Text = "间隔";
+            // 
+            // toolStripMenuItem14
+            // 
+            this.toolStripMenuItem14.Name = "toolStripMenuItem14";
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem14.Text = "1.0";
+            this.toolStripMenuItem14.Click += new System.EventHandler(this.ChangeAxisIntervals);
+            // 
+            // toolStripMenuItem15
+            // 
+            this.toolStripMenuItem15.Name = "toolStripMenuItem15";
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem15.Text = "2.0";
+            this.toolStripMenuItem15.Click += new System.EventHandler(this.ChangeAxisIntervals);
+            // 
+            // toolStripMenuItem16
+            // 
+            this.toolStripMenuItem16.Name = "toolStripMenuItem16";
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem16.Text = "3.0";
+            this.toolStripMenuItem16.Click += new System.EventHandler(this.ChangeAxisIntervals);
+            // 
+            // toolStripMenuItem17
+            // 
+            this.toolStripMenuItem17.Name = "toolStripMenuItem17";
+            this.toolStripMenuItem17.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem17.Text = "4.0";
+            this.toolStripMenuItem17.Click += new System.EventHandler(this.ChangeAxisIntervals);
+            // 
+            // toolStripMenuItem18
+            // 
+            this.toolStripMenuItem18.Name = "toolStripMenuItem18";
+            this.toolStripMenuItem18.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem18.Text = "5.0";
+            this.toolStripMenuItem18.Click += new System.EventHandler(this.ChangeAxisIntervals);
+            // 
             // 数据线ToolStripMenuItem
             // 
             this.数据线ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -179,7 +233,7 @@
             this.粗细ToolStripMenuItem,
             this.颜色ToolStripMenuItem1});
             this.数据线ToolStripMenuItem.Name = "数据线ToolStripMenuItem";
-            this.数据线ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.数据线ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.数据线ToolStripMenuItem.Text = "数据线";
             // 
             // 线型ToolStripMenuItem
@@ -286,7 +340,7 @@
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(149, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(109, 6);
             // 
             // FrmConfigChart
             // 
@@ -295,8 +349,8 @@
             this.ClientSize = new System.Drawing.Size(625, 415);
             this.Name = "FrmConfigChart";
             this.Text = "FrmConfigCharts";
-            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmConfigChart_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmConfigChart_FormClosed);
+            this.ControlAdded += new System.Windows.Forms.ControlEventHandler(this.FrmConfigChart_ControlAdded);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -333,6 +387,12 @@
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem13;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem 标题ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 间隔ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem15;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem16;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem17;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem18;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem14;
 
 
 
