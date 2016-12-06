@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
@@ -168,7 +169,7 @@ namespace Xb2.Utils
                     continue;
                 }
                 //求当前窗口中所有测值的平均值（即归一化处理）
-                var curMeanDate = curDvps.Select(d => d.Date).Mean();
+                var curMeanDate = curDvps.Select(d => d.Date).MeanDate();
                 var curMeanValue = curDvps.Select(d => d.Value).Average();
                 var curMean = new DateValue(curMeanDate, curMeanValue);
                 Debug.Print("{0}，{1}个数【{2}】，平均值为{3}->", dateRange, curDvps.Count,
@@ -180,7 +181,7 @@ namespace Xb2.Utils
                     continue;
                 }
                 //求前一个窗口中所有测值的平均值（即归一化处理）
-                var preMeanDate = preDvps.Select(d => d.Date).Mean();
+                var preMeanDate = preDvps.Select(d => d.Date).MeanDate();
                 var preMeanValue = preDvps.Select(d => d.Value).Average();
                 var preMean = new DateValue(preMeanDate, preMeanValue);
                 Debug.Print("{0}，前范围{1}-> 找到{2}个数【{3}】，平均值{4}->", curMean, preWin,
@@ -197,13 +198,38 @@ namespace Xb2.Utils
             return answer;
         }
 
-        public static DateTime Mean(this IEnumerable<DateTime> dateTimes)
+        public static DateTime MeanDate(this IEnumerable<DateTime> dateTimes)
         {
             dateTimes.ToList().Sort();
             DateTime start = dateTimes.First(), end = dateTimes.Last();
-            return start.AddDays(((end - start).Days) / 2.0);
+            return start.AddDays(((end - start).Days)/2.0);
         }
 
-    #endregion
+        public static DateValueList ToDateValueList(this List<DateValue> dateValues)
+        {
+            var dateValueList = new DateValueList();
+            for (int i = 0; i < dateValues.Count; i++)
+            {
+                dateValueList.Add(new DateValue(dateValues[i].Date, dateValues[i].Value));
+            }
+            return dateValueList;
+        }
+
+        public static DataTable ToDataTable(this DateValueList dateValueList)
+        {
+            var dataTable = new DataTable();
+            dataTable.Columns.Add("观测日期", typeof(DateTime));
+            dataTable.Columns.Add("观测值", typeof(double));
+            foreach (var dateValue in dateValueList)
+            {
+                var dr = dataTable.NewRow();
+                dr["观测日期"] = dateValue.Date;
+                dr["观测值"] = dateValue.Value;
+                dataTable.Rows.Add(dr);
+            }
+            return dataTable;
+        }
+
+        #endregion
     }
 }

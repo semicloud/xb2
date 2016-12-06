@@ -42,7 +42,7 @@ namespace Xb2.Algorithms.Core.Methods.AbnormalAmplification
         {
             var preparedList = new List<DateValueList>();
             var range = new DateRange(start, end);
-            srcList.ForEach(collection => preparedList.Add(collection.GetValuesBetweenDateRange(range)));
+            srcList.ForEach(collection => preparedList.Add(collection.Between(range)));
             Action<DateValueList> action = collection =>
             {
                 var yj = getYj(collection, collection.AbnormalTrend);
@@ -99,7 +99,7 @@ namespace Xb2.Algorithms.Core.Methods.AbnormalAmplification
                     //日期范围
                     var range = new DateRange(start, pointer);
                     //子序列
-                    var subCollection = collection.GetValuesBetweenDateRange(range);
+                    var subCollection = collection.Between(range);
                     //如果子序列中的测值数不为0，加入集合
                     if (subCollection.Count > 0)
                         inThisRange.Add(subCollection);

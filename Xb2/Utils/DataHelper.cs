@@ -72,9 +72,9 @@ namespace Xb2.Utils
         /// </summary>
         /// <param name="dataTable"></param>
         /// <returns></returns>
-        public static List<DateValue> RetrieveDateValues(this DataTable dataTable)
+        public static DateValueList RetrieveDateValues(this DataTable dataTable)
         {
-            var answer = new List<DateValue>();
+            var answer = new DateValueList();
             if (dataTable != null)
             {
                 for (int i = 0; i < dataTable.Rows.Count; i++)

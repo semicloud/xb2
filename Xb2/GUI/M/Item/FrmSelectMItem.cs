@@ -7,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Accord.Math;
 using MySql.Data.MySqlClient;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;

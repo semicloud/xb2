@@ -7,6 +7,7 @@ using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.LinearAlgebra.Double;
 using NUnit.Framework;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Utils;
 
 namespace Xb2.Algorithms.Core.Methods.Regression
 {
@@ -25,10 +26,13 @@ namespace Xb2.Algorithms.Core.Methods.Regression
         public Xb2Regression(Xb2RegressionInput input)
         {
             this._input = input;
-            this._x = Vector.Build.Dense(_input.Collection.Select(d => d.Date.ToOADate()).ToArray());
-            this._y = Vector.Build.Dense(_input.Collection.Select(d => d.Value).ToArray());
+            //构造输入向量
+            this._x = Vector.Build.Dense(_input.List.Select(d => d.Date.ToOADate()).ToArray());
+            //构造输出向量
+            this._y = Vector.Build.Dense(_input.List.Select(d => d.Value).ToArray());
+            //y_hat
             this._yCap = _x.Map(Fit.LineFunc(_x.ToArray(), _y.ToArray()));
-            this._dates = _input.Collection.Select(p => p.Date).ToList();
+            this._dates = _input.List.Select(p => p.Date).ToList();
             Debug.Print("Linear Regression:");
             Debug.Print("_x:" + String.Join(",",_x));
             Debug.Print("_y:" + String.Join(",", _y));
@@ -52,12 +56,12 @@ namespace Xb2.Algorithms.Core.Methods.Regression
             throw new NotImplementedException();
         }
 
-        public List<DateValue> GetFittingLineData()
+        public DateValueList GetFittingLineData()
         {
             return DateValueList.FromArrays(_dates, _yCap.ToList());
         }
 
-        public List<DateValue> GetResidualLineData()
+        public DateValueList GetResidualLineData()
         {
             return DateValueList.FromArrays(_dates, (_y - _yCap).ToList());
         }
@@ -78,12 +82,12 @@ namespace Xb2.Algorithms.Core.Methods.Regression
         public void Test()
         {
             var input = new Xb2RegressionInput();
-            var dateValues = DateValueList.FromRawData(39).GetRange(0, 10);
+            var dateValues = DateValueList.FromRawData(39).GetRange(0, 10).ToDateValueList();
             Console.WriteLine(String.Join(",", dateValues.Select(p => p.Date.ToOADate())));
             Console.WriteLine(String.Join(",", dateValues.Select(p => p.Value)));
             //25659,25689,25720,25750,25781,25812,25842,25873,25903,25934
             //-2203.29,-2203.2,-2203.21,-2203.19,-2203.12,-2203.02,-2203.11,-2203.1,-2203.1,-2203.09
-            input.Collection = dateValues;
+            input.List = dateValues;
             var regression = new Xb2Regression(input);
             Console.WriteLine("R:" + regression.GetR());
             Console.WriteLine("a={0},b={1}", regression.GetCoff().Item1, regression.GetCoff().Item2);

@@ -7,6 +7,8 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using MySql.Data.MySqlClient;
 using Xb2.Algorithms.Core;
+using Xb2.Algorithms.Core.Entity;
+using Xb2.Entity;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
 using Xb2.GUI.M.Item;
@@ -66,10 +68,30 @@ namespace Xb2.GUI.Computing
             return dt;
         }
 
-        private void 选测项ToolStripMenuItem_Click(object sender, System.EventArgs e)
+        //X和Y的起始坐标
+        private Int32 _posX = 5;
+        private Int32 _posY = 27 + 5;
+
+        /// <summary>
+        /// 向该界面中添加一个Chart
+        /// </summary>
+        /// <param name="calcResult"></param>
+        public void AddChart(CalcResult calcResult)
         {
-            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser);
-            frmSelectMItem.StartPosition = FormStartPosition.CenterScreen;
+            var chart = ChartHelper.BuildChart(calcResult);
+            chart.Location = new Point(_posX, _posY);
+            panel1.Controls.Add(chart);
+            _posX += 5;
+            _posY += 5;
+            panel1.Focus();
+        }
+
+        private void 选测项ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser)
+            {
+                StartPosition = FormStartPosition.CenterScreen
+            };
             DialogResult dlRslt = frmSelectMItem.ShowDialog();
             int x = 5, y = 27 + 5;
             if (dlRslt == DialogResult.OK)
@@ -81,8 +103,8 @@ namespace Xb2.GUI.Computing
                     var title = dt.Rows[i]["观测单位"] + "-" + dt.Rows[i]["地名"] + "-" + dt.Rows[i]["方法名"] + "-" +
                                 dt.Rows[i]["测项名"];
                     var cc = new CalcResult {Title = title, NumericalTable = GetDataTable(id)};
-                    var list = new List<CalcResult>() {cc};
-                    var chart = ChartHelper.BuildChart(list);
+                    //var list = new List<CalcResult>() {cc};
+                    var chart = ChartHelper.BuildChart(cc);
                     chart.Location = new Point(x, y);
                     panel1.Controls.Add(chart);
                     x += 5;
@@ -129,7 +151,7 @@ namespace Xb2.GUI.Computing
         private List<Chart> GetAllCharts()
         {
             var charts = new List<Chart>();
-            if (panel1.Controls.Count > 1)
+            if (panel1.Controls.Count > 0)
             {
                 for (int i = 0; i < panel1.Controls.Count; i++)
                 {

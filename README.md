@@ -23,3 +23,6 @@ cross fault data tool for national earthquake response support service of China
 #2016-12-5
 1. 集成了核心算法；
 2. 消趋势那个集成的差不多了，现在就是在做软件和算法的图形接口；碎吧~
+
+#2016-12-6
+1. 消趋势算法集成完毕，目前已经可以实现输入参数-调用算法-出图展示的业务闭环；下一步就是精化这个闭环，做其他算法的时候能够快些；尽量满足用户的要求；

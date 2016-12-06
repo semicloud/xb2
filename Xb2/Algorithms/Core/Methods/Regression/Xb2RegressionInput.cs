@@ -5,7 +5,6 @@
 // 初次编写时间：2014-09-01
 // 功能：
 
-using System.Collections.Generic;
 using Xb2.Algorithms.Core.Entity;
 
 namespace Xb2.Algorithms.Core.Methods.Regression
@@ -18,7 +17,22 @@ namespace Xb2.Algorithms.Core.Methods.Regression
         /// <summary>
         /// 测值序列
         /// </summary>
-        public List<DateValue> Collection { get; set; }
+        public DateValueList List { get; set; }
+
+        /// <summary>
+        /// 测项编号
+        /// </summary>
+        public int MItemID { get; set; }
+
+        /// <summary>
+        /// 基础数据库编号
+        /// </summary>
+        public int DatabaseID { get; set; }
+
+        /// <summary>
+        /// 基础数据库名称
+        /// </summary>
+        public string DatabaseName { get; set; }
 
         /// <summary>
         /// 置信因子

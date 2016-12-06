@@ -34,8 +34,8 @@ namespace Xb2.Algorithms.Core.Methods.Correlation
         {
             DateRange dateRange = new DateRange(_input.Start, _input.End);
             /**
-            var coll1 = _input.Collection1.GetValuesBetweenDateRange(dateRange);
-            var coll2 = _input.Collection2.GetValuesBetweenDateRange(dateRange);
+            var coll1 = _input.Collection1.Between(dateRange);
+            var coll2 = _input.Collection2.Between(dateRange);
             int period = coll1.GetPossiblePeriod();
             //TODO 这里和吴老师再确认一下,观测周期的格子怎么打
             var datetimes = DateRange.GetDateRangeStepByStep(_input.Start, _input.End, DateUnit.MONTH, period);

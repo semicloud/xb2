@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Windows.Forms;
-using Accord.Math;
+using Xb2.Algorithms.Core.Entity;
+using Xb2.Algorithms.Core.Methods.Regression;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
 using Xb2.GUI.Computing;
@@ -9,7 +10,7 @@ using Xb2.GUI.Computing.Input;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.M.Val.ProcessedData;
 using Xb2.GUI.M.Val.Rawdata;
-using Xb2.Utils.Control;
+using Xb2.Utils;
 
 namespace Xb2.GUI.Main
 {
@@ -107,29 +108,54 @@ namespace Xb2.GUI.Main
 
         private void 消趋势ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmSingleInput frmSingleInput = new FrmSingleInput(this.CUser);
-            frmSingleInput.StartPosition = FormStartPosition.CenterScreen;
-            frmSingleInput.Show();
+            FrmRegressionInput frmSingleInput = new FrmRegressionInput(this.CUser)
+            {
+                StartPosition = FormStartPosition.CenterScreen,
+            };
+            var result = frmSingleInput.ShowDialog();
+            if (result == DialogResult.OK)
+            {
+                var input = frmSingleInput.RegresInput;
+                Xb2Regression regression = new Xb2Regression(input);
+
+                CalcResult calcResult1 = new CalcResult
+                {
+                    NumericalTable = regression.GetResidualLineData().ToDataTable(),
+                    Title = "残差值线"
+                };
+
+                CalcResult calcResult2 = new CalcResult
+                {
+                    NumericalTable = input.List.ToDataTable(),
+                    Title = "基础数据"
+                };
+
+                var frmDisplayCharts = OpenChartForm();
+                frmDisplayCharts.AddChart(calcResult1);
+                frmDisplayCharts.AddChart(calcResult2);
+            }
         }
 
-        private void OpenChartForm()
+        private FrmDisplayCharts OpenChartForm()
         {
             var title = "分幅图";
             var mdiChildrenTitles = this.MdiChildren.Select(f => f.Text);
+            FrmDisplayCharts frmDisplayCharts;
             if (mdiChildrenTitles.Contains(title))
             {
-                var frmDisplayCharts = (FrmDisplayCharts)this.MdiChildren.ToList().Find(f => f.Text.Equals(title));
+                frmDisplayCharts = (FrmDisplayCharts) (this.MdiChildren.ToList().Find(f => f.Text.Equals(title)));
                 frmDisplayCharts.BringToFront();
             }
             else
             {
-                var frmDisplayCharts = new FrmDisplayCharts(this.CUser)
+                frmDisplayCharts = new FrmDisplayCharts(this.CUser)
                 {
                     MdiParent = this,
                     StartPosition = FormStartPosition.CenterScreen,
                 };
                 frmDisplayCharts.Show();
             }
+            return frmDisplayCharts;
         }
 
         private void 管理基础数据ToolStripMenuItem_Click(object sender, EventArgs e)

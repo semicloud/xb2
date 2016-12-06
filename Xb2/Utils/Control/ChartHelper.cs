@@ -2646,6 +2646,210 @@ namespace Xb2.Utils.Control
             return chart;
         }
 
+        /// <summary>
+        /// 将算法的计算结果封装为Chart控件，重要的方法！
+        /// 该方法比较重要，包括分幅图管理中对于图件的重要操作
+        /// </summary>
+        /// <param name="calcResult"></param>
+        /// <returns></returns>
+        public static Chart BuildChart(CalcResult calcResult)
+        {
+            #region Chart控件的基本设置，BackColor，Size等
+
+            //chart控件的默认宽度，下面都是读取配置
+            var width = Convert.ToInt32(ConfigurationManager.AppSettings["DISP_CHART_WIDTH"]);
+            //每个chartArea的默认高度，使用这两个值计算chart控件的Size
+            var heightPerArea = Convert.ToInt32(ConfigurationManager.AppSettings["DISP_CHART_AREA_HEIGHT"]);
+            //第1个chartArea控件的起始Y坐标
+            var startY = Convert.ToInt32(ConfigurationManager.AppSettings["DISP_CHART_AREA_Y_START"]);
+            var startX = Convert.ToInt32(ConfigurationManager.AppSettings["DISP_CHART_AREA_X_START"]);
+            //chartArea控件的宽度比例
+            var chartAreaWidthPercent =
+                Convert.ToInt32(ConfigurationManager.AppSettings["DISP_CHART_AREA_WIDTH_PERCENT"]);
+            //chart控件的基本属性设置，边框等
+            var chart = new Chart
+            {
+                BackColor = Color.Transparent,
+                Size = new Size(width, heightPerArea),
+                // 用户要求不要边框
+                // BorderlineColor = Color.FromName(ConfigurationManager.AppSettings["DISP_CHART_BORDER_COLOR"]),
+                // BorderlineWidth = Convert.ToInt32(ConfigurationManager.AppSettings["DISP_CHART_BORDER_WIDTH"]),
+                // BorderDashStyle = ChartDashStyle.Solid,
+                Titles = {calcResult.Title}
+            };
+
+            #endregion
+
+            #region 添加选中的CheckBox
+
+            //Chart控件中添加一个CheckBox，使得Chart可以选中
+            //Chart控件选中时，边框样式改变
+            CheckBox checkBox = new CheckBox {Location = new Point(5, 5), Size = new Size(20, 20)};
+            checkBox.CheckedChanged += (sender, e) =>
+            {
+                var parent = (Chart) checkBox.Parent;
+                parent.BorderlineWidth = checkBox.Checked ? 2 : 1;
+                parent.BorderlineColor = checkBox.Checked ? Color.Blue : Color.Black;
+                parent.BorderDashStyle = checkBox.Checked ? ChartDashStyle.Dash : ChartDashStyle.NotSet;
+            };
+            chart.Controls.Add(checkBox);
+
+            #endregion
+
+            //Titles加到chart控件中
+            //results.ForEach(rslt => chart.Titles.Add(rslt.Title));
+
+            #region 可以按住鼠标拖动Chart控件
+
+            //startPos变量和MouseDown、MouseMove两个事件用于用鼠标在界面内拖动chart控件
+            Point startPos = new Point();
+            chart.MouseDown += (sender, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    startPos = e.Location;
+                    //在拖动图件的时候将其带到最上层
+                    chart.BringToFront();
+                    //Alt键控制图件拖放，使分幅图叠加
+                    if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
+                    {
+                        chart.DoDragDrop(chart, DragDropEffects.Move);
+                    }
+                }
+            };
+            chart.MouseMove += (sender, e) =>
+            {
+                if (e.Button == MouseButtons.Left)
+                {
+                    chart.Left = e.X + chart.Left - startPos.X;
+                    chart.Top = e.Y + chart.Top - startPos.Y;
+                    chart.Invalidate();
+                }
+            };
+
+            #endregion
+
+            #region 负责Chart之间按住Alt键的拖拽(Drop)，拼图
+
+            //-------------------------以下代码负责处理图件的拖放处理--------------------------------
+            //下面DragOver和DragDrop方法用于控制Chart控件的拖放，即叠加
+            //按住Alt键，同时拖动分幅图，拖动到另外一幅图上，可将两个分幅图叠加可将分幅图叠加
+            chart.AllowDrop = true;
+            chart.DragOver += (sender, e) =>
+            {
+                if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
+                {
+                    e.Effect = DragDropEffects.Move;
+                }
+            };
+            chart.DragDrop += (sender, e) =>
+            {
+                if (System.Windows.Forms.Control.ModifierKeys == Keys.Alt)
+                {
+                    System.Windows.Forms.Control c =
+                        e.Data.GetData(e.Data.GetFormats()[0]) as System.Windows.Forms.Control;
+                    if (c != null)
+                    {
+                        Chart otherChart = (Chart) c;
+                        //获取数据源和标题，生成ChartArea和Series对象插入到目标Chart控件中
+                        var dt = otherChart.Series[0].Points.ToDataTable();
+                        var chartArea = GetChartArea(dt, otherChart.Titles[0].Text);
+                        var series = GetSeries(dt, otherChart.Titles[0].Text);
+                        chart.ChartAreas.Add(chartArea);
+                        chart.Series.Add(series);
+                        chart.Titles.Add(chartArea.Name);
+                        var n = chart.ChartAreas.Count;
+                        //chart.Size = new Size(width, n*heightPerArea + (n - 1)*span + startY);
+                        chart.Size = new Size(width, n*heightPerArea);
+                        //每个ChartArea之间的间距，设置每个图之间的距离是10px，由于图的Size不断变化， 所以每次都要更新span和StartY
+                        //这样StartY就不是一个比例了，就成了px
+                        var span = 5/chart.Height;
+                        startY = startY/chart.Height;
+                        //计算每个ChartArea应占的高度比例
+                        var chartAreaHeightPercent = (int) Math.Floor((double) ((100 - startY - span*(n - 1))/n));
+                        Debug.Print("Per height:" + chartAreaHeightPercent);
+                        for (int i = 0; i < chart.ChartAreas.Count; i++)
+                        {
+                            var area = chart.ChartAreas[i];
+                            area.Position.Auto = false;
+                            area.Position.Width = chartAreaWidthPercent;
+                            area.Position.Height = chartAreaHeightPercent;
+                            area.AxisX.Enabled = AxisEnabled.False;
+                            area.BorderDashStyle = ChartDashStyle.Solid;
+                            area.BorderColor = Color.Red;
+                            //令绘图区域对齐
+                            area.AlignmentOrientation = AreaAlignmentOrientations.Vertical;
+                            area.AlignmentStyle = AreaAlignmentStyles.All;
+                            if (i == 0)
+                            {
+                                //最下面一条曲线
+                                area.Position.Y = (n - 1)*chartAreaHeightPercent + startY + span;
+                                Debug.Print("i=0,y=" + area.Position.Y);
+                                area.AxisX.Enabled = AxisEnabled.True;
+                            }
+                            //除第1条和最后1条曲线外，其他曲线的处理
+                            else if (i != chart.ChartAreas.Count - 1)
+                            {
+                                area.Position.Y = (n - i - 1)*chartAreaHeightPercent + startY + span;
+                                area.AlignWithChartArea = chart.ChartAreas[0].Name;
+                                Debug.Print("i={0},y={1}", i, area.Position.Y);
+                            }
+                            //最后一条曲线的处理（最上面一条的曲线）
+                            else
+                            {
+                                area.Position.Y = startY;
+                                //设置Y轴的标签头，暂不处理啦
+                                //area.AxisY.ArrowStyle = AxisArrowStyle.SharpTriangle;
+                                area.AlignWithChartArea = chart.ChartAreas[0].Name;
+                                Debug.Print("i={0},max,y={1}", i, area.Position.Y);
+                            }
+                            chart.Titles[i].DockedToChartArea = area.Name;
+                        }
+                    }
+                }
+            };
+            //---------------------------------------------------------------------------------------
+
+            #endregion
+
+            #region 向Chart中添加ChartArea，目前只添加了一个
+
+            /**
+             * 根据计算结果生成chartArea，
+             * 计算并设置chartArea的高度和Y坐标，
+             * 从而形成分幅图，
+             * 将图标题固定到chartArea
+             */
+            var chartArea1 = GetChartArea(calcResult.NumericalTable.Copy(), 0);
+            var series1 = GetSeries(calcResult.NumericalTable.Copy());
+            series1.ChartArea = chartArea1.Name;
+            //如果计算结果中只有一条曲线，那简单了
+            //var chartAreaHeightPercent = (int) Math.Floor(100.0/chart.ChartAreas.Count);
+            //下面这行代码可以修改Y轴刻度的疏密程度
+            // var yInverval = (chartArea.AxisY.Maximum - chartArea.AxisY.Minimum)/3;
+            chartArea1.Position.Auto = false;
+            chartArea1.Position.Width = chartAreaWidthPercent;
+            chartArea1.Position.Height = 100;
+            chartArea1.Position.Y = startY;
+            chartArea1.Position.X = startX;
+            //chartArea.Name = chart.Titles[0].Text;
+            //设置该Tag属性是为了后面的分幅图拼图需要，Tag为0的ChartArea在最下面
+            //chartArea.Tag = 0; 
+            //chartArea.AxisX.ArrowStyle = AxisArrowStyle.SharpTriangle;
+            //chartArea.AxisY.ArrowStyle = AxisArrowStyle.SharpTriangle;
+            chartArea1.AxisY.IntervalAutoMode = IntervalAutoMode.VariableCount;
+            //chartArea.AxisY.Interval = yInverval;
+            chartArea1.Tag = calcResult.NumericalTable; //拼图需要
+            chart.Series.Add(series1);
+            chart.ChartAreas.Add(chartArea1);
+            chart.Titles[0].DockedToChartArea = chartArea1.Name;
+            chart.ChartAreas[0].Name = chart.Titles[0].Text;
+
+            #endregion
+
+            return chart;
+        }
+
         #endregion
 
         #region Chart扩展方法

@@ -73,7 +73,7 @@ namespace Xb2.Algorithms.Core.Methods
             var dictionary = new Dictionary<DateTime, List<double>>();
             /**
             DateRange range = new DateRange(start, end);
-            var target = coll.GetValuesBetweenDateRange(range);
+            var target = coll.Between(range);
             var period = coll.GetPossiblePeriod();
             var allDateTimes = DateRange.GetDateRangeStepByStep(start, end, DateUnit.MONTH, period);
             var cursor = start.AddMonths(delta);
@@ -137,8 +137,8 @@ namespace Xb2.Algorithms.Core.Methods
             {
                 Window cur = new Window {Lower = inWin[i], Upper = inWin[i + 1]};
                 Window pre = cur.GetPreWindow(delta);
-                var curValues = coll.GetValuesBetweenDateRange(cur);
-                var preValues = coll.GetValuesBetweenDateRange(pre);
+                var curValues = coll.Between(cur);
+                var preValues = coll.Between(pre);
                 foreach (var curValue in curValues)
                 {
                     var chi = curValue.Date.AddMonths(-delta);
@@ -168,8 +168,8 @@ namespace Xb2.Algorithms.Core.Methods
             var ans = new List<StrainValueUnitFirst>();
             /**
             var range = new DateRange(start, end);
-            var col1 = collection1.GetValuesBetweenDateRange(range);
-            var col2 = collection2.GetValuesBetweenDateRange(range);
+            var col1 = collection1.Between(range);
+            var col2 = collection2.Between(range);
             int p1 = col1.GetPossiblePeriod(), p2 = col2.GetPossiblePeriod();
             var col1AllDateTimes = DateRange.GetDateRangeStepByStep(start, end, DateUnit.MONTH, p1);
             var col2AllDateTimes = DateRange.GetDateRangeStepByStep(start, end, DateUnit.MONTH, p2);
@@ -210,9 +210,9 @@ namespace Xb2.Algorithms.Core.Methods
             var ans = new List<StrainValueUnitSecond>();
             /**
             var range = new DateRange(start, end);
-            var col1 = collection1.GetValuesBetweenDateRange(range);
-            var col2 = collection2.GetValuesBetweenDateRange(range);
-            var col3 = collection3.GetValuesBetweenDateRange(range);
+            var col1 = collection1.Between(range);
+            var col2 = collection2.Between(range);
+            var col3 = collection3.Between(range);
             int p1 = col1.GetPossiblePeriod(), p2 = col2.GetPossiblePeriod(), p3 = col3.GetPossiblePeriod();
             var col1AllDateTimes = DateRange.GetDateRangeStepByStep(start, end, DateUnit.MONTH, p1);
             var col2AllDateTimes = DateRange.GetDateRangeStepByStep(start, end, DateUnit.MONTH, p2);

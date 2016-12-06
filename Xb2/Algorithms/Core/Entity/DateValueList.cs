@@ -27,7 +27,7 @@ namespace Xb2.Algorithms.Core.Entity
         /// </summary>
         /// <param name="range">日期范围</param>
         /// <returns>List of MValue</returns>
-        public DateValueList GetValuesBetweenDateRange(DateRange range)
+        public DateValueList Between(DateRange range)
         {
             DateValueList dateValueList = new DateValueList();
             var result = FindAll(v => v.Date >= range.Lower && v.Date <= range.Upper);
@@ -74,7 +74,7 @@ namespace Xb2.Algorithms.Core.Entity
         /// </summary>
         /// <param name="date">日期</param>
         /// <returns></returns>
-        public DateValue GetMVal(DateTime date)
+        public DateValue GetDateValue(DateTime date)
         {
             return this.Find(m => m.Date.Equals(date));
         }
@@ -86,13 +86,15 @@ namespace Xb2.Algorithms.Core.Entity
         /// <param name="dateTimes">List of DateTimes</param>
         /// <param name="values">List of Value</param>
         /// <returns></returns>
-        public static List<DateValue> FromArrays(List<DateTime> dateTimes, List<double> values)
+        public static DateValueList FromArrays(List<DateTime> dateTimes, List<double> values)
         {
             if (dateTimes.Count != values.Count)
                 throw new Exception("The length of x's and y's is not equal!");
-            var ans = new List<DateValue>();
+            var ans = new DateValueList();
             for (int i = 0; i < dateTimes.Count; i++)
+            {
                 ans.Add(new DateValue(dateTimes[i], values[i]));
+            }
             return ans;
         }
 
@@ -101,13 +103,13 @@ namespace Xb2.Algorithms.Core.Entity
         /// </summary>
         /// <param name="mItemId"></param>
         /// <returns></returns>
-        public static List<DateValue> FromRawData(int mItemId)
+        public static DateValueList FromRawData(int mItemId)
         {
             var sql = "select 观测日期,观测值 from {0} where 测项编号={1} order by 观测日期";
             sql = string.Format(sql, Db.TnRData(), mItemId);
             var dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
             var ans = dt.RetrieveDateValues();
-            Debug.Print("Retrieve date values from raw data, item id:" + mItemId + "\n return {0} values", ans.Count);
+            Debug.Print("获取原始数据，测项编号:" + mItemId + "\n 返回 {0} 条数据", ans.Count);
             return ans;
         }
         #endregion

@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data;
 
-namespace Xb2.Algorithms.Core
+namespace Xb2.Algorithms.Core.Entity
 {
     /// <summary>
     /// 计算结果类
