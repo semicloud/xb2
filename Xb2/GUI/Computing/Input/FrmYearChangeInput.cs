@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Xb2.Algorithms.Core.Entity;
 using Xb2.Algorithms.Core.Methods.Regression;
+using Xb2.Algorithms.Core.Methods.YearChange;
 using Xb2.Entity.Business;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
@@ -14,19 +15,19 @@ using Xb2.Utils.Database;
 
 namespace Xb2.GUI.Computing.Input
 {
-    public partial class FrmRegressionInput : FrmBase
+    public partial class FrmYearChangeInput : FrmBase
     {
-        public FrmRegressionInput(XbUser user)
+        public FrmYearChangeInput(XbUser user)
         {
             InitializeComponent();
             this.CUser = user;
-            if (this.RegresInput == null)
+            if (this.YearChangeInput == null)
             {
-                this.RegresInput = new Xb2RegressionInput();
+                this.YearChangeInput = new Xb2YearChangeInput();
             }
         }
 
-        public Xb2RegressionInput RegresInput { get; private set; }
+        public Xb2YearChangeInput YearChangeInput { get; private set; }
 
         /// <summary>
         /// 选测项按钮
@@ -36,9 +37,9 @@ namespace Xb2.GUI.Computing.Input
         private void button1_Click(object sender, EventArgs e)
         {
             flowLayoutPanel1.Controls.Clear();//清理
-            this.RegresInput.MItemId = 0;
-            this.RegresInput.DatabaseId = 0;
-            this.RegresInput.DatabaseName = string.Empty;
+            this.YearChangeInput.MItemId = 0;
+            this.YearChangeInput.DatabaseId = 0;
+            this.YearChangeInput.DatabaseName = string.Empty;
 
             FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser)
             {
@@ -54,18 +55,18 @@ namespace Xb2.GUI.Computing.Input
                     return;
                 }
                 //获取测项编号
-                this.RegresInput.MItemId = Convert.ToInt32(dt.Rows[0]["编号"]);
+                this.YearChangeInput.MItemId = Convert.ToInt32(dt.Rows[0]["编号"]);
                 //注意下面这个字符串中的全角逗号，在算法中要使用这个全角逗号来获取测项字符串
-                label3.Text = string.Format("测项编号:{0}，{1}-{2}-{3}-{4}", RegresInput.MItemId,
+                label3.Text = string.Format("测项编号:{0}，{1}-{2}-{3}-{4}", YearChangeInput.MItemId,
                     dt.Rows[0]["观测单位"], dt.Rows[0]["地名"], dt.Rows[0]["方法名"], dt.Rows[0]["测项名"]);
-                Debug.Print("测项编号：" + RegresInput.MItemId);
+                Debug.Print("测项编号：" + YearChangeInput.MItemId);
                 //根据测项编号和用户编号查询基础数据库信息
                 var sql = string.Format("select 编号,库名,是否默认 from {0} where 用户编号={1} and 测项编号={2}", Db.TnProcessedDb(),
-                    this.CUser.ID, this.RegresInput.MItemId);
+                    this.CUser.ID, this.YearChangeInput.MItemId);
                 Debug.Print("根据测项编号和用户编号查询基础数据库信息：\n" + sql);
                 dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
                 bool hasDefaultDb = dt.AsEnumerable().Any(r => r.Field<bool>("是否默认"));
-                Debug.Print("用户{0}，测项{1}是否有默认基础数据库？{2}", this.CUser.ID, this.RegresInput.MItemId, hasDefaultDb);
+                Debug.Print("用户{0}，测项{1}是否有默认基础数据库？{2}", this.CUser.ID, this.YearChangeInput.MItemId, hasDefaultDb);
                 //将原始数据加到基础数据里
                 var dr = dt.NewRow();
                 dr["库名"] = "原始数据";
@@ -97,19 +98,19 @@ namespace Xb2.GUI.Computing.Input
             {
                 String[] strs = rb.Text.Split(',');
                 //设置基础数据库ID，基础数据库名称和测项字符串
-                this.RegresInput.DatabaseId = Convert.ToInt32(strs[0]);
-                this.RegresInput.DatabaseName = strs[1];
-                this.RegresInput.MItemStr = label3.Text;
-                Debug.Print("选定的编号：{0}，基础数据库名称：{1}", this.RegresInput.DatabaseId, this.RegresInput.DatabaseName);
+                this.YearChangeInput.DatabaseId = Convert.ToInt32(strs[0]);
+                this.YearChangeInput.DatabaseName = strs[1];
+                this.YearChangeInput.MItemStr = label3.Text;
+                Debug.Print("选定的编号：{0}，基础数据库名称：{1}", this.YearChangeInput.DatabaseId, this.YearChangeInput.DatabaseName);
                 var sql = "select min(观测日期) as s,max(观测日期) as t from {0} where {1}={2}";
-                if (this.RegresInput.DatabaseId == -1)
+                if (this.YearChangeInput.DatabaseId == -1)
                 {
-                    sql = string.Format(sql, Db.TnRData(), "测项编号", this.RegresInput.MItemId);
+                    sql = string.Format(sql, Db.TnRData(), "测项编号", this.YearChangeInput.MItemId);
                     Debug.Print("从原始数据中查询日期：" + sql);
                 }
                 else
                 {
-                    sql = string.Format(sql, Db.TnProcessedDbData(), "库编号", this.RegresInput.DatabaseId);
+                    sql = string.Format(sql, Db.TnProcessedDbData(), "库编号", this.YearChangeInput.DatabaseId);
                     Debug.Print("从基础数据库中查询日期：" + sql);
                 }
                 DetermineDateTime(sql);
@@ -124,22 +125,22 @@ namespace Xb2.GUI.Computing.Input
         private void button2_Click(object sender, EventArgs e)
         {
             var sql = "select 观测日期,观测值 from {0} where {1}={2} order by 观测日期";
-            if (this.RegresInput.DatabaseId == -1)
+            if (this.YearChangeInput.DatabaseId == -1)
             {
-                sql = string.Format(sql, Db.TnRData(), "测项编号", this.RegresInput.MItemId);
+                sql = string.Format(sql, Db.TnRData(), "测项编号", this.YearChangeInput.MItemId);
                 Debug.Print("从原始数据中查询数据：" + sql);
             }
             else
             {
-                sql = string.Format(sql, Db.TnProcessedDbData(), "库编号", this.RegresInput.DatabaseId);
+                sql = string.Format(sql, Db.TnProcessedDbData(), "库编号", this.YearChangeInput.DatabaseId);
                 Debug.Print("从基础数据库中查询数据：" + sql);
             }
-            this.RegresInput.Start = dateTimePicker1.Value;
-            this.RegresInput.End = dateTimePicker2.Value;
+            this.YearChangeInput.Start = dateTimePicker1.Value;
+            this.YearChangeInput.End = dateTimePicker2.Value;
             //按照开始日期和结束日期截取数据
             var dateValueList = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0].RetrieveDateValues();
-            var dateRange = new DateRange(this.RegresInput.Start, this.RegresInput.End);
-            this.RegresInput.List = dateValueList.Between(dateRange);
+            var dateRange = new DateRange(this.YearChangeInput.Start, this.YearChangeInput.End);
+            this.YearChangeInput.DateValueList = dateValueList.Between(dateRange);
             //下一步就是调用FrmDisplayChart中的方法来绘制图形
             this.DialogResult = DialogResult.OK;
             this.Close();

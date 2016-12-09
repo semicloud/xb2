@@ -75,7 +75,7 @@
             this.数据线ToolStripMenuItem,
             this.toolStripMenuItem1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 98);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(113, 76);
             // 
             // 标题ToolStripMenuItem
             // 
@@ -115,7 +115,7 @@
             this.标题ToolStripMenuItem1,
             this.间隔ToolStripMenuItem});
             this.坐标轴ToolStripMenuItem.Name = "坐标轴ToolStripMenuItem";
-            this.坐标轴ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.坐标轴ToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.坐标轴ToolStripMenuItem.Text = "坐标轴";
             // 
             // toolStripMenuItem2
@@ -188,41 +188,41 @@
             this.toolStripMenuItem17,
             this.toolStripMenuItem18});
             this.间隔ToolStripMenuItem.Name = "间隔ToolStripMenuItem";
-            this.间隔ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.间隔ToolStripMenuItem.Size = new System.Drawing.Size(100, 22);
             this.间隔ToolStripMenuItem.Text = "间隔";
             // 
             // toolStripMenuItem14
             // 
             this.toolStripMenuItem14.Name = "toolStripMenuItem14";
-            this.toolStripMenuItem14.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem14.Size = new System.Drawing.Size(93, 22);
             this.toolStripMenuItem14.Text = "1.0";
             this.toolStripMenuItem14.Click += new System.EventHandler(this.ChangeAxisIntervals);
             // 
             // toolStripMenuItem15
             // 
             this.toolStripMenuItem15.Name = "toolStripMenuItem15";
-            this.toolStripMenuItem15.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem15.Size = new System.Drawing.Size(93, 22);
             this.toolStripMenuItem15.Text = "2.0";
             this.toolStripMenuItem15.Click += new System.EventHandler(this.ChangeAxisIntervals);
             // 
             // toolStripMenuItem16
             // 
             this.toolStripMenuItem16.Name = "toolStripMenuItem16";
-            this.toolStripMenuItem16.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem16.Size = new System.Drawing.Size(93, 22);
             this.toolStripMenuItem16.Text = "3.0";
             this.toolStripMenuItem16.Click += new System.EventHandler(this.ChangeAxisIntervals);
             // 
             // toolStripMenuItem17
             // 
             this.toolStripMenuItem17.Name = "toolStripMenuItem17";
-            this.toolStripMenuItem17.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem17.Size = new System.Drawing.Size(93, 22);
             this.toolStripMenuItem17.Text = "4.0";
             this.toolStripMenuItem17.Click += new System.EventHandler(this.ChangeAxisIntervals);
             // 
             // toolStripMenuItem18
             // 
             this.toolStripMenuItem18.Name = "toolStripMenuItem18";
-            this.toolStripMenuItem18.Size = new System.Drawing.Size(152, 22);
+            this.toolStripMenuItem18.Size = new System.Drawing.Size(93, 22);
             this.toolStripMenuItem18.Text = "5.0";
             this.toolStripMenuItem18.Click += new System.EventHandler(this.ChangeAxisIntervals);
             // 
@@ -347,6 +347,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(625, 415);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.Fixed3D;
             this.Name = "FrmConfigChart";
             this.Text = "FrmConfigCharts";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmConfigChart_FormClosed);

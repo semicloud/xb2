@@ -52,7 +52,7 @@ namespace Xb2.Algorithms.Core.Methods.YearChange
             for (int i = 0; i < dates.Count - 1; i++)
             {
                 int m1 = dates[i].Month, m2 = dates[i + 1].AddDays(-1).Month;
-                var them = _input.Collection.FindAll(m => m.Date.Month >= m1 && m.Date.Month <= m2);
+                var them = _input.DateValueList.FindAll(m => m.Date.Month >= m1 && m.Date.Month <= m2);
                 answer.Add(dates[i + 1].AddDays(-1), them.Average(m => m.Value));
             }
             return answer;
@@ -69,7 +69,7 @@ namespace Xb2.Algorithms.Core.Methods.YearChange
             for (int i = 0; i < dates.Count - 1; i++)
             {
                 int m1 = dates[i].Month, m2 = dates[i + 1].AddDays(-1).Month;
-                var them = _input.Collection.FindAll(m => m.Date.Month >= m1 && m.Date.Month <= m2);
+                var them = _input.DateValueList.FindAll(m => m.Date.Month >= m1 && m.Date.Month <= m2);
                 double avg = them.Average(t => t.Value);
                 foreach (var t in them)
                     answer.Add(new DateValue(t.Date, t.Value - avg));
@@ -86,7 +86,7 @@ namespace Xb2.Algorithms.Core.Methods.YearChange
         {
             var answer = new List<DateValue>();
             var yearchanges = this.getYearChangeData();
-            var years = _input.Collection.Select(m => m.Date.Year).Distinct();
+            var years = _input.DateValueList.Select(m => m.Date.Year).Distinct();
             foreach (var year in years)
             {
                 foreach (var yearchange in yearchanges)

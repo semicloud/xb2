@@ -194,6 +194,12 @@
     <Compile Include="GUI\Computing\FrmDisplayCharts.Designer.cs">
       <DependentUpon>FrmDisplayCharts.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Computing\Input\FrmYearChangeInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Computing\Input\FrmYearChangeInput.Designer.cs">
+      <DependentUpon>FrmYearChangeInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Computing\Input\FrmRegressionInput.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -418,6 +424,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Computing\FrmDisplayCharts.resx">
       <DependentUpon>FrmDisplayCharts.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Computing\Input\FrmYearChangeInput.resx">
+      <DependentUpon>FrmYearChangeInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Computing\Input\FrmRegressionInput.resx">
       <DependentUpon>FrmRegressionInput.cs</DependentUpon>

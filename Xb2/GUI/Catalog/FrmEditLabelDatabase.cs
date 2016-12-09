@@ -321,9 +321,5 @@ namespace Xb2.GUI.Catalog
                 }
             }
         }
-
-       
-
-       
     }
 }

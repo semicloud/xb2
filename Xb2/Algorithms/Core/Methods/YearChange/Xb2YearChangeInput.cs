@@ -5,7 +5,6 @@
 // 初次编写时间：2014-09-01
 // 功能：
 
-using System.Collections.Generic;
 using Xb2.Algorithms.Core.Entity;
 
 namespace Xb2.Algorithms.Core.Methods.YearChange
@@ -18,11 +17,18 @@ namespace Xb2.Algorithms.Core.Methods.YearChange
         /// <summary>
         /// 测值序列
         /// </summary>
-        public List<DateValue> Collection { get; set; }
+        public DateValueList DateValueList { get; set; }
+
+
 
         /// <summary>
         /// 相关系数
         /// </summary>
         public double Alpha { get; set; }
+
+        public int MItemId { get; set; }
+        public int DatabaseId { get; set; }
+        public string DatabaseName { get; set; }
+        public string MItemStr { get; set; }
     }
 }

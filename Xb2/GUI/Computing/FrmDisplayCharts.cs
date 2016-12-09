@@ -37,8 +37,8 @@ namespace Xb2.GUI.Computing
             var colMargin = 5;
             var charts = GetAllCharts();
             var totalCount = charts.Count;
-            //分幅图的列数
-            var colNumber = 3;
+            //分幅图的列数（可以考虑根据显示器的大小来计算分幅图的列数）
+            var colNumber = 4;
             var rowNumber = (int) Math.Ceiling((float) totalCount/(float) colNumber);
             var width = charts[0].Width;
             var height = charts[0].Height;
@@ -137,6 +137,7 @@ namespace Xb2.GUI.Computing
             this.EditedChartLocation = chart.Location;
             panel1.Controls.Remove(chart);
             
+            //打开图形编辑界面，由用户编辑图件
             var frmConfigChart = new FrmConfigChart();
             chart.Dock = DockStyle.Fill;
             chart.ContextMenuStrip = frmConfigChart.contextMenuStrip1;
@@ -149,10 +150,26 @@ namespace Xb2.GUI.Computing
 
         private void 标地震ToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            var checkedCharts = GetCheckedCharts();
+            if (checkedCharts.Count != 1)
+            {
+                MessageBox.Show("请选中一幅图进行标地震!");
+                return;
+            }
             FrmEditLabelDatabase frmEditLabelDatabase = new FrmEditLabelDatabase(this.CUser);
             frmEditLabelDatabase.ShowDialog();
             var dt = frmEditLabelDatabase.ConfirmedDataTable;
-            MessageBox.Show("有" + dt.Rows.Count + "条数据将被标地震！");
+            if (dt != null)
+            {
+                Debug.Print("有" + dt.Rows.Count + "条数据将被标地震！");
+                if (dt.Rows.Count == 0)
+                {
+                    MessageBox.Show("标注库无数据！");
+                    return;
+                }
+                var chart = checkedCharts.First();
+                chart.LabelingEarthquakes(dt);
+            }
         }
 
         private void 单测项差分ToolStripMenuItem_Click(object sender, EventArgs e)

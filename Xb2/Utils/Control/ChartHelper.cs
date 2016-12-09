@@ -31,13 +31,15 @@ namespace Xb2.Utils.Control
         /// <summary>
         /// Chart控件纵坐标的扩充
         /// 如果没有扩充的话数据整好填充满Y轴
+        /// 2016-12-09 把X和Y的扩展设置的大一点，标地震好看
         /// </summary>
-        private static readonly double Y_EXPAND = 2;
+        private static readonly double Y_EXPAND = 10; //old:2
 
         /// <summary>
         /// Chart空间横坐标的扩充，单位是月
+        /// 2016-12-09 把X和Y的扩展设置的大一点，标地震好看
         /// </summary>
-        private static readonly int X_EXPAND = 2;
+        private static readonly int X_EXPAND = 6; //old:2
 
         /// <summary>
         /// X轴刻度的格式化字符串
@@ -3050,6 +3052,53 @@ namespace Xb2.Utils.Control
             }
             dt.AcceptChanges();
             BindChartWithData(chart, dt);
+        }
+
+        /// <summary>
+        /// 在Chart控件上标地震
+        /// 2016-12-09 大功能已经完成，剩下的是细节的调整
+        /// </summary>
+        /// <param name="chart"></param>
+        /// <param name="dt"></param>
+        public static void LabelingEarthquakes(this Chart chart, DataTable dt)
+        {
+            var ymax = chart.ChartAreas[0].AxisY.Maximum - Y_EXPAND + 5;
+            Debug.Print("Y MAX:" + ymax);
+            for (int i = 0; i < dt.Rows.Count; i++)
+            {
+                //获取箭头的位置
+                var date = Convert.ToDateTime(dt.Rows[i]["发震日期"]);
+                var xpos = chart.ChartAreas[0].AxisX.ValueToPosition(date.ToOADate());
+                
+                var arrowAnnotation = new LineAnnotation
+                {
+                    ClipToChartArea = chart.ChartAreas[0].Name,
+                    EndCap = LineAnchorCapStyle.Arrow,
+                    AxisX = chart.ChartAreas[0].AxisX,
+                    AxisY = chart.ChartAreas[0].AxisY,
+                    // X = chart.Series[0].Points[50].XValue,
+                    X = date.ToOADate(),
+                    Y = ymax,
+                    LineColor = Color.Red,
+                    Height = 6,
+                    Width = 0 //width=0：不偏不斜
+                };
+                var textAnnotation = new TextAnnotation
+                {
+                    ClipToChartArea = chart.ChartAreas[0].Name,
+                    AxisX = chart.ChartAreas[0].AxisX,
+                    AxisY = chart.ChartAreas[0].AxisY,
+                    X = date.ToOADate() + 2,
+                    Y = ymax,
+                    Alignment = ContentAlignment.TopLeft,
+                    Text = dt.Rows[i]["参考地点"] + "\n"
+                           + Convert.ToDouble(dt.Rows[i]["震级值"]).ToString("#0.0")
+                };
+                Debug.Print("发震日期：{0}，位置：{1}%，坐标：{2}", date, xpos, arrowAnnotation.X);
+                chart.Annotations.Add(arrowAnnotation);
+                chart.Annotations.Add(textAnnotation);
+            }
+            chart.Invalidate();
         }
 
         #endregion
