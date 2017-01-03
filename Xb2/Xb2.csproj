@@ -218,6 +218,12 @@
     <Compile Include="GUI\Controls\CtnlMFieldSelect.designer.cs">
       <DependentUpon>CtnlMFieldSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Controls\MItemInput.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\MItemInput.Designer.cs">
+      <DependentUpon>MItemInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Controls\RectQuery.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -364,6 +370,12 @@
     <Compile Include="TestAndDemos\FrmExportChartDemo.Designer.cs">
       <DependentUpon>FrmExportChartDemo.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestAndDemos\FrmInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmInput.Designer.cs">
+      <DependentUpon>FrmInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestAndDemos\FrmLagrangeInterpolationDemo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -436,6 +448,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\CtnlMFieldSelect.resx">
       <DependentUpon>CtnlMFieldSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\MItemInput.resx">
+      <DependentUpon>MItemInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\RectQuery.resx">
       <DependentUpon>RectQuery.cs</DependentUpon>
@@ -517,6 +532,9 @@
     </Compile>
     <EmbeddedResource Include="TestAndDemos\FrmExportChartDemo.resx">
       <DependentUpon>FrmExportChartDemo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestAndDemos\FrmInput.resx">
+      <DependentUpon>FrmInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestAndDemos\FrmLagrangeInterpolationDemo.resx">
       <DependentUpon>FrmLagrangeInterpolationDemo.cs</DependentUpon>

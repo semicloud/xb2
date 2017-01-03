@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
+using Xb2.Entity.Business;
 using Xb2.GUI.Main;
 using Xb2.TestAndDemos;
 
@@ -15,16 +16,21 @@ namespace Xb2
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new FrmExportChartDemo());
+            XbUser user = new XbUser();
+            user.ID = 1;
+            user.Name = "admin";
+            user.IsAdmin = true;
+            user.Password = "admin";
+            Application.Run(new FrmInput(user));
 
-            FrmLogin frmLogin = new FrmLogin();
-            frmLogin.ShowDialog();
-            if (frmLogin.DialogResult == DialogResult.OK)
-            {
-                frmLogin.Close();
-                var frmFirst = new FrmFirst(frmLogin.CUser);
-                Application.Run(frmFirst);
-            }
+            //FrmLogin frmLogin = new FrmLogin();
+            //frmLogin.ShowDialog();
+            //if (frmLogin.DialogResult == DialogResult.OK)
+            //{
+            //    frmLogin.Close();
+            //    var frmFirst = new FrmFirst(frmLogin.CUser);
+            //    Application.Run(frmFirst);
+            //}
         }
     }
 }
