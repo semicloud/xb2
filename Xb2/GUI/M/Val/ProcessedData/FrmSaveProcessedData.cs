@@ -71,8 +71,8 @@ namespace Xb2.GUI.M.Val.ProcessedData
 
                 //自动生成基础数据库名，注意日期的格式化
                 var sql = "select 观测单位,地名,方法名,测项名 from {0} where 编号={1}";
-                sql = string.Format(sql, Db.TnMItem(), this.ItemId);
-                var dr = MySqlHelper.ExecuteDataRow(Db.CStr(), sql);
+                sql = string.Format(sql, DbHelper.TnMItem(), this.ItemId);
+                var dr = MySqlHelper.ExecuteDataRow(DbHelper.ConnectionString(), sql);
                 Debug.Print("sql:{0}, returns:{1}", sql, dr);
                 if (dr != null)
                 {
@@ -104,8 +104,8 @@ namespace Xb2.GUI.M.Val.ProcessedData
         private static bool HasProcessedDataDb(int userId, int itemId, string dbName)
         {
             var sql = string.Format("select 编号 from {0} where 用户编号={1} and 测项编号={2} and 库名='{3}'",
-                Db.TnProcessedDb(), userId, itemId, dbName);
-            var dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+                DbHelper.TnProcessedDb(), userId, itemId, dbName);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             return dt.Rows.Count > 0;
         }
 
@@ -113,9 +113,9 @@ namespace Xb2.GUI.M.Val.ProcessedData
             string logger)
         {
             var sql = string.Format("select * from {0} where 用户编号={1} and 测项编号={2}",
-                Db.TnProcessedDb(), userId, itemId);
+                DbHelper.TnProcessedDb(), userId, itemId);
             var dt = new DataTable();
-            var adapter = new MySqlDataAdapter(sql, Db.CStr());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
             var builder = new MySqlCommandBuilder(adapter);
             adapter.Fill(dt);
             var dr = dt.NewRow();
@@ -133,12 +133,12 @@ namespace Xb2.GUI.M.Val.ProcessedData
         private static bool SaveProcessedDataDbData(int userId, int itemId, string dbName, DataTable dataTable)
         {
             var sql = string.Format("select 编号 from {0} where 用户编号={1} and 测项编号={2} and 库名='{3}'",
-                Db.TnProcessedDb(), userId, itemId, dbName);
-            var dbId = MySqlHelper.ExecuteScalar(Db.CStr(), sql);
+                DbHelper.TnProcessedDb(), userId, itemId, dbName);
+            var dbId = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql);
             Debug.Print("基础数据库编号：" + dbId);
-            sql = string.Format("select * from {0} where 库编号={1}", Db.TnProcessedDbData(), dbId);
+            sql = string.Format("select * from {0} where 库编号={1}", DbHelper.TnProcessedDbData(), dbId);
             var dt = new DataTable();
-            var adapter = new MySqlDataAdapter(sql, Db.CStr());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
             var builder = new MySqlCommandBuilder(adapter);
             adapter.Fill(dt);
             for (int i = 0; i < dataTable.Rows.Count; i++)

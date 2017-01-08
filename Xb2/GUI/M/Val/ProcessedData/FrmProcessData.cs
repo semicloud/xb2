@@ -50,10 +50,10 @@ namespace Xb2.GUI.M.Val.ProcessedData
         private void InitializeChart(int itemId)
         {
             var sql = "select 观测日期,观测值 from {0} where 测项编号={1} order by 观测日期";
-            sql = string.Format(sql, Db.TnRData(), itemId);
+            sql = string.Format(sql, DbHelper.TnRData(), itemId);
             Debug.Print("_itemId:" + itemId);
             Debug.Print("sql:" + sql);
-            var dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
 
             //初始化Chart控件
             groupBox1.Controls.Add(ChartHelper.GetOrdinaryChart());
@@ -76,16 +76,16 @@ namespace Xb2.GUI.M.Val.ProcessedData
         private void InitializeChart(int itemId, int dbId)
         {
             var sql = "select 观测日期,观测值 from {0} where 测项编号={1} order by 观测日期";
-            sql = string.Format(sql, Db.TnRData(), itemId);
-            var dtSource = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            sql = string.Format(sql, DbHelper.TnRData(), itemId);
+            var dtSource = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
 
             var sql2 = "select 观测日期,观测值 from {0} where 库编号={1} order by 观测日期";
-            sql2 = string.Format(sql2, Db.TnProcessedDbData(), _processedDataDbId);
-            var dtProcessed = MySqlHelper.ExecuteDataset(Db.CStr(), sql2).Tables[0];
+            sql2 = string.Format(sql2, DbHelper.TnProcessedDbData(), _processedDataDbId);
+            var dtProcessed = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql2).Tables[0];
 
             var sql3 = "select 操作记录 from {0} where 编号={1}";
-            sql3 = string.Format(sql3, Db.TnProcessedDb(), _processedDataDbId);
-            var strLog = MySqlHelper.ExecuteScalar(Db.CStr(), sql3);
+            sql3 = string.Format(sql3, DbHelper.TnProcessedDb(), _processedDataDbId);
+            var strLog = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql3);
 
             //初始化Chart控件
             groupBox1.Controls.Add(ChartHelper.GetOrdinaryChart());

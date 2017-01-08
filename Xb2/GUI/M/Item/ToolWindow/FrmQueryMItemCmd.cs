@@ -51,8 +51,8 @@ namespace Xb2.GUI.M.Item.ToolWindow
                 var userId = this.CUser.ID;
                 //命令名是否重复查询
                 var sql = "select count(*) from {0} where 用户编号={1} and 命令名称='{2}'";
-                sql = string.Format(sql, Db.TnQMItem(), this.CUser.ID, cmdName);
-                var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(Db.CStr(), sql));
+                sql = string.Format(sql, DbHelper.TnQMItem(), this.CUser.ID, cmdName);
+                var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql));
                 if (n > 0)
                 {
                     MessageBox.Show("已存在名为【" + cmdName + "】的查询！");
@@ -77,8 +77,8 @@ namespace Xb2.GUI.M.Item.ToolWindow
         private void RefreshDataGridView()
         {
             var sql = "select 编号,命令名称,命令文本 from {0} where 用户编号={1}";
-            sql = string.Format(sql, Db.TnQMItem(), this.CUser.ID);
-            var dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            sql = string.Format(sql, DbHelper.TnQMItem(), this.CUser.ID);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             var identifiedTable = DataHelper.IdentifyDataTable(dt);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = identifiedTable;
@@ -94,14 +94,14 @@ namespace Xb2.GUI.M.Item.ToolWindow
         //保存查询条件至数据库
         private bool SaveCmd(int userId, string cmdName, string cmd)
         {
-            var sql = "select * from " + Db.TnQMItem();
-            var dataTable = MySqlHelper.ExecuteDataset(Db.CStr(),sql).Tables[0];
+            var sql = "select * from " + DbHelper.TnQMItem();
+            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(),sql).Tables[0];
             var dataRow = dataTable.NewRow();
             dataRow["用户编号"] = userId;
             dataRow["命令名称"] = cmdName;
             dataRow["命令文本"] = cmd;
             dataTable.Rows.Add(dataRow);
-            var adapter = new MySqlDataAdapter(sql, Db.CStr());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
             var commandBuilder = new MySqlCommandBuilder(adapter);
             return adapter.Update(dataTable) > 0;
         }
@@ -133,8 +133,8 @@ namespace Xb2.GUI.M.Item.ToolWindow
                     if (confirm == DialogResult.OK)
                     {
                         var sql = "delete from {0} where 编号={1} and 用户编号={2}";
-                        sql = string.Format(sql, Db.TnQMItem(), id, CUser.ID);
-                        var n = MySqlHelper.ExecuteNonQuery(Db.CStr(), sql);
+                        sql = string.Format(sql, DbHelper.TnQMItem(), id, CUser.ID);
+                        var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql);
                         Debug.Print("sql:{0},returns:{1}", sql, n);
                         RefreshDataGridView();
                     }

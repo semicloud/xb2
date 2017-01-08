@@ -146,9 +146,9 @@ namespace Xb2.GUI.M.Item.ToolWindow
 
             //是否有重名的区域查询条件？
             var sql = "select count(*) from {0} where 用户编号={1} and 视图名称='{2}'";
-            sql = string.Format(sql, Db.TnRQMItem(), this.CUser.ID, viewDisplayName);
+            sql = string.Format(sql, DbHelper.TnRQMItem(), this.CUser.ID, viewDisplayName);
             Debug.Print(sql);
-            var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(Db.CStr(), sql));
+            var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql));
             if (n > 0)
             {
                 MessageBox.Show("已经存在名称【" + viewDisplayName + "】，未保存！");
@@ -159,15 +159,15 @@ namespace Xb2.GUI.M.Item.ToolWindow
             var viewName = this.CUser.Name + "_" + Guid.NewGuid().ToString().Replace('-', '_');
             var viewSQL = string.Format("create view {0} as " + this.GetSql(), viewName);
             Debug.Print(viewSQL);
-            MySqlHelper.ExecuteNonQuery(Db.CStr(), viewSQL);
+            MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), viewSQL);
             Debug.Print(viewSQL);
             //视图如果创建成功了，向数据库中写入记录
-            if (Db.HasView(viewName))
+            if (DbHelper.HasView(viewName))
             {
                 sql = "insert into {0}(用户编号,视图名称,视图体) values ({1},'{2}','{3}')";
-                sql = string.Format(sql, Db.TnRQMItem(), this.CUser.ID, viewDisplayName, viewName);
+                sql = string.Format(sql, DbHelper.TnRQMItem(), this.CUser.ID, viewDisplayName, viewName);
                 Debug.Print(sql);
-                n = MySqlHelper.ExecuteNonQuery(Db.CStr(), sql);
+                n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql);
                 if (n > 0)
                 {
                     MessageBox.Show("保存成功！");
@@ -333,7 +333,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
         /// <returns></returns>
         private string GetSql()
         {
-            var sb = new StringBuilder(string.Format("select * from {0} where ", Db.TnMItem()));
+            var sb = new StringBuilder(string.Format("select * from {0} where ", DbHelper.TnMItem()));
             sb.Append(this.GetCircleQueryClause());
             sb.Append(this.GetRectQueryClause());
             var sql = sb.ToString();
@@ -354,13 +354,13 @@ namespace Xb2.GUI.M.Item.ToolWindow
         private void RefreshDataGridView()
         {
             var sql = "select 编号,视图名称 as 名称,视图体 from {0} where 用户编号={1}";
-            sql = string.Format(sql, Db.TnRQMItem(), this.CUser.ID);
+            sql = string.Format(sql, DbHelper.TnRQMItem(), this.CUser.ID);
             Debug.Print(sql);
-            var dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             //加入测项表，即不使用区域查询
             var dr = dt.NewRow();
             dr["名称"] = "测项";
-            dr["视图体"] = Db.TnMItem();
+            dr["视图体"] = DbHelper.TnMItem();
             dt.Rows.InsertAt(dr, 0);
             dt = DataHelper.IdentifyDataTable(dt);
             dataGridView1.DataSource = null;
@@ -417,7 +417,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
                 var row = dataGridView1.SelectedRows[0];
                 var vn = row.Cells["视图体"].Value.ToString();
                 //测项表不能删除
-                if (vn.Equals(Db.TnMItem()))
+                if (vn.Equals(DbHelper.TnMItem()))
                 {
                     MessageBox.Show("测项表不可删除！");
                     return;
@@ -426,13 +426,13 @@ namespace Xb2.GUI.M.Item.ToolWindow
                 Debug.Print("编号：{0}，视图体:{1}", id, vn);
                 var sql = "drop view " + vn;
                 Debug.Print(sql);
-                MySqlHelper.ExecuteNonQuery(Db.CStr(), sql);
-                if (!Db.HasView(vn))
+                MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql);
+                if (!DbHelper.HasView(vn))
                 {
                     sql = "delete from {0} where 编号={1}";
-                    sql = string.Format(sql, Db.TnRQMItem(), id);
+                    sql = string.Format(sql, DbHelper.TnRQMItem(), id);
                     Debug.Print(sql);
-                    var n = MySqlHelper.ExecuteNonQuery(Db.CStr(), sql);
+                    var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql);
                     if (n > 0)
                     {
                         MessageBox.Show("已删除！");

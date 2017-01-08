@@ -393,9 +393,8 @@
     <Compile Include="Utils\Control\ChartHelper.cs" />
     <Compile Include="Utils\Control\ControlHelper.cs" />
     <Compile Include="Utils\Control\ToolStripHelper.cs" />
-    <Compile Include="Utils\Database\Db.cs" />
     <Compile Include="Utils\Database\DbHelper.cs" />
-    <Compile Include="Utils\Database\XbDao.cs" />
+    <Compile Include="Utils\Database\DaoObject.cs" />
     <Compile Include="Utils\DataHelper.cs" />
     <Compile Include="Utils\ExtendMethods.cs" />
     <EmbeddedResource Include="GUI\Catalog\FrmChooseSubDatabase.resx">

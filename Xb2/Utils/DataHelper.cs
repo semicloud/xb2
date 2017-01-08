@@ -4,7 +4,6 @@ using System.Data;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
-using Xb2.Algorithms.Core;
 using Xb2.Algorithms.Core.Entity;
 
 namespace Xb2.Utils

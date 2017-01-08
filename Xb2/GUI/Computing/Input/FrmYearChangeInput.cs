@@ -61,10 +61,10 @@ namespace Xb2.GUI.Computing.Input
                     dt.Rows[0]["观测单位"], dt.Rows[0]["地名"], dt.Rows[0]["方法名"], dt.Rows[0]["测项名"]);
                 Debug.Print("测项编号：" + YearChangeInput.MItemId);
                 //根据测项编号和用户编号查询基础数据库信息
-                var sql = string.Format("select 编号,库名,是否默认 from {0} where 用户编号={1} and 测项编号={2}", Db.TnProcessedDb(),
+                var sql = string.Format("select 编号,库名,是否默认 from {0} where 用户编号={1} and 测项编号={2}", DbHelper.TnProcessedDb(),
                     this.CUser.ID, this.YearChangeInput.MItemId);
                 Debug.Print("根据测项编号和用户编号查询基础数据库信息：\n" + sql);
-                dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+                dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
                 bool hasDefaultDb = dt.AsEnumerable().Any(r => r.Field<bool>("是否默认"));
                 Debug.Print("用户{0}，测项{1}是否有默认基础数据库？{2}", this.CUser.ID, this.YearChangeInput.MItemId, hasDefaultDb);
                 //将原始数据加到基础数据里
@@ -105,12 +105,12 @@ namespace Xb2.GUI.Computing.Input
                 var sql = "select min(观测日期) as s,max(观测日期) as t from {0} where {1}={2}";
                 if (this.YearChangeInput.DatabaseId == -1)
                 {
-                    sql = string.Format(sql, Db.TnRData(), "测项编号", this.YearChangeInput.MItemId);
+                    sql = string.Format(sql, DbHelper.TnRData(), "测项编号", this.YearChangeInput.MItemId);
                     Debug.Print("从原始数据中查询日期：" + sql);
                 }
                 else
                 {
-                    sql = string.Format(sql, Db.TnProcessedDbData(), "库编号", this.YearChangeInput.DatabaseId);
+                    sql = string.Format(sql, DbHelper.TnProcessedDbData(), "库编号", this.YearChangeInput.DatabaseId);
                     Debug.Print("从基础数据库中查询日期：" + sql);
                 }
                 DetermineDateTime(sql);
@@ -127,18 +127,18 @@ namespace Xb2.GUI.Computing.Input
             var sql = "select 观测日期,观测值 from {0} where {1}={2} order by 观测日期";
             if (this.YearChangeInput.DatabaseId == -1)
             {
-                sql = string.Format(sql, Db.TnRData(), "测项编号", this.YearChangeInput.MItemId);
+                sql = string.Format(sql, DbHelper.TnRData(), "测项编号", this.YearChangeInput.MItemId);
                 Debug.Print("从原始数据中查询数据：" + sql);
             }
             else
             {
-                sql = string.Format(sql, Db.TnProcessedDbData(), "库编号", this.YearChangeInput.DatabaseId);
+                sql = string.Format(sql, DbHelper.TnProcessedDbData(), "库编号", this.YearChangeInput.DatabaseId);
                 Debug.Print("从基础数据库中查询数据：" + sql);
             }
             this.YearChangeInput.Start = dateTimePicker1.Value;
             this.YearChangeInput.End = dateTimePicker2.Value;
             //按照开始日期和结束日期截取数据
-            var dateValueList = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0].RetrieveDateValues();
+            var dateValueList = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0].RetrieveDateValues();
             var dateRange = new DateRange(this.YearChangeInput.Start, this.YearChangeInput.End);
             this.YearChangeInput.DateValueList = dateValueList.Between(dateRange);
             //下一步就是调用FrmDisplayChart中的方法来绘制图形
@@ -158,7 +158,7 @@ namespace Xb2.GUI.Computing.Input
 
         private void DetermineDateTime(string sql)
         {
-            var dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             if (dt != null)
             {
                 Debug.Print("开始日期：{0}，结束日期：{1}",

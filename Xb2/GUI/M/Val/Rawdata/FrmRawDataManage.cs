@@ -113,8 +113,8 @@ namespace Xb2.GUI.M.Val.Rawdata
                     if (answ == DialogResult.OK)
                     {
                         var sql = "select * from {0} where 测项编号={1}";
-                        sql = string.Format(sql, Db.TnRData(), itemId);
-                        var adapter = new MySqlDataAdapter(sql, Db.CStr());
+                        sql = string.Format(sql, DbHelper.TnRData(), itemId);
+                        var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
                         var builder = new MySqlCommandBuilder(adapter);
                         var dt = new DataTable();
                         adapter.Fill(dt);
@@ -160,8 +160,8 @@ namespace Xb2.GUI.M.Val.Rawdata
                         //从数据库中查询到这个测项的数据
                         var dt = new DataTable();
                         var sql = "select * from {0} where 测项编号={1}";
-                        sql = string.Format(sql, Db.TnRData(), itemId);
-                        var adapter = new MySqlDataAdapter(sql, Db.CStr());
+                        sql = string.Format(sql, DbHelper.TnRData(), itemId);
+                        var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
                         var builder=  new MySqlCommandBuilder(adapter);
                         adapter.Fill(dt);
                         //数据表合并
@@ -197,8 +197,8 @@ namespace Xb2.GUI.M.Val.Rawdata
         public void RefreshRawData(int itemId)
         {
             var sql = "select * from {0} where 测项编号={1} order by 观测日期";
-            sql = string.Format(sql, Db.TnRData(), itemId);
-            var dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            sql = string.Format(sql, DbHelper.TnRData(), itemId);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             RefreshDataGridView(dt);
         }
 

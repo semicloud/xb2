@@ -36,7 +36,7 @@ namespace Xb2.GUI.Main
             this.CUser.Password = PasswordTextBox.Text;
             this.CUser.IsAdmin = AdminRadioButton.Checked;
 
-            var userId = XbDao.GetUserId(this.CUser.Name, this.CUser.Password, this.CUser.IsAdmin);
+            var userId = DaoObject.GetUserId(this.CUser.Name, this.CUser.Password, this.CUser.IsAdmin);
             if (userId != -1)
             {
                 this.CUser.ID = Convert.ToInt32(userId);

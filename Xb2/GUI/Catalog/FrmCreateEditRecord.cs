@@ -139,10 +139,10 @@ namespace Xb2.GUI.Catalog
             var locationParameter = this.textBox5.Text.Trim();
             var location = this.textBox6.Text.Trim();
 
-            var labelDbId = Db.GetLabelDbId(_labelDatabaseName, CUser.ID);
+            var labelDbId = DaoObject.GetLabelDbId(_labelDatabaseName, CUser.ID);
             var sql = "select * from {0} where 标注库编号={1}";
-            sql = string.Format(sql, Db.TnLabelDbData(), labelDbId);
-            var adapter = new MySqlDataAdapter(sql, Db.CStr());
+            sql = string.Format(sql, DbHelper.TnLabelDbData(), labelDbId);
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
             var builder = new MySqlCommandBuilder(adapter);
             builder.ConflictOption = ConflictOption.OverwriteChanges;
             var dataTable = new DataTable();

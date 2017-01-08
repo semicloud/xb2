@@ -15,7 +15,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
         private void FrmPlotDWT_Load(object sender, EventArgs e)
         {
             //var sql = "select 观测日期,观测值 from 测值_测试 order by 观测日期";
-            //var dataTable = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            //var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             //var dateValues = DtUtils.RetrieveDateValues(dataTable);
             //var xz = this.GetXAxis(dateValues.Select(d => d.Date).Min(), dateValues.Select(d => d.Date).Max());
             //var yz = this.GetYAxis();

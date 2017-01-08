@@ -352,15 +352,15 @@ namespace Xb2.GUI.Catalog
         }
 
         /// <summary>
-        /// 保存标注库信息
+        /// 保存子库信息
         /// </summary>
         /// <param name="subDbName">标注库名</param>
         /// <returns></returns>
         private bool SaveSubDbInfo(string subDbName)
         {
             var sql = "insert into {0}(用户编号,子库名称) values ({1},'{2}')";
-            sql = string.Format(sql, Db.TnSubDb(), this.CUser.ID, subDbName);
-            return MySqlHelper.ExecuteNonQuery(Db.CStr(), sql) > 0;
+            sql = string.Format(sql, DbHelper.TnSubDb(), this.CUser.ID, subDbName);
+            return MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql) > 0;
         }
 
         /// <summary>
@@ -372,8 +372,8 @@ namespace Xb2.GUI.Catalog
         {
             //表中可以有重名的子库，只要用户Id不一样就行了
             var sql = "select 编号 from {0} where 用户编号={1} and 子库名称='{2}'";
-            sql = string.Format(sql, Db.TnSubDb(), this.CUser.ID, subDbName);
-            var ret = MySqlHelper.ExecuteScalar(Db.CStr(), sql);
+            sql = string.Format(sql, DbHelper.TnSubDb(), this.CUser.ID, subDbName);
+            var ret = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql);
             if (ret != null) return Convert.ToInt32(ret);
             return -1;
         }
@@ -387,8 +387,8 @@ namespace Xb2.GUI.Catalog
         {
             var dt = new DataTable();
             var sql = "select * from {0} where 子库编号={1}";
-            sql = string.Format(sql, Db.TnSubDbData(), subDbId);
-            var adapter = new MySqlDataAdapter(sql, Db.CStr());
+            sql = string.Format(sql, DbHelper.TnSubDbData(), subDbId);
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
             var builder = new MySqlCommandBuilder(adapter);
             adapter.Fill(dt);
             dt = LoadSelectedRecords(subDbId, dt);
@@ -438,8 +438,8 @@ namespace Xb2.GUI.Catalog
             }
             //不能有重名的子库
             var sql = "select count(*) from {0} where 用户编号={1} and 子库名称='{2}'";
-            sql = string.Format(sql, Db.TnSubDb(), this.CUser.ID, subDbName);
-            if (Convert.ToInt32(MySqlHelper.ExecuteScalar(Db.CStr(), sql)) > 0)
+            sql = string.Format(sql, DbHelper.TnSubDb(), this.CUser.ID, subDbName);
+            if (Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql)) > 0)
             {
                 MessageBox.Show("已经存在名为【" + subDbName + "】的子库，请换个名字");
                 return;
@@ -481,7 +481,7 @@ namespace Xb2.GUI.Catalog
             var dialogResult = frmQueryCmd.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                RefreshDataGridView(MySqlHelper.ExecuteDataset(Db.CStr(), frmQueryCmd.Command).Tables[0]);
+                RefreshDataGridView(MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), frmQueryCmd.Command).Tables[0]);
             }
         }
 

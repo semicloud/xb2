@@ -29,12 +29,12 @@ namespace Xb2.GUI.Catalog
         private void RefreshDataGridView()
         {
             var sql = "select 子库名称 from 系统_地震目录子库 where 用户编号=" + this.CUser.ID;
-            var dtZK = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            var dtZK = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             dtZK.Columns.Add("类别", typeof(string));
             dtZK.FillColumn("类别", "子库");
             //应甲方要求，将标注库也放在标注库里
             sql = "select 标注库名称 from 系统_地震目录标注库 where 用户编号=" + this.CUser.ID;
-            var dtBZK = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            var dtBZK = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             for (int i = 0; i < dtBZK.Rows.Count; i++)
             {
                 var row = dtZK.NewRow();
@@ -44,7 +44,7 @@ namespace Xb2.GUI.Catalog
             }
             //地震目录也放在子库里，即用户可以选择从直接从地震目录中生成子库
             var dataRow = dtZK.NewRow();
-            dataRow["子库名称"] = Db.TnCategory();
+            dataRow["子库名称"] = DbHelper.TnCategory();
             dataRow["类别"] = "地震目录";
             dtZK.Rows.InsertAt(dataRow, 0);
             //增加序号列

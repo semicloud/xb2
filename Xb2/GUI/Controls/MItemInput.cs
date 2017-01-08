@@ -23,8 +23,8 @@ namespace Xb2.GUI.Controls
 
         private void MItemInput_Load(object sender, EventArgs e)
         {
-            var dtMitem = MySqlHelper.ExecuteDataset(Db.CStr(),
-                string.Format("select * from {0} where 编号=" + m_mitemId, Db.TnMItem())).Tables[0];
+            var dtMitem = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(),
+                string.Format("select * from {0} where 编号=" + m_mitemId, DbHelper.TnMItem())).Tables[0];
             if (dtMitem.Rows.Count == 0)
             {
                 MessageBox.Show("不存在的测项！编号：" + m_mitemId);
@@ -34,10 +34,10 @@ namespace Xb2.GUI.Controls
                 dtMitem.Rows[0]["观测单位"], dtMitem.Rows[0]["地名"], dtMitem.Rows[0]["方法名"], dtMitem.Rows[0]["测项名"]);
             Debug.Print("测项编号：" + m_mitemId);
             //根据测项编号和用户编号查询基础数据库信息
-            var sql = string.Format("select 编号,库名,是否默认 from {0} where 用户编号={1} and 测项编号={2}", Db.TnProcessedDb(),
+            var sql = string.Format("select 编号,库名,是否默认 from {0} where 用户编号={1} and 测项编号={2}", DbHelper.TnProcessedDb(),
                 this.m_user.ID, m_mitemId);
             Debug.Print("根据测项编号和用户编号查询基础数据库信息：\n" + sql);
-            var dtEssDb = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            var dtEssDb = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             bool hasDefaultDb = dtEssDb.AsEnumerable().Any(r => r.Field<bool>("是否默认"));
             Debug.Print("用户{0}，测项{1}是否有默认基础数据库？{2}", this.m_user, m_mitemId, hasDefaultDb);
             //将原始数据加到基础数据里

@@ -61,7 +61,7 @@ namespace Xb2.GUI.Controls
             //造成性能瓶颈
             this.checkedListBox1.SelectedIndexChanged -= this.checkedListBox1_SelectedIndexChanged;
             Debug.Print("fsql:" + fsql);
-            var dataTable = MySqlHelper.ExecuteDataset(Db.CStr(), fsql).Tables[0];
+            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), fsql).Tables[0];
             this.checkedListBox1.DataSource = null;
             this.checkedListBox1.DataSource = dataTable.GetColumnOfString(this.FieldName);
             this.checkedListBox1.SelectedIndexChanged += this.checkedListBox1_SelectedIndexChanged;
@@ -103,8 +103,8 @@ namespace Xb2.GUI.Controls
             }
             else
             {
-                //var sql = string.Format("select * from {0}", Db.TnMItem());
-                //var dataTable = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+                //var sql = string.Format("select * from {0}", DbHelper.TnMItem());
+                //var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
                 //无查询字段，拿空表填充查询窗体的dgv
                 this.GetParentForm().RefreshData(string.Empty);
             }

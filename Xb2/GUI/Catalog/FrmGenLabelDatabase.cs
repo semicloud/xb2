@@ -214,7 +214,7 @@ namespace Xb2.GUI.Catalog
                 return;
             }
             //不能创建同名的标注库
-            if (Db.GetLabelDbId(labelDbName,CUser.ID) != -1)
+            if (DaoObject.GetLabelDbId(labelDbName,CUser.ID) != -1)
             {
                 MessageBox.Show("已经存在名称为【" + labelDbName + "】的标注库了！");
                 return;
@@ -223,16 +223,16 @@ namespace Xb2.GUI.Catalog
             #endregion
             //新建标注库记录
             var sql = "insert into {0}(用户编号,标注库名称) values ({1},'{2}')";
-            sql = string.Format(sql, Db.TnLabelDb(), CUser.ID, labelDbName);
-            var ans = MySqlHelper.ExecuteNonQuery(Db.CStr(), sql);
+            sql = string.Format(sql, DbHelper.TnLabelDb(), CUser.ID, labelDbName);
+            var ans = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql);
             //标注库记录新建成功之后，获取标注库编号，然后向标注库数据表中插入地震目录，标注库创建完成
             if (ans > 0)
             {
-                var id = Db.GetLabelDbId(labelDbName, CUser.ID);
+                var id = DaoObject.GetLabelDbId(labelDbName, CUser.ID);
                 sql = "select * from {0} where 标注库编号={1}";
-                sql = string.Format(sql, Db.TnLabelDbData(), id);
+                sql = string.Format(sql, DbHelper.TnLabelDbData(), id);
                 var dt = new DataTable();
-                var adapter = new MySqlDataAdapter(sql, Db.CStr());
+                var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
                 adapter.Fill(dt);
                 var builder = new MySqlCommandBuilder(adapter);
                 dt = LoadSelectedRecords(id, dt);
@@ -309,7 +309,7 @@ namespace Xb2.GUI.Catalog
                       + "经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点"
                       + " from {0} inner join {1} on {0}.编号={1}.子库编号"
                       + " where 子库名称='{2}' and 用户编号={3}";
-                sql = string.Format(sql, Db.TnSubDb(), Db.TnSubDbData(), dbName, CUser.ID);
+                sql = string.Format(sql, DbHelper.TnSubDb(), DbHelper.TnSubDbData(), dbName, CUser.ID);
                 Debug.Print(sql);
             }
             //使用内连接查询标注库数据
@@ -319,7 +319,7 @@ namespace Xb2.GUI.Catalog
                       + "经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点"
                       + " from {0} inner join {1} on {0}.编号={1}.标注库编号"
                       + " where 标注库名称='{2}' and 用户编号={3}";
-                sql = string.Format(sql, Db.TnLabelDb(), Db.TnLabelDbData(), dbName, CUser.ID);
+                sql = string.Format(sql, DbHelper.TnLabelDb(), DbHelper.TnLabelDbData(), dbName, CUser.ID);
                 Debug.Print(sql);
             }
             if (type.Equals("地震目录"))
@@ -327,10 +327,10 @@ namespace Xb2.GUI.Catalog
                 //直接从地震目录中查询出记录
                 sql = "select date(发震日期) as 发震日期,time(发震时间) as 发震时间,"
                       + "经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点 from {0}";
-                sql = string.Format(sql, Db.TnCategory());
+                sql = string.Format(sql, DbHelper.TnCategory());
             }
             Debug.Print(sql);
-            dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             return dt;
         }
 

@@ -101,7 +101,7 @@ namespace Xb2.TestAndDemos
         private void FrmMSChartDemo_Load(object sender, System.EventArgs e)
         {
             var sql = "select 观测日期,观测值 from 系统_原始数据 where 测项编号=16 order by 观测日期";
-            var dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             chart1.DataSource = dt;
             chart1.ChartAreas[0].AxisY.Minimum = (double) dt.Compute("min(观测值)", "") - 1;
             chart1.ChartAreas[0].AxisY.Maximum = (double) dt.Compute("max(观测值)", "") + 1;

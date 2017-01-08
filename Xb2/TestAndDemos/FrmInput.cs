@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing;
 using System.Windows.Forms;
 using Xb2.Entity.Business;
 using Xb2.GUI.Controls;
@@ -23,21 +24,32 @@ namespace Xb2.TestAndDemos
 
         private void button1_Click(object sender, EventArgs e)
         {
-            this.flowLayoutPanel1.Controls.Clear();
+           panel1.Controls.Clear();
             FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
             var confirm = frmSelectMItem.ShowDialog();
+
             if (confirm == DialogResult.OK)
             {
                 var dt = frmSelectMItem.Result;
+                var x = 5;
+                var y = 5;
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     var mItemId = Convert.ToInt32(dt.Rows[i]["编号"]);
-                    this.flowLayoutPanel1.Controls.Add(new MItemInput(this.CUser,mItemId));
+                    var inputForm = new MItemInput(this.CUser, mItemId);
+                    inputForm.Width = panel1.Width - 25;
+                    inputForm.Location = new Point(x, panel1.Controls.Count * (inputForm.Height + 5));
+                    this.panel1.Controls.Add(inputForm);
                 }
             }
+        }
+
+        private void panel1_MouseEnter(object sender, EventArgs e)
+        {
+            panel1.Focus();
         }
     }
 }

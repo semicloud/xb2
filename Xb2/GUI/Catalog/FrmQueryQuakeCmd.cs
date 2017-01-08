@@ -59,8 +59,8 @@ namespace Xb2.GUI.Catalog
         private void RefreshDataGridView()
         {
             var sql = "select 命令名称,命令文本 from {0} where 用户编号={1}";
-            sql = string.Format(sql, Db.TnQCategory(), this.CUser.ID);
-            var dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            sql = string.Format(sql, DbHelper.TnQCategory(), this.CUser.ID);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             var identifiedTable = DataHelper.IdentifyDataTable(dt);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = identifiedTable;
@@ -75,14 +75,14 @@ namespace Xb2.GUI.Catalog
         //保存查询条件至数据库
         private bool SaveCmd(int userId, string cmdName, string cmd)
         {
-            var sql = "select * from " + Db.TnQCategory();
-            var dataTable = MySqlHelper.ExecuteDataset(Db.CStr(),sql).Tables[0];
+            var sql = "select * from " + DbHelper.TnQCategory();
+            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(),sql).Tables[0];
             var dataRow = dataTable.NewRow();
             dataRow["用户编号"] = userId;
             dataRow["命令名称"] = cmdName;
             dataRow["命令文本"] = cmd;
             dataTable.Rows.Add(dataRow);
-            var adapter = new MySqlDataAdapter(sql, Db.CStr());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
             var commandBuilder = new MySqlCommandBuilder(adapter);
             return adapter.Update(dataTable) > 0;
         }

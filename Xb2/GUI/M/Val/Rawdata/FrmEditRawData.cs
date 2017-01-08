@@ -78,9 +78,9 @@ namespace Xb2.GUI.M.Val.Rawdata
             if (this._operation == Operation.Create)
             {
                 var sql = "select * from {0} where 测项编号={1}";
-                sql = string.Format(sql, Db.TnRData(), _itemId);
+                sql = string.Format(sql, DbHelper.TnRData(), _itemId);
                 var dt = new DataTable();
-                var adapter = new MySqlDataAdapter(sql, Db.CStr());
+                var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
                 var builder = new MySqlCommandBuilder(adapter);
                 adapter.Fill(dt);
                 var row = dt.NewRow();
@@ -102,10 +102,10 @@ namespace Xb2.GUI.M.Val.Rawdata
             {
                 var sql = "select * from {0} where 编号={1}";
                 var id = Convert.ToInt32(label2.Text);
-                sql = string.Format(sql, Db.TnRData(), id);
+                sql = string.Format(sql, DbHelper.TnRData(), id);
                 Debug.Print(sql);
                 var dt = new DataTable();
-                var adapter = new MySqlDataAdapter(sql, Db.CStr());
+                var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
                 var builder = new MySqlCommandBuilder(adapter);
                 adapter.Fill(dt);
                 var row = dt.Rows[0];

@@ -88,8 +88,8 @@ namespace Xb2.GUI.M.Item
         /// <returns></returns>
         private bool CreateMItem()
         {
-            var sql = "select * from " + Db.TnMItem();
-            var adapter = new MySqlDataAdapter(sql, Db.CStr());
+            var sql = "select * from " + DbHelper.TnMItem();
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
             var builder = new MySqlCommandBuilder(adapter);
             var dt = new DataTable();
             adapter.Fill(dt);
@@ -122,10 +122,10 @@ namespace Xb2.GUI.M.Item
         {
             var sql = "select * from {0} where 编号={1}";
             var id = Convert.ToInt32(label2.Text.Trim());
-            sql = string.Format(sql, Db.TnMItem(), id);
+            sql = string.Format(sql, DbHelper.TnMItem(), id);
             Debug.Print(sql);
             //生成adapter对象，省的写那么长的update语句了
-            var adapter = new MySqlDataAdapter(sql, Db.CStr());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
             var builder = new MySqlCommandBuilder(adapter);
             var dt = new DataTable();
             adapter.Fill(dt);

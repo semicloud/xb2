@@ -47,7 +47,7 @@ namespace Xb2.GUI.M.Item
             this.SQL = string.Empty;
             this.CUser = user;
             //默认视图为查询测项总表
-            this._viewName = Db.TnMItem();
+            this._viewName = DbHelper.TnMItem();
         }
 
         private void FrmSelectMItem_Load(object sender, System.EventArgs e)
@@ -67,7 +67,7 @@ namespace Xb2.GUI.M.Item
                 this.SQL = String.Empty;
                 //从数据视图中查询数据
                 sql = "select * from " + this._viewName;
-                var emptyDt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0].Clone();
+                var emptyDt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0].Clone();
                 this.RefreshDataGridView(emptyDt);
                 return;
             }
@@ -75,7 +75,7 @@ namespace Xb2.GUI.M.Item
             //这里重新生成一个带排序的SQL语句，因为在下面需要使用不带排序的sql
             var sortSql = sql + " order by 观测单位,地名,方法名";
             //用sortSql更新DataGridView
-            var dataTable = MySqlHelper.ExecuteDataset(Db.CStr(), sortSql).Tables[0];
+            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sortSql).Tables[0];
             this.SQL = sql;
             this.RefreshDataGridView(dataTable);
             //SQL语句中已经查询的字段集合，该字段的Checkboxlist就不再更新了
@@ -315,7 +315,7 @@ namespace Xb2.GUI.M.Item
             var dialogResult = frmQueryCmd.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                var dt = MySqlHelper.ExecuteDataset(Db.CStr(), frmQueryCmd.Command).Tables[0];
+                var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), frmQueryCmd.Command).Tables[0];
                 this.RefreshDataGridView(dt);
             }
         }

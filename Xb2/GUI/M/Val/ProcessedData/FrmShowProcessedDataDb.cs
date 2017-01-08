@@ -33,9 +33,9 @@ namespace Xb2.GUI.M.Val.ProcessedData
         {
             var sql = "select {1}.编号,{0}.编号 as 测项编号,{0}.观测单位,{0}.地名,{0}.测项名,{0}.方法名,{1}.库名 as 基础数据库名"
                       + " from {0} inner join {1} on {0}.编号={1}.测项编号 where {1}.用户编号={2}";
-            sql = string.Format(sql, Db.TnMItem(), Db.TnProcessedDb(), CUser.ID);
+            sql = string.Format(sql, DbHelper.TnMItem(), DbHelper.TnProcessedDb(), CUser.ID);
             Debug.Print(sql);
-            var dt = MySqlHelper.ExecuteDataset(Db.CStr(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
             dataGridView1.DataSource = dt;
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.AllowUserToOrderColumns = false;
