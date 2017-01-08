@@ -8,6 +8,9 @@ using Xb2.Algorithms.Core.Entity;
 
 namespace Xb2.Utils
 {
+    /// <summary>
+    /// 封装了项目里常用的DataTable操作
+    /// </summary>
     public static class DataHelper
     {
         /// <summary>
@@ -87,6 +90,100 @@ namespace Xb2.Utils
         }
 
         /// <summary>
+        /// 给dataTable加一列“选择”列，该列为第1列，类型为Boolean
+        /// 并默认将该列全部选中，即全部置为True
+        /// </summary>
+        /// <param name="dataTable"></param>
+        /// <returns></returns>
+        public static DataTable BuildChooseColumn(DataTable dataTable)
+        {
+            var column = new DataColumn("选择", typeof(bool));
+            dataTable.Columns.Add(column);
+            column.SetOrdinal(0); //该列放到第一列
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                dataTable.Rows[i]["选择"] = true;
+            }
+            return dataTable;
+        }
+
+        /// <summary>
+        /// 给DataTable加一列序号列，从1开始排序
+        /// </summary>
+        /// <param name="dataTable"></param>
+        /// <returns></returns>
+        public static DataTable IdentifyDataTable(DataTable dataTable)
+        {
+            var column = new DataColumn {ColumnName = "序号", DataType = typeof(Int32)};
+            dataTable.Columns.Add(column);
+            column.SetOrdinal(0); //序号列放在第一列
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+            {
+                dataTable.Rows[i]["序号"] = i + 1;
+            }
+            return dataTable;
+        }
+
+        /// <summary>
+        /// 从DataTable中去除序号列
+        /// </summary>
+        /// <param name="dataTable"></param>
+        /// <returns></returns>
+        public static DataTable UnIdentifyDataTable(DataTable dataTable)
+        {
+            dataTable.Columns.RemoveAt(0);
+            return dataTable;
+        }
+
+        /// <summary>
+        /// 将DataTable导出到文本文件
+        /// </summary>
+        /// <param name="pathname"></param>
+        /// <param name="dataTable"></param>
+        public static void Export(string pathname, DataTable dataTable)
+        {
+            var sb = new StringBuilder();
+            //分隔符是半角逗号
+            var spliter = ",";
+            //用分隔符连接列名
+            sb.AppendLine(string.Join(spliter, dataTable.GetColumnNames()));
+            //连接数据行
+            for (int i = 0; i < dataTable.Rows.Count; i++)
+                sb.AppendLine(String.Join(spliter, dataTable.Rows[i].ItemArray));
+            //写入文件
+            if (!File.Exists(pathname))
+            {
+                var fs = new FileStream(pathname, FileMode.Create);
+                var sw = new StreamWriter(fs);
+                sw.Write(sb.ToString());
+                sw.Close();
+                fs.Close();
+            }
+            else
+            {
+                MessageBox.Show("已存在文件【" + pathname + "】");
+            }
+        }
+
+        #region DataTable列操作
+
+        /// <summary>
+        /// 获取DataTable的所有列的列名
+        /// </summary>
+        /// <param name="dataTable"></param>
+        /// <returns></returns>
+        public static List<string> GetColumnNames(this DataTable dataTable)
+        {
+            var ans = new List<string>();
+            var columns = dataTable.Columns;
+            foreach (DataColumn column in columns)
+            {
+                ans.Add(column.ColumnName);
+            }
+            return ans;
+        }
+
+        /// <summary>
         /// 给某一列填充固定值
         /// </summary>
         /// <param name="dataTable"></param>
@@ -141,96 +238,7 @@ namespace Xb2.Utils
             return answer;
         }
 
-        /// <summary>
-        /// 给dataTable加一列“选择”列，该列为第1列，类型为Boolean
-        /// 并默认将该列全部选中，即全部置为True
-        /// </summary>
-        /// <param name="dataTable"></param>
-        /// <returns></returns>
-        public static DataTable BuildChooseColumn(DataTable dataTable)
-        {
-            var column = new DataColumn("选择", typeof(bool));
-            dataTable.Columns.Add(column);
-            column.SetOrdinal(0); //该列放到第一列
-            for (int i = 0; i < dataTable.Rows.Count; i++)
-            {
-                dataTable.Rows[i]["选择"] = true;
-            }
-            return dataTable;
-        }
-
-        /// <summary>
-        /// 给DataTable加一列序号列，从1开始排序
-        /// </summary>
-        /// <param name="dataTable"></param>
-        /// <returns></returns>
-        public static DataTable IdentifyDataTable(DataTable dataTable)
-        {
-            var column = new DataColumn {ColumnName = "序号", DataType = typeof(Int32)};
-            dataTable.Columns.Add(column);
-            column.SetOrdinal(0); //序号列放在第一列
-            for (int i = 0; i < dataTable.Rows.Count; i++)
-            {
-                dataTable.Rows[i]["序号"] = i + 1;
-            }
-            return dataTable;
-        }
-
-        /// <summary>
-        /// 从DataTable中去除序号列
-        /// </summary>
-        /// <param name="dataTable"></param>
-        /// <returns></returns>
-        public static DataTable UnIdentifyDataTable(DataTable dataTable)
-        {
-            dataTable.Columns.RemoveAt(0);
-            return dataTable;
-        }
-
-        /// <summary>
-        /// 获取DataTable的所有列的列名
-        /// </summary>
-        /// <param name="dataTable"></param>
-        /// <returns></returns>
-        public static List<string> GetColNames(this DataTable dataTable)
-        {
-            var ans = new List<string>();
-            var columns = dataTable.Columns;
-            foreach (DataColumn column in columns)
-            {
-                ans.Add(column.ColumnName);
-            }
-            return ans;
-        }
-
-        /// <summary>
-        /// 将DataTable导出到文本文件
-        /// </summary>
-        /// <param name="pathname"></param>
-        /// <param name="dataTable"></param>
-        public static void Export(string pathname, DataTable dataTable)
-        {
-            var sb = new StringBuilder();
-            //分隔符是半角逗号
-            var spliter = ",";
-            //用分隔符连接列名
-            sb.AppendLine(string.Join(spliter, dataTable.GetColNames()));
-            //连接数据行
-            for (int i = 0; i < dataTable.Rows.Count; i++)
-                sb.AppendLine(String.Join(spliter, dataTable.Rows[i].ItemArray));
-            //写入文件
-            if (!File.Exists(pathname))
-            {
-                var fs = new FileStream(pathname, FileMode.Create);
-                var sw = new StreamWriter(fs);
-                sw.Write(sb.ToString());
-                sw.Close();
-                fs.Close();
-            }
-            else
-            {
-                MessageBox.Show("已存在文件【" + pathname + "】");
-            }
-        }
+        #endregion
+       
     }
 }
