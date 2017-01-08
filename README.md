@@ -38,3 +38,7 @@ cross fault data tool for national earthquake response support service of China
 #2017-1-3
 1. 查看了合同，消趋势和年周变那边都需要多测项输入，做了多测项输入的一个demo，下周给他们演示；
 2. 准备算法文档，对照做的demo，给甲方演示操作流程；
+
+#2017-1-8
+1. 进行了一些初步的重构操作，目前软件较复杂的地方在地震目录的查询和算法的封装接口上；
+2. 做了一个简单的输入Demo，准备明日与甲方讨论；
