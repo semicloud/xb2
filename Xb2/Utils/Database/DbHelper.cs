@@ -3,8 +3,17 @@ using MySql.Data.MySqlClient;
 
 namespace Xb2.Utils.Database
 {
-    public class DbHelper
+    public static class DbHelper
     {
+        #region 数据库连接字符串
+
+        public static string ConnectionString
+        {
+            get { return ConfigurationManager.ConnectionStrings["Xb2ConnStr"].ConnectionString; }
+        }
+
+        #endregion
+
         /// <summary>
         /// 查询数据库中是否存在名为viewName的视图
         /// </summary>
@@ -14,19 +23,12 @@ namespace Xb2.Utils.Database
         {
             var sql = "SELECT TABLE_NAME FROM information_schema.`TABLES` "
                       + "WHERE TABLE_TYPE LIKE 'VIEW' AND TABLE_SCHEMA LIKE 'xb'";
-            var dt = MySqlHelper.ExecuteDataset(ConnectionString(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(ConnectionString, sql).Tables[0];
             var viewNames = dt.GetColumnOfString("TABLE_NAME");
             return viewNames.Contains(viewName);
         }
 
-        #region 数据库连接字符串
-
-        public static string ConnectionString()
-        {
-            return ConfigurationManager.ConnectionStrings["Xb2ConnStr"].ConnectionString;
-        }
-
-        #endregion
+        
 
         #region 表的名字
         /// <summary>

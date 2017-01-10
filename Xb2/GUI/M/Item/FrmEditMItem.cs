@@ -19,7 +19,7 @@ namespace Xb2.GUI.M.Item
         public FrmEditMItem(Operation operation, XbUser user)
         {
             this.InitializeComponent();
-            this.CUser = user;
+            this.User = user;
             this._operation = operation;
             if (operation == Operation.Create)
             {
@@ -34,7 +34,7 @@ namespace Xb2.GUI.M.Item
         public FrmEditMItem(Operation operation, DataRow dataRow, XbUser user)
         {
             this.InitializeComponent();
-            this.CUser = user;
+            this.User = user;
             this._operation = operation;
             this._dataRow = dataRow;
             if (operation == Operation.Create)
@@ -89,7 +89,7 @@ namespace Xb2.GUI.M.Item
         private bool CreateMItem()
         {
             var sql = "select * from " + DbHelper.TnMItem();
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             var dt = new DataTable();
             adapter.Fill(dt);
@@ -125,7 +125,7 @@ namespace Xb2.GUI.M.Item
             sql = string.Format(sql, DbHelper.TnMItem(), id);
             Debug.Print(sql);
             //生成adapter对象，省的写那么长的update语句了
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             var dt = new DataTable();
             adapter.Fill(dt);

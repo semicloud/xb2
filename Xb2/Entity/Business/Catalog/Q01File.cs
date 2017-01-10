@@ -83,7 +83,7 @@ namespace Xb2.Entity.Business.Catalog
         {
             var sql = "select * from q01文件";
             var dt = new DataTable();
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
             var commandBuilder = new MySqlCommandBuilder(adapter);
             adapter.Fill(dt);
             var dr = dt.NewRow();

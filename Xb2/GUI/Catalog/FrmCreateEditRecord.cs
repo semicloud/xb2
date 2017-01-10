@@ -24,7 +24,7 @@ namespace Xb2.GUI.Catalog
             this._operation = operation;
             this._dataRow = dataRow;
             this._labelDatabaseName = dbname;
-            this.CUser = user;
+            this.User = user;
             if (this._operation == Operation.Create)
             {
                 this.Text = "新建地震目录";
@@ -139,10 +139,10 @@ namespace Xb2.GUI.Catalog
             var locationParameter = this.textBox5.Text.Trim();
             var location = this.textBox6.Text.Trim();
 
-            var labelDbId = DaoObject.GetLabelDbId(_labelDatabaseName, CUser.ID);
+            var labelDbId = DaoObject.GetLabelDbId(_labelDatabaseName, User.ID);
             var sql = "select * from {0} where 标注库编号={1}";
             sql = string.Format(sql, DbHelper.TnLabelDbData(), labelDbId);
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             builder.ConflictOption = ConflictOption.OverwriteChanges;
             var dataTable = new DataTable();

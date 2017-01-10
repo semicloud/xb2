@@ -10,7 +10,7 @@ namespace Xb2.GUI.Main
         public FrmLogin()
         {
             InitializeComponent();
-            this.CUser = new XbUser();
+            this.User = new XbUser();
         }
 
         private void FrmLogin_Activated(object sender, EventArgs e)
@@ -32,14 +32,14 @@ namespace Xb2.GUI.Main
                 ShowMsgLabel.Text = "请输入密码！";
                 return;
             }
-            this.CUser.Name = UserNameTextBox.Text;
-            this.CUser.Password = PasswordTextBox.Text;
-            this.CUser.IsAdmin = AdminRadioButton.Checked;
+            this.User.Name = UserNameTextBox.Text;
+            this.User.Password = PasswordTextBox.Text;
+            this.User.IsAdmin = AdminRadioButton.Checked;
 
-            var userId = DaoObject.GetUserId(this.CUser.Name, this.CUser.Password, this.CUser.IsAdmin);
+            var userId = DaoObject.GetUserId(this.User.Name, this.User.Password, this.User.IsAdmin);
             if (userId != -1)
             {
-                this.CUser.ID = Convert.ToInt32(userId);
+                this.User.ID = Convert.ToInt32(userId);
                 this.DialogResult = DialogResult.OK;
             }
             else

@@ -45,12 +45,23 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Accord.Math.3.3.0\lib\net45\Accord.Math.Core.dll</HintPath>
     </Reference>
+    <Reference Include="Itenso.TimePeriod, Version=2.0.0.0, Culture=neutral, PublicKeyToken=d7f23b760ed5c748, processorArchitecture=MSIL">
+      <HintPath>..\packages\TimePeriodLibrary.NET.2.0.0\lib\net35\Desktop.Release\Itenso.TimePeriod.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="MathNet.Numerics">
       <HintPath>..\packages\MathNet.Numerics.3.13.1\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="MySql.Data, Version=6.9.9.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.4.1\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NodaTime">
+      <HintPath>..\packages\NodaTime.1.3.2\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1+XamariniOS1\NodaTime.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.3.5.0\lib\net45\nunit.framework.dll</HintPath>
@@ -376,6 +387,12 @@
     <Compile Include="TestAndDemos\FrmInput.Designer.cs">
       <DependentUpon>FrmInput.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestAndDemos\FrmInput2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmInput2.Designer.cs">
+      <DependentUpon>FrmInput2.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestAndDemos\FrmLagrangeInterpolationDemo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -388,6 +405,12 @@
     <Compile Include="TestAndDemos\FrmMSChartDemo.Designer.cs">
       <DependentUpon>FrmMSChartDemo.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestAndDemos\FrmInputInterface1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmInputInterface1.Designer.cs">
+      <DependentUpon>FrmInputInterface1.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestAndDemos\RegressionTest.cs" />
     <Compile Include="TestAndDemos\SimpleTest.cs" />
     <Compile Include="Utils\Control\ChartHelper.cs" />
@@ -395,7 +418,9 @@
     <Compile Include="Utils\Control\ToolStripHelper.cs" />
     <Compile Include="Utils\Database\DbHelper.cs" />
     <Compile Include="Utils\Database\DaoObject.cs" />
-    <Compile Include="Utils\DataHelper.cs" />
+    <Compile Include="Utils\DataTableHelper.cs" />
+    <Compile Include="Utils\DateHelper.cs" />
+    <Compile Include="Utils\DateValueHelper.cs" />
     <Compile Include="Utils\ExtendMethods.cs" />
     <EmbeddedResource Include="GUI\Catalog\FrmChooseSubDatabase.resx">
       <DependentUpon>FrmChooseSubDatabase.cs</DependentUpon>
@@ -535,12 +560,24 @@
     <EmbeddedResource Include="TestAndDemos\FrmInput.resx">
       <DependentUpon>FrmInput.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TestAndDemos\FrmInput2.resx">
+      <DependentUpon>FrmInput2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestAndDemos\FrmLagrangeInterpolationDemo.resx">
       <DependentUpon>FrmLagrangeInterpolationDemo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestAndDemos\FrmMSChartDemo.resx">
       <DependentUpon>FrmMSChartDemo.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TestAndDemos\FrmInputInterface1.resx">
+      <DependentUpon>FrmInputInterface1.cs</DependentUpon>
+    </EmbeddedResource>
+    <Content Include="NLog.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <None Include="NLog.xsd">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

@@ -35,7 +35,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
         public FrmProcessData(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
         }
 
         private void FrmProcessData_Load(object sender, EventArgs e)
@@ -53,7 +53,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
             sql = string.Format(sql, DbHelper.TnRData(), itemId);
             Debug.Print("_itemId:" + itemId);
             Debug.Print("sql:" + sql);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
 
             //初始化Chart控件
             groupBox1.Controls.Add(ChartHelper.GetOrdinaryChart());
@@ -77,15 +77,15 @@ namespace Xb2.GUI.M.Val.ProcessedData
         {
             var sql = "select 观测日期,观测值 from {0} where 测项编号={1} order by 观测日期";
             sql = string.Format(sql, DbHelper.TnRData(), itemId);
-            var dtSource = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            var dtSource = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
 
             var sql2 = "select 观测日期,观测值 from {0} where 库编号={1} order by 观测日期";
             sql2 = string.Format(sql2, DbHelper.TnProcessedDbData(), _processedDataDbId);
-            var dtProcessed = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql2).Tables[0];
+            var dtProcessed = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql2).Tables[0];
 
             var sql3 = "select 操作记录 from {0} where 编号={1}";
             sql3 = string.Format(sql3, DbHelper.TnProcessedDb(), _processedDataDbId);
-            var strLog = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql3);
+            var strLog = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql3);
 
             //初始化Chart控件
             groupBox1.Controls.Add(ChartHelper.GetOrdinaryChart());
@@ -152,7 +152,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
                     dataRow["观测值"] = Convert.ToDouble(dataPoint.YValues[0]);
                     dataTable.Rows.Add(dataRow);
                 }
-                FrmSaveProcessedData frmSaveProcessedData = new FrmSaveProcessedData(this.CUser);
+                FrmSaveProcessedData frmSaveProcessedData = new FrmSaveProcessedData(this.User);
                 frmSaveProcessedData.StartPosition = FormStartPosition.CenterScreen;
                 frmSaveProcessedData.ItemId = _itemId;
                 frmSaveProcessedData.ProcessedDataId = _processedDataDbId;
@@ -184,7 +184,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser);
+            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.User);
             frmSelectMItem.StartPosition = FormStartPosition.CenterScreen;
             var diagRslt = frmSelectMItem.ShowDialog();
             if (diagRslt == DialogResult.OK)
@@ -225,9 +225,9 @@ namespace Xb2.GUI.M.Val.ProcessedData
         /// <param name="e"></param>
         private void button3_Click(object sender, EventArgs e)
         {
-            FrmShowProcessedDataDb frmShowProcessedDataDb = new FrmShowProcessedDataDb(CUser);
+            FrmShowProcessedDataDb frmShowProcessedDataDb = new FrmShowProcessedDataDb(User);
             frmShowProcessedDataDb.StartPosition = FormStartPosition.CenterScreen;
-            frmShowProcessedDataDb.Text = string.Format("用户【{0}】的基础数据库", CUser.ID);
+            frmShowProcessedDataDb.Text = string.Format("用户【{0}】的基础数据库", User.ID);
             var confirm = frmShowProcessedDataDb.ShowDialog();
             if (confirm == DialogResult.OK)
             {

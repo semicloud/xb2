@@ -22,13 +22,13 @@ namespace Xb2.GUI.Catalog
         public FrmEditLabelDatabase(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
         }
 
         private void FrmEditLabelDatabase_Load(object sender, EventArgs e)
         {
             var dataTable = GetLabelDbInfo();
-            RefreshDataGridView1(DataHelper.IdentifyDataTable(dataTable));
+            RefreshDataGridView1(DataTableHelper.IdentifyDataTable(dataTable));
         }
 
         /// <summary>
@@ -76,10 +76,10 @@ namespace Xb2.GUI.Catalog
         /// <returns></returns>
         private DataTable GetLabelDbData(string dbName)
         {
-            var labelDbId = DaoObject.GetLabelDbId(dbName, this.CUser.ID);
+            var labelDbId = DaoObject.GetLabelDbId(dbName, this.User.ID);
             var sql = string.Format(bsql, DbHelper.TnLabelDbData()) + " where 标注库编号=" + labelDbId;
             Debug.Print(sql);
-            return MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            return MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
         }
 
         /// <summary>
@@ -88,11 +88,11 @@ namespace Xb2.GUI.Catalog
         /// <returns></returns>
         private DataTable GetLabelDbInfo()
         {
-            this.Text = this.Text + "-[" + this.CUser.Name + "]";
+            this.Text = this.Text + "-[" + this.User.Name + "]";
             var sql = "select 标注库名称 from {0} " + "where 用户编号={1}";
-            sql = string.Format(sql, DbHelper.TnLabelDb(), CUser.ID);
+            sql = string.Format(sql, DbHelper.TnLabelDb(), User.ID);
             Debug.Print(sql);
-            return MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            return MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
@@ -104,10 +104,10 @@ namespace Xb2.GUI.Catalog
                 {
                     var dgv = this.dataGridView1;
                     var labelDbName = dgv.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-                    var labelDbId = DaoObject.GetLabelDbId(labelDbName, CUser.ID);
+                    var labelDbId = DaoObject.GetLabelDbId(labelDbName, User.ID);
                     var sql = string.Format(bsql, DbHelper.TnLabelDbData()) + " where 标注库编号=" + labelDbId;
                     Debug.Print(sql);
-                    var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+                    var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
                     RefreshDataGridView2(dataTable);
                 }
             }
@@ -146,14 +146,14 @@ namespace Xb2.GUI.Catalog
             if (ans == DialogResult.OK)
             {
                 var sql = "delete from {0} where 用户编号={1} and 标注库名称='{2}'";
-                sql = string.Format(sql, DbHelper.TnLabelDb(), CUser.ID, dbname);
-                var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql);
+                sql = string.Format(sql, DbHelper.TnLabelDb(), User.ID, dbname);
+                var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql);
                 if (n > 0)
                 {
                     MessageBox.Show("删除成功！");
                     //删除成功后需要重新绑定数据，以表明数据已删除
                     var dataTable = GetLabelDbInfo();
-                    RefreshDataGridView1(DataHelper.IdentifyDataTable(dataTable));
+                    RefreshDataGridView1(DataTableHelper.IdentifyDataTable(dataTable));
                     //从表数据源设为空，
                     RefreshDataGridView2(new DataTable());
                 }
@@ -225,7 +225,7 @@ namespace Xb2.GUI.Catalog
             }
             var dataTable = (DataTable) this.dataGridView2.DataSource;
             var dbName = dataGridView1.SelectedRows[0].Cells["标注库名称"].Value.ToString();
-            var form = new FrmCreateEditRecord(dataTable.NewRow(), dbName, Operation.Create, CUser);
+            var form = new FrmCreateEditRecord(dataTable.NewRow(), dbName, Operation.Create, User);
             form.StartPosition = FormStartPosition.CenterScreen;
             var dialogResult = form.ShowDialog();
             if (dialogResult == DialogResult.OK)
@@ -264,7 +264,7 @@ namespace Xb2.GUI.Catalog
             var selectedRow = dataTable.Rows[this.dataGridView2.SelectedRows[0].Index];
             if (selectedRow != null)
             {
-                var form = new FrmCreateEditRecord(selectedRow, dbname, Operation.Edit, CUser);
+                var form = new FrmCreateEditRecord(selectedRow, dbname, Operation.Edit, User);
                 form.StartPosition = FormStartPosition.CenterScreen;
                 var dialogResult = form.ShowDialog();
                 if (dialogResult == DialogResult.OK)
@@ -314,7 +314,7 @@ namespace Xb2.GUI.Catalog
                 var sql = "delete from {0} where 编号={1}";
                 sql = string.Format(sql,DbHelper.TnLabelDbData(), id);
                 Debug.Print(sql);
-                if (MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql) > 0)
+                if (MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql) > 0)
                 {
                     var dt = GetLabelDbData(dbname);
                     RefreshDataGridView2(dt);

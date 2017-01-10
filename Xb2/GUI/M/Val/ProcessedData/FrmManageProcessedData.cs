@@ -15,12 +15,12 @@ namespace Xb2.GUI.M.Val.ProcessedData
         public FrmManageProcessedData(XbUser user)
         {
             InitializeComponent();
-            CUser = user;
+            User = user;
         }
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var form = new FrmSelectMItem(this.CUser);
+            var form = new FrmSelectMItem(this.User);
             form.Owner = this;
             //选完项后加载选项结果
             if (form.ShowDialog() == DialogResult.OK)
@@ -49,9 +49,9 @@ namespace Xb2.GUI.M.Val.ProcessedData
         {
             var sql = "select {1}.编号,{0}.编号 as 测项编号,{0}.观测单位,{0}.地名,{0}.测项名,{0}.方法名,{1}.库名 as 基础数据库名,{1}.是否默认"
                       + " from {0} inner join {1} on {0}.编号={1}.测项编号 where {1}.用户编号={2} and 测项编号={3}";
-            sql = string.Format(sql, DbHelper.TnMItem(), DbHelper.TnProcessedDb(), CUser.ID, itemId);
+            sql = string.Format(sql, DbHelper.TnMItem(), DbHelper.TnProcessedDb(), User.ID, itemId);
             Debug.Print(sql);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
             dataGridView1.DataSource = dt;
             dataGridView1.RowHeadersVisible = false;
             dataGridView1.AllowUserToOrderColumns = false;
@@ -126,14 +126,14 @@ namespace Xb2.GUI.M.Val.ProcessedData
         private bool ChangeDefaultDatabase(int dbId)
         {
             var itemId = GetCurrentMItemID();
-            var userId = CUser.ID;
+            var userId = User.ID;
             Debug.Print("更改基础数据库{0}为默认基础数据库，测项编号{1}，用户编号{2}", dbId, itemId, userId);
             var sql = "update {0} set 是否默认=0 where 用户编号={1} and 测项编号={2}";
             sql = string.Format(sql, DbHelper.TnProcessedDb(), userId, itemId);
-            var isRemoveDefualt = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql) > 0;
+            var isRemoveDefualt = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql) > 0;
             Debug.Print("清除默认信息：" + isRemoveDefualt);
             sql = string.Format("update {0} set 是否默认=1 where 编号={1}", DbHelper.TnProcessedDb(), dbId);
-            var isUpdated = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql) > 0;
+            var isUpdated = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql) > 0;
             Debug.Print("更新默认基础数据：" + isUpdated);
             return isUpdated;
         }

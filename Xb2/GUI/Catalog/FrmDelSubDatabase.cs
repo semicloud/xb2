@@ -15,21 +15,21 @@ namespace Xb2.GUI.Catalog
         public FrmDelSubDatabase(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
         }
 
         private void FrmDelSubDatabase_Load(object sender, EventArgs e)
         {
-            this.Text = this.Text + "-[" + this.CUser.Name + "]";
+            this.Text = this.Text + "-[" + this.User.Name + "]";
             this.RefreshDataGridView();
         }
 
         private void RefreshDataGridView()
         {
             var sql = "select 子库名称 from {0} where 用户编号={1}";
-            sql = string.Format(sql, DbHelper.TnSubDb(), CUser.ID);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
-            dt = DataHelper.IdentifyDataTable(dt);
+            sql = string.Format(sql, DbHelper.TnSubDb(), User.ID);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
+            dt = DataTableHelper.IdentifyDataTable(dt);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = dt;
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
@@ -50,8 +50,8 @@ namespace Xb2.GUI.Catalog
             {
                 var subDbName = dgv.SelectedRows[0].Cells["子库名称"].Value.ToString();
                 var sql = "delete from {0} where 用户编号={1} and 子库名称='{2}'";
-                sql = string.Format(sql,DbHelper.TnSubDb(), CUser.ID, subDbName);
-                var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql) ;
+                sql = string.Format(sql,DbHelper.TnSubDb(), User.ID, subDbName);
+                var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql) ;
                 if (n >= 0)
                 {
                     MessageBox.Show("删除成功！");

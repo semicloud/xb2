@@ -90,7 +90,7 @@ namespace Xb2.Algorithms.Core.Methods
         //            collection.Sort((m1, m2) => m1.Date.CompareTo(m2.Date));
         //            var start = collection.First().Date;
         //            var end = collection.Last().Date;
-        //            var dic = GetKValues(collection, start, end);
+        //            var dic = GetKIndexes(collection, start, end);
         //            Console.WriteLine("测项" + i + " : "  +  String.Join(",", dic));
         //        }
         //        catch (Exception)

@@ -19,7 +19,7 @@ namespace Xb2.Algorithms.Core.Entity
 
         public override string ToString()
         {
-            return string.Format("【{0}, {1}】",this.Date.ToString("yyyy-MM-dd"), this.Value.ToString("#0.00"));
+            return string.Format("d:{0:yyyy-MM-dd}, v:{1:#0.00}", this.Date, this.Value);
         }
 
         public static string Desc(DateValue dv1, DateValue dv2)

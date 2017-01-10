@@ -17,7 +17,7 @@ namespace Xb2.GUI.M.Val.Rawdata
         public FrmRawDataManage(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
         }
 
         /// <summary>
@@ -27,7 +27,7 @@ namespace Xb2.GUI.M.Val.Rawdata
         /// <param name="e"></param>
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var form = new FrmSelectMItem(this.CUser);
+            var form = new FrmSelectMItem(this.User);
             form.Owner = this;
             //选完项后加载选项结果
             if (form.ShowDialog() == DialogResult.OK)
@@ -114,7 +114,7 @@ namespace Xb2.GUI.M.Val.Rawdata
                     {
                         var sql = "select * from {0} where 测项编号={1}";
                         sql = string.Format(sql, DbHelper.TnRData(), itemId);
-                        var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+                        var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
                         var builder = new MySqlCommandBuilder(adapter);
                         var dt = new DataTable();
                         adapter.Fill(dt);
@@ -153,7 +153,7 @@ namespace Xb2.GUI.M.Val.Rawdata
                     if (form.ShowDialog() == DialogResult.OK)
                     {
                         //获取数据查看窗口的数据，去掉“序号”列
-                        var dataTable = DataHelper.UnIdentifyDataTable(form.DataTable);
+                        var dataTable = DataTableHelper.UnIdentifyDataTable(form.DataTable);
                         //加入“测项编号”列，并填入测项编号
                         dataTable.Columns.Add("测项编号", typeof(int));
                         dataTable.FillColumn("测项编号", itemId);
@@ -161,7 +161,7 @@ namespace Xb2.GUI.M.Val.Rawdata
                         var dt = new DataTable();
                         var sql = "select * from {0} where 测项编号={1}";
                         sql = string.Format(sql, DbHelper.TnRData(), itemId);
-                        var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+                        var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
                         var builder=  new MySqlCommandBuilder(adapter);
                         adapter.Fill(dt);
                         //数据表合并
@@ -198,7 +198,7 @@ namespace Xb2.GUI.M.Val.Rawdata
         {
             var sql = "select * from {0} where 测项编号={1} order by 观测日期";
             sql = string.Format(sql, DbHelper.TnRData(), itemId);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
             RefreshDataGridView(dt);
         }
 

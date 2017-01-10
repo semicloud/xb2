@@ -19,7 +19,7 @@ namespace Xb2.GUI.Catalog
         public FrmGenLabelDatabase(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
             this._selectedDbName = string.Empty;
         }
 
@@ -104,7 +104,7 @@ namespace Xb2.GUI.Catalog
 
         private void FrmGenSubDatabase_Load(object sender, EventArgs e)
         {
-            this.Text = this.Text + "-[" + this.CUser.Name + "]";
+            this.Text = this.Text + "-[" + this.User.Name + "]";
         }
 
         //刷新datagrdiview
@@ -214,7 +214,7 @@ namespace Xb2.GUI.Catalog
                 return;
             }
             //不能创建同名的标注库
-            if (DaoObject.GetLabelDbId(labelDbName,CUser.ID) != -1)
+            if (DaoObject.GetLabelDbId(labelDbName,User.ID) != -1)
             {
                 MessageBox.Show("已经存在名称为【" + labelDbName + "】的标注库了！");
                 return;
@@ -223,16 +223,16 @@ namespace Xb2.GUI.Catalog
             #endregion
             //新建标注库记录
             var sql = "insert into {0}(用户编号,标注库名称) values ({1},'{2}')";
-            sql = string.Format(sql, DbHelper.TnLabelDb(), CUser.ID, labelDbName);
-            var ans = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql);
+            sql = string.Format(sql, DbHelper.TnLabelDb(), User.ID, labelDbName);
+            var ans = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql);
             //标注库记录新建成功之后，获取标注库编号，然后向标注库数据表中插入地震目录，标注库创建完成
             if (ans > 0)
             {
-                var id = DaoObject.GetLabelDbId(labelDbName, CUser.ID);
+                var id = DaoObject.GetLabelDbId(labelDbName, User.ID);
                 sql = "select * from {0} where 标注库编号={1}";
                 sql = string.Format(sql, DbHelper.TnLabelDbData(), id);
                 var dt = new DataTable();
-                var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+                var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
                 adapter.Fill(dt);
                 var builder = new MySqlCommandBuilder(adapter);
                 dt = LoadSelectedRecords(id, dt);
@@ -309,7 +309,7 @@ namespace Xb2.GUI.Catalog
                       + "经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点"
                       + " from {0} inner join {1} on {0}.编号={1}.子库编号"
                       + " where 子库名称='{2}' and 用户编号={3}";
-                sql = string.Format(sql, DbHelper.TnSubDb(), DbHelper.TnSubDbData(), dbName, CUser.ID);
+                sql = string.Format(sql, DbHelper.TnSubDb(), DbHelper.TnSubDbData(), dbName, User.ID);
                 Debug.Print(sql);
             }
             //使用内连接查询标注库数据
@@ -319,7 +319,7 @@ namespace Xb2.GUI.Catalog
                       + "经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点"
                       + " from {0} inner join {1} on {0}.编号={1}.标注库编号"
                       + " where 标注库名称='{2}' and 用户编号={3}";
-                sql = string.Format(sql, DbHelper.TnLabelDb(), DbHelper.TnLabelDbData(), dbName, CUser.ID);
+                sql = string.Format(sql, DbHelper.TnLabelDb(), DbHelper.TnLabelDbData(), dbName, User.ID);
                 Debug.Print(sql);
             }
             if (type.Equals("地震目录"))
@@ -330,14 +330,14 @@ namespace Xb2.GUI.Catalog
                 sql = string.Format(sql, DbHelper.TnCategory());
             }
             Debug.Print(sql);
-            dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
             return dt;
         }
 
         //加子库
         private void button5_Click(object sender, EventArgs e)
         {
-            var form = new FrmChooseSubDatabase(this.CUser);
+            var form = new FrmChooseSubDatabase(this.User);
             form.Owner = this;
             var dialogResult = form.ShowDialog();
             if (dialogResult == DialogResult.OK)
@@ -348,7 +348,7 @@ namespace Xb2.GUI.Catalog
                 var dbType = form.DbNameAndType.Split(',')[1];
                 var dt = GetData(dbName, dbType);
                 //查询出来的记录默认选中
-                dt = DataHelper.BuildChooseColumn(dt);
+                dt = DataTableHelper.BuildChooseColumn(dt);
                 RefreshDataGridView(dt);
                 //从查询出的数据中找到日期、震级的最大最小值
                 var minDate = Convert.ToDateTime(dt.AsEnumerable().Min(r => r["发震日期"]));

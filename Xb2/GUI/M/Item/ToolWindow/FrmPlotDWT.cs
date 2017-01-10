@@ -67,7 +67,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
             //model.Axes.Add(yz);
             //model.Series.Add(line);
             //model.Annotations.Add(annotation);
-            //var plot = new Plot {Dock = DockStyle.Fill, Model = model};
+            //var plot = new Plot {Dock = DockStyle.FillIfLackOfData, Model = model};
             //this.Controls.Add(plot);
 
             //PngExporter.Export(model, "c://x.png", plot.Width, plot.Height, Brushes.Transparent);

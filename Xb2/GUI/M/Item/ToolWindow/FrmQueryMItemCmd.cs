@@ -18,7 +18,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
         public FrmQueryMItemCmd(XbUser user, QueryCmdAction action)
         {
             this.InitializeComponent();
-            this.CUser = user;
+            this.User = user;
             this._action = action;
             this.dataGridView1.AllowUserToResizeColumns = false;
             this.dataGridView1.AllowUserToResizeRows = false;
@@ -26,7 +26,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
 
         private void FrmQueryCmd_Load(object sender, EventArgs e)
         {
-            this.Text = this.Text + "[" + this.CUser.Name + "]";
+            this.Text = this.Text + "[" + this.User.Name + "]";
             //如果是用来查询，则给GridView挂上鼠标双击的事件，直接双击则使用已保存的查询条件
             if (this._action == QueryCmdAction.Use)
             {
@@ -48,11 +48,11 @@ namespace Xb2.GUI.M.Item.ToolWindow
                 var form = (FrmSelectMItem)this.Owner;
                 var cmd = form.SQL;
                 var cmdName = this.textBox1.Text.Trim();
-                var userId = this.CUser.ID;
+                var userId = this.User.ID;
                 //命令名是否重复查询
                 var sql = "select count(*) from {0} where 用户编号={1} and 命令名称='{2}'";
-                sql = string.Format(sql, DbHelper.TnQMItem(), this.CUser.ID, cmdName);
-                var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql));
+                sql = string.Format(sql, DbHelper.TnQMItem(), this.User.ID, cmdName);
+                var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql));
                 if (n > 0)
                 {
                     MessageBox.Show("已存在名为【" + cmdName + "】的查询！");
@@ -77,9 +77,9 @@ namespace Xb2.GUI.M.Item.ToolWindow
         private void RefreshDataGridView()
         {
             var sql = "select 编号,命令名称,命令文本 from {0} where 用户编号={1}";
-            sql = string.Format(sql, DbHelper.TnQMItem(), this.CUser.ID);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
-            var identifiedTable = DataHelper.IdentifyDataTable(dt);
+            sql = string.Format(sql, DbHelper.TnQMItem(), this.User.ID);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
+            var identifiedTable = DataTableHelper.IdentifyDataTable(dt);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = identifiedTable;
             this.dataGridView1.Columns["编号"].Visible = false;
@@ -95,13 +95,13 @@ namespace Xb2.GUI.M.Item.ToolWindow
         private bool SaveCmd(int userId, string cmdName, string cmd)
         {
             var sql = "select * from " + DbHelper.TnQMItem();
-            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(),sql).Tables[0];
+            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString,sql).Tables[0];
             var dataRow = dataTable.NewRow();
             dataRow["用户编号"] = userId;
             dataRow["命令名称"] = cmdName;
             dataRow["命令文本"] = cmd;
             dataTable.Rows.Add(dataRow);
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
             var commandBuilder = new MySqlCommandBuilder(adapter);
             return adapter.Update(dataTable) > 0;
         }
@@ -133,8 +133,8 @@ namespace Xb2.GUI.M.Item.ToolWindow
                     if (confirm == DialogResult.OK)
                     {
                         var sql = "delete from {0} where 编号={1} and 用户编号={2}";
-                        sql = string.Format(sql, DbHelper.TnQMItem(), id, CUser.ID);
-                        var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql);
+                        sql = string.Format(sql, DbHelper.TnQMItem(), id, User.ID);
+                        var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql);
                         Debug.Print("sql:{0},returns:{1}", sql, n);
                         RefreshDataGridView();
                     }

@@ -20,13 +20,13 @@ namespace Xb2.GUI.Catalog
         public FrmManageCatalog(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
         }
 
         private void RefreshDataGridView()
         {
             String sql = "select 编号,开始日期,结束日期,文件名,记录数,加入时间,用户,已导入数据库 as 导入 from q01文件";
-            DataTable dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            DataTable dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = dataTable;
             this.dataGridView1.ContextMenuStrip = contextMenuStrip1;
@@ -75,7 +75,7 @@ namespace Xb2.GUI.Catalog
                 if (openFileDialog.CheckFileExists)
                 {
                     var fileNames = openFileDialog.FileNames.ToList();
-                    var copied = fileNames.TrueForAll(s => Q01File.AddQ01File(s, this.CUser));
+                    var copied = fileNames.TrueForAll(s => Q01File.AddQ01File(s, this.User));
                     if (copied)
                     {
                         StringBuilder sb = new StringBuilder("以下q01文件：\n");

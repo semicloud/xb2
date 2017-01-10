@@ -29,7 +29,7 @@ namespace Xb2.GUI.Catalog
         public FrmGenSubDatabase(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
             this._sb = new StringBuilder();
         }
 
@@ -210,7 +210,7 @@ namespace Xb2.GUI.Catalog
                 this.textBox1.Text = dataTable.Rows[0]["minm"].ToString();
                 this.textBox2.Text = dataTable.Rows[0]["maxm"].ToString();
             }
-            this.Text = this.Text + "[" + this.CUser.Name + "]";
+            this.Text = this.Text + "[" + this.User.Name + "]";
         }
 
         private void RefreshDataGridView(DataTable dataTable)
@@ -359,8 +359,8 @@ namespace Xb2.GUI.Catalog
         private bool SaveSubDbInfo(string subDbName)
         {
             var sql = "insert into {0}(用户编号,子库名称) values ({1},'{2}')";
-            sql = string.Format(sql, DbHelper.TnSubDb(), this.CUser.ID, subDbName);
-            return MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString(), sql) > 0;
+            sql = string.Format(sql, DbHelper.TnSubDb(), this.User.ID, subDbName);
+            return MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql) > 0;
         }
 
         /// <summary>
@@ -372,8 +372,8 @@ namespace Xb2.GUI.Catalog
         {
             //表中可以有重名的子库，只要用户Id不一样就行了
             var sql = "select 编号 from {0} where 用户编号={1} and 子库名称='{2}'";
-            sql = string.Format(sql, DbHelper.TnSubDb(), this.CUser.ID, subDbName);
-            var ret = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql);
+            sql = string.Format(sql, DbHelper.TnSubDb(), this.User.ID, subDbName);
+            var ret = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql);
             if (ret != null) return Convert.ToInt32(ret);
             return -1;
         }
@@ -388,7 +388,7 @@ namespace Xb2.GUI.Catalog
             var dt = new DataTable();
             var sql = "select * from {0} where 子库编号={1}";
             sql = string.Format(sql, DbHelper.TnSubDbData(), subDbId);
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             adapter.Fill(dt);
             dt = LoadSelectedRecords(subDbId, dt);
@@ -438,8 +438,8 @@ namespace Xb2.GUI.Catalog
             }
             //不能有重名的子库
             var sql = "select count(*) from {0} where 用户编号={1} and 子库名称='{2}'";
-            sql = string.Format(sql, DbHelper.TnSubDb(), this.CUser.ID, subDbName);
-            if (Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql)) > 0)
+            sql = string.Format(sql, DbHelper.TnSubDb(), this.User.ID, subDbName);
+            if (Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql)) > 0)
             {
                 MessageBox.Show("已经存在名为【" + subDbName + "】的子库，请换个名字");
                 return;
@@ -468,7 +468,7 @@ namespace Xb2.GUI.Catalog
                 MessageBox.Show("请先进行查询再保存查询条件");
                 return;
             }
-            FrmQueryQuakeCmd frmQueryCmd = new FrmQueryQuakeCmd(this.CUser, QueryCmdAction.Save);
+            FrmQueryQuakeCmd frmQueryCmd = new FrmQueryQuakeCmd(this.User, QueryCmdAction.Save);
             frmQueryCmd.Owner = this;
             frmQueryCmd.ShowDialog();
         }
@@ -476,12 +476,12 @@ namespace Xb2.GUI.Catalog
         //快查按钮
         private void button2_Click(object sender, EventArgs e)
         {
-            FrmQueryQuakeCmd frmQueryCmd = new FrmQueryQuakeCmd(this.CUser, QueryCmdAction.Use);
+            FrmQueryQuakeCmd frmQueryCmd = new FrmQueryQuakeCmd(this.User, QueryCmdAction.Use);
             frmQueryCmd.Owner = this;
             var dialogResult = frmQueryCmd.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                RefreshDataGridView(MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), frmQueryCmd.Command).Tables[0]);
+                RefreshDataGridView(MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, frmQueryCmd.Command).Tables[0]);
             }
         }
 

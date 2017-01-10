@@ -13,19 +13,19 @@ namespace Xb2.TestAndDemos
         public FrmInput(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
         }
 
         private void FrmInput_Load(object sender, EventArgs e)
         {
-            //MItemInput mItemInput = new MItemInput(this.CUser, 15);
+            //MItemInput mItemInput = new MItemInput(this.User, 15);
             //this.flowLayoutPanel1.Controls.Add(mItemInput);
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
            panel1.Controls.Clear();
-            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser)
+            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.User)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
@@ -39,7 +39,7 @@ namespace Xb2.TestAndDemos
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     var mItemId = Convert.ToInt32(dt.Rows[i]["编号"]);
-                    var inputForm = new MItemInput(this.CUser, mItemId);
+                    var inputForm = new MItemInput(this.User, mItemId);
                     inputForm.Width = panel1.Width - 25;
                     inputForm.Location = new Point(x, panel1.Controls.Count * (inputForm.Height + 5));
                     this.panel1.Controls.Add(inputForm);

@@ -8,7 +8,7 @@ namespace Xb2.GUI.Main
         /// <summary>
         /// 当前登录的用户CurrentUser
         /// </summary>
-        public XbUser CUser { get; set; }
+        public XbUser User { get; set; }
 
         protected readonly int DIST_TO_MOUSE = 10;
 

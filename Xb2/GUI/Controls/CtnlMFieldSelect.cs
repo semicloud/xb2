@@ -61,7 +61,7 @@ namespace Xb2.GUI.Controls
             //造成性能瓶颈
             this.checkedListBox1.SelectedIndexChanged -= this.checkedListBox1_SelectedIndexChanged;
             Debug.Print("fsql:" + fsql);
-            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), fsql).Tables[0];
+            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, fsql).Tables[0];
             this.checkedListBox1.DataSource = null;
             this.checkedListBox1.DataSource = dataTable.GetColumnOfString(this.FieldName);
             this.checkedListBox1.SelectedIndexChanged += this.checkedListBox1_SelectedIndexChanged;

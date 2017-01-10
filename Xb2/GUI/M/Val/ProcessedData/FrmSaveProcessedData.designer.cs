@@ -126,6 +126,7 @@
             this.checkBox1.TabIndex = 11;
             this.checkBox1.Text = "覆盖原基础数据？";
             this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // textBox5
             // 

@@ -11,7 +11,7 @@ namespace Xb2.Utils
     /// <summary>
     /// 封装了项目里常用的DataTable操作
     /// </summary>
-    public static class DataHelper
+    public static class DataTableHelper
     {
         /// <summary>
         /// 将datatable中未选择的行去掉

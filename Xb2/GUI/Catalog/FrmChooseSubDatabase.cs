@@ -17,24 +17,24 @@ namespace Xb2.GUI.Catalog
         public FrmChooseSubDatabase(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
         }
 
         private void FrmDelSubDatabase_Load(object sender, EventArgs e)
         {
-            this.Text = this.Text + "-[" + this.CUser.Name + "]";
+            this.Text = this.Text + "-[" + this.User.Name + "]";
             this.RefreshDataGridView();
         }
 
         private void RefreshDataGridView()
         {
-            var sql = "select 子库名称 from 系统_地震目录子库 where 用户编号=" + this.CUser.ID;
-            var dtZK = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            var sql = "select 子库名称 from 系统_地震目录子库 where 用户编号=" + this.User.ID;
+            var dtZK = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
             dtZK.Columns.Add("类别", typeof(string));
             dtZK.FillColumn("类别", "子库");
             //应甲方要求，将标注库也放在标注库里
-            sql = "select 标注库名称 from 系统_地震目录标注库 where 用户编号=" + this.CUser.ID;
-            var dtBZK = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            sql = "select 标注库名称 from 系统_地震目录标注库 where 用户编号=" + this.User.ID;
+            var dtBZK = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
             for (int i = 0; i < dtBZK.Rows.Count; i++)
             {
                 var row = dtZK.NewRow();
@@ -48,7 +48,7 @@ namespace Xb2.GUI.Catalog
             dataRow["类别"] = "地震目录";
             dtZK.Rows.InsertAt(dataRow, 0);
             //增加序号列
-            dtZK = DataHelper.IdentifyDataTable(dtZK);
+            dtZK = DataTableHelper.IdentifyDataTable(dtZK);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = dtZK;
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;

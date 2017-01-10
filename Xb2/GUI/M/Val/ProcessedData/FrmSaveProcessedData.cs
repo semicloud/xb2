@@ -45,7 +45,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
         public FrmSaveProcessedData(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
         }
 
         private void FrmSaveProcessedData_Load(object sender, EventArgs e)
@@ -55,7 +55,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
                 //测项编号
                 this.textBox1.Text = this.ItemId.ToString();
                 //用户名
-                this.textBox2.Text = this.CUser.Name;
+                this.textBox2.Text = this.User.Name;
                 //K指数
                 this.textBox4.Text = this.KIndex;
                 //基础数据库编号
@@ -72,7 +72,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
                 //自动生成基础数据库名，注意日期的格式化
                 var sql = "select 观测单位,地名,方法名,测项名 from {0} where 编号={1}";
                 sql = string.Format(sql, DbHelper.TnMItem(), this.ItemId);
-                var dr = MySqlHelper.ExecuteDataRow(DbHelper.ConnectionString(), sql);
+                var dr = MySqlHelper.ExecuteDataRow(DbHelper.ConnectionString, sql);
                 Debug.Print("sql:{0}, returns:{1}", sql, dr);
                 if (dr != null)
                 {
@@ -81,7 +81,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
                     var cxm = dr["测项名"].ToString();
                     var ffm = dr["方法名"].ToString();
                     var dbname = string.Format("{0}_{1}_{2}_{3}_{4}_基础数据_{5}",
-                        this.CUser.Name, gcdw, dm, ffm, cxm, DateTime.Now.Date.ToString("yyyyMMdd"));
+                        this.User.Name, gcdw, dm, ffm, cxm, DateTime.Now.Date.ToString("yyyyMMdd"));
                     this.textBox3.Text = dbname;
                 }
                 else
@@ -105,7 +105,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
         {
             var sql = string.Format("select 编号 from {0} where 用户编号={1} and 测项编号={2} and 库名='{3}'",
                 DbHelper.TnProcessedDb(), userId, itemId, dbName);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
             return dt.Rows.Count > 0;
         }
 
@@ -115,7 +115,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
             var sql = string.Format("select * from {0} where 用户编号={1} and 测项编号={2}",
                 DbHelper.TnProcessedDb(), userId, itemId);
             var dt = new DataTable();
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             adapter.Fill(dt);
             var dr = dt.NewRow();
@@ -134,11 +134,11 @@ namespace Xb2.GUI.M.Val.ProcessedData
         {
             var sql = string.Format("select 编号 from {0} where 用户编号={1} and 测项编号={2} and 库名='{3}'",
                 DbHelper.TnProcessedDb(), userId, itemId, dbName);
-            var dbId = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql);
+            var dbId = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql);
             Debug.Print("基础数据库编号：" + dbId);
             sql = string.Format("select * from {0} where 库编号={1}", DbHelper.TnProcessedDbData(), dbId);
             var dt = new DataTable();
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             adapter.Fill(dt);
             for (int i = 0; i < dataTable.Rows.Count; i++)
@@ -152,7 +152,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
             return adapter.Update(dt) > 0;
         }
 
-        private void SaveButton_Click(object sender, System.EventArgs e)
+        private void SaveButton_Click(object sender, EventArgs e)
         {
             //基础数据库名
             var dbName = this.textBox3.Text.Trim();
@@ -169,18 +169,18 @@ namespace Xb2.GUI.M.Val.ProcessedData
                 //再保存基础数据库的数据
                 //检查是否存在同名基础数据库，有则提示用户修改
                 //HERE！
-                if (HasProcessedDataDb(this.CUser.ID, this.ItemId, dbName))
+                if (HasProcessedDataDb(this.User.ID, this.ItemId, dbName))
                 {
                     MessageBox.Show("已经存在名为【" + dbName + "】的基础数据库，请换个名字。");
                     return;
                 }
-                var isDbInfoSaved = SaveProcessedDataDbInfo(this.CUser.ID, this.ItemId, dbName, k, period, logger);
+                var isDbInfoSaved = SaveProcessedDataDbInfo(this.User.ID, this.ItemId, dbName, k, period, logger);
                 Debug.Print("保存用户基础数据库，用户编号{0}，测项编号{1}，库名{2}，返回{3}",
-                    this.CUser.ID, this.ItemId, dbName, isDbInfoSaved);
+                    this.User.ID, this.ItemId, dbName, isDbInfoSaved);
                 if (isDbInfoSaved)
                 {
                     //保存基础数据库数据
-                    var isDbDataSaved = SaveProcessedDataDbData(this.CUser.ID, this.ItemId, dbName, this.DataTable);
+                    var isDbDataSaved = SaveProcessedDataDbData(this.User.ID, this.ItemId, dbName, this.DataTable);
                     MessageBox.Show(isDbDataSaved ? "保存成功！" : "保存失败！");
                 }
                 else
@@ -193,6 +193,11 @@ namespace Xb2.GUI.M.Val.ProcessedData
         private void CloseButton_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

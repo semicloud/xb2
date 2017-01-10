@@ -42,7 +42,7 @@ namespace Xb2.GUI.M.Val.Rawdata
                 dataRow["观测值"] = value;
                 _dataTable.Rows.Add(dataRow);
             }
-            var dt = DataHelper.IdentifyDataTable(_dataTable);
+            var dt = DataTableHelper.IdentifyDataTable(_dataTable);
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = dt;
             dataGridView1.RowHeadersVisible = false;

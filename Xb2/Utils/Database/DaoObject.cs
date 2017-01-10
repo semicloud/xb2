@@ -2,7 +2,7 @@
 using System.Data;
 using System.Diagnostics;
 using MySql.Data.MySqlClient;
-using NUnit.Framework;
+using NLog;
 
 namespace Xb2.Utils.Database
 {
@@ -11,6 +11,8 @@ namespace Xb2.Utils.Database
     /// </summary>
     public static class DaoObject
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         #region 用户相关操作
 
         public static int GetUserId(string userName, string password, bool isAdmin)
@@ -18,7 +20,7 @@ namespace Xb2.Utils.Database
             var ans = -1;
             var sql = "select 编号 from 系统_用户 where 用户名='{1}' and 密码='{2}' and 管理员={3}";
             sql = String.Format(sql, "系统_用户", userName, password, isAdmin);
-            var obj = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql);
+            var obj = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql);
             if (obj != null) ans = Convert.ToInt32(obj);
             Debug.Print("query user id by [{0},{1},{2}], return {3}", userName, password, isAdmin, ans);
             return ans;
@@ -195,9 +197,11 @@ namespace Xb2.Utils.Database
         public static int GetLabelDbId(string labelDbName, int userId)
         {
             var sql = "select 编号 from {0} where 用户编号={1} and 标注库名称='{2}'";
-            sql = String.Format(sql, DbHelper.TnLabelDb(), userId, labelDbName);
-            var ans = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString(), sql);
+            var commandText = String.Format(sql, DbHelper.TnLabelDb(), userId, labelDbName);
+            var ans = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, commandText);
             var id = ans != null ? Convert.ToInt32(ans) : -1;
+            Logger.Info("查询用户 {0} 的名称为 {1} 的标注库编号为 {2}. 返回-1表示该标注库不存在", userId, labelDbName, id);
+            Logger.Debug(commandText);
             return id;
         }
 
@@ -236,7 +240,13 @@ namespace Xb2.Utils.Database
         /// <returns></returns>
         public static DataTable GetRawData(int mitemId)
         {
-            throw new NotImplementedException();
+            var commandText = string.Format("select 编号,观测日期,观测值 from {0} where 测项编号={1} order by 观测日期",
+                DbHelper.TnRData(), mitemId);
+            Debug.Print(commandText);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            Logger.Info("查询测项 {0} 的原始数据，共返回 {1} 条观测数据", mitemId, dt.Rows.Count);
+            Logger.Debug(commandText);
+            return dt;
         }
 
         #endregion
@@ -251,7 +261,12 @@ namespace Xb2.Utils.Database
         /// <returns></returns>
         public static DataTable GetProcessedData(int databaseId)
         {
-            throw new NotImplementedException();
+            var sql = "select 编号,观测日期,观测值 from {0} order by 观测日期";
+            var commandText = string.Format(sql, DbHelper.TnProcessedDbData());
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            Logger.Debug(commandText);
+            Logger.Info("查询编号为 {0} 的基础数据库，共返回 {1} 条观测数据", databaseId, dt.Rows.Count);
+            return dt;
         }
 
         /// <summary>
@@ -266,13 +281,21 @@ namespace Xb2.Utils.Database
         }
 
         /// <summary>
-        /// 根据测项编号获取基础数据库信息(需要连接测项表)
+        /// 获取用户某测项的基础数据库信息
         /// </summary>
-        /// <param name="mitemId"></param>
+        /// <param name="userId">用户编号</param>
+        /// <param name="mitemId">测项编号</param>
+        /// <param name="columnNames">要查询的列名</param>
         /// <returns></returns>
-        public static DataTable GetProcessedDatabaseInfosByMItemId(int mitemId)
+        public static DataTable GetUserProcessedDatabaseInfos(int userId, int mitemId, params string[] columnNames)
         {
-            throw new NotImplementedException();
+            var sql = "select {0} from {1} where 用户编号={2} and 测项编号={3}";
+            var colNames = string.Join(",", columnNames);
+            var commandText = string.Format(sql, colNames, DbHelper.TnProcessedDb(), userId, mitemId);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            Logger.Info("查询用户{0}，测项{1}的基础数据库信息共{2}个", userId, mitemId, dt.Rows.Count);
+            Logger.Debug(commandText);
+            return dt;
         }
 
         /// <summary>

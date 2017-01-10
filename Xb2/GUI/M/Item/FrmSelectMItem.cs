@@ -45,7 +45,7 @@ namespace Xb2.GUI.M.Item
         {
             this.InitializeComponent();
             this.SQL = string.Empty;
-            this.CUser = user;
+            this.User = user;
             //默认视图为查询测项总表
             this._viewName = DbHelper.TnMItem();
         }
@@ -67,7 +67,7 @@ namespace Xb2.GUI.M.Item
                 this.SQL = String.Empty;
                 //从数据视图中查询数据
                 sql = "select * from " + this._viewName;
-                var emptyDt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0].Clone();
+                var emptyDt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0].Clone();
                 this.RefreshDataGridView(emptyDt);
                 return;
             }
@@ -75,7 +75,7 @@ namespace Xb2.GUI.M.Item
             //这里重新生成一个带排序的SQL语句，因为在下面需要使用不带排序的sql
             var sortSql = sql + " order by 观测单位,地名,方法名";
             //用sortSql更新DataGridView
-            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sortSql).Tables[0];
+            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sortSql).Tables[0];
             this.SQL = sql;
             this.RefreshDataGridView(dataTable);
             //SQL语句中已经查询的字段集合，该字段的Checkboxlist就不再更新了
@@ -114,7 +114,7 @@ namespace Xb2.GUI.M.Item
         public void RefreshDataGridView(DataTable dataTable)
         {
             this.dataGridView1.DataSource = null;
-            this.dataGridView1.DataSource = DataHelper.BuildChooseColumn(dataTable);
+            this.dataGridView1.DataSource = DataTableHelper.BuildChooseColumn(dataTable);
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.MultiSelect = true;
             this.dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -278,7 +278,7 @@ namespace Xb2.GUI.M.Item
         {
             var posx = Cursor.Position.X + DIST_TO_MOUSE;
             var posy = Cursor.Position.Y + DIST_TO_MOUSE;
-            var form = new FrmRegionSelectMItem(this.CUser);
+            var form = new FrmRegionSelectMItem(this.User);
             form.Owner = this;
             form.StartPosition = FormStartPosition.Manual;
             form.Location = new Point(posx, posy);
@@ -309,13 +309,13 @@ namespace Xb2.GUI.M.Item
         /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            var frmQueryCmd = new FrmQueryMItemCmd(this.CUser, QueryCmdAction.Use);
+            var frmQueryCmd = new FrmQueryMItemCmd(this.User, QueryCmdAction.Use);
             frmQueryCmd.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             frmQueryCmd.Owner = this;
             var dialogResult = frmQueryCmd.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), frmQueryCmd.Command).Tables[0];
+                var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, frmQueryCmd.Command).Tables[0];
                 this.RefreshDataGridView(dt);
             }
         }
@@ -337,7 +337,7 @@ namespace Xb2.GUI.M.Item
                 MessageBox.Show("已经保存的查询条件!");
                 return;
             }
-            var frmQueryCmd = new FrmQueryMItemCmd(this.CUser, QueryCmdAction.Save);
+            var frmQueryCmd = new FrmQueryMItemCmd(this.User, QueryCmdAction.Save);
             frmQueryCmd.FormBorderStyle = FormBorderStyle.FixedToolWindow;
             frmQueryCmd.Owner = this;
             frmQueryCmd.ShowDialog();
@@ -379,7 +379,7 @@ namespace Xb2.GUI.M.Item
                     var extension = Path.GetExtension(saveFileDialog.FileName);
                     if (extension != null && extension.Equals(".txt"))
                     {
-                        DataHelper.Export(saveFileDialog.FileName, dt);
+                        DataTableHelper.Export(saveFileDialog.FileName, dt);
                     }
                 }
             }
@@ -531,7 +531,7 @@ namespace Xb2.GUI.M.Item
             {
                 var index = dataGridView1.SelectedRows[0].Index;
                 var dataRow = ((DataTable) (dataGridView1.DataSource)).Rows[index];
-                var form = new FrmEditMItem(Operation.Edit, dataRow, this.CUser);
+                var form = new FrmEditMItem(Operation.Edit, dataRow, this.User);
                 form.StartPosition = FormStartPosition.CenterParent;
                 form.Show();
             }

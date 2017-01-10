@@ -20,7 +20,7 @@ namespace Xb2.GUI.Computing.Input
         public FrmYearChangeInput(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
             if (this.YearChangeInput == null)
             {
                 this.YearChangeInput = new Xb2YearChangeInput();
@@ -41,7 +41,7 @@ namespace Xb2.GUI.Computing.Input
             this.YearChangeInput.DatabaseId = 0;
             this.YearChangeInput.DatabaseName = string.Empty;
 
-            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser)
+            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.User)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
@@ -62,11 +62,11 @@ namespace Xb2.GUI.Computing.Input
                 Debug.Print("测项编号：" + YearChangeInput.MItemId);
                 //根据测项编号和用户编号查询基础数据库信息
                 var sql = string.Format("select 编号,库名,是否默认 from {0} where 用户编号={1} and 测项编号={2}", DbHelper.TnProcessedDb(),
-                    this.CUser.ID, this.YearChangeInput.MItemId);
+                    this.User.ID, this.YearChangeInput.MItemId);
                 Debug.Print("根据测项编号和用户编号查询基础数据库信息：\n" + sql);
-                dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+                dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
                 bool hasDefaultDb = dt.AsEnumerable().Any(r => r.Field<bool>("是否默认"));
-                Debug.Print("用户{0}，测项{1}是否有默认基础数据库？{2}", this.CUser.ID, this.YearChangeInput.MItemId, hasDefaultDb);
+                Debug.Print("用户{0}，测项{1}是否有默认基础数据库？{2}", this.User.ID, this.YearChangeInput.MItemId, hasDefaultDb);
                 //将原始数据加到基础数据里
                 var dr = dt.NewRow();
                 dr["库名"] = "原始数据";
@@ -138,7 +138,7 @@ namespace Xb2.GUI.Computing.Input
             this.YearChangeInput.Start = dateTimePicker1.Value;
             this.YearChangeInput.End = dateTimePicker2.Value;
             //按照开始日期和结束日期截取数据
-            var dateValueList = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0].RetrieveDateValues();
+            var dateValueList = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0].RetrieveDateValues();
             var dateRange = new DateRange(this.YearChangeInput.Start, this.YearChangeInput.End);
             this.YearChangeInput.DateValueList = dateValueList.Between(dateRange);
             //下一步就是调用FrmDisplayChart中的方法来绘制图形
@@ -158,7 +158,7 @@ namespace Xb2.GUI.Computing.Input
 
         private void DetermineDateTime(string sql)
         {
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
             if (dt != null)
             {
                 Debug.Print("开始日期：{0}，结束日期：{1}",

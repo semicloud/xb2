@@ -198,12 +198,7 @@ namespace Xb2.Utils
             return answer;
         }
 
-        public static DateTime MeanDate(this IEnumerable<DateTime> dateTimes)
-        {
-            dateTimes.ToList().Sort();
-            DateTime start = dateTimes.First(), end = dateTimes.Last();
-            return start.AddDays(((end - start).Days)/2.0);
-        }
+       
 
         public static DateValueList ToDateValueList(this List<DateValue> dateValues)
         {

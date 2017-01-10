@@ -23,7 +23,7 @@ namespace Xb2.GUI.Main
         public FrmFirst(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
             this.Paint += OnPaint;
         }
 
@@ -33,14 +33,14 @@ namespace Xb2.GUI.Main
 
         private void 生成基础数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmProcessData frmProcessData = new FrmProcessData(this.CUser);
+            FrmProcessData frmProcessData = new FrmProcessData(this.User);
             frmProcessData.MdiParent = this;
             frmProcessData.Show();
         }
 
         private void 管理地震目录ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmManageCatalog frmManageCatalog = new FrmManageCatalog(this.CUser);
+            FrmManageCatalog frmManageCatalog = new FrmManageCatalog(this.User);
             frmManageCatalog.MdiParent = this;
             frmManageCatalog.StartPosition = FormStartPosition.CenterScreen;
             frmManageCatalog.Show();
@@ -48,7 +48,7 @@ namespace Xb2.GUI.Main
 
         private void 生成地震目录子库ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmGenSubDatabase frmGenSubDatabase = new FrmGenSubDatabase(this.CUser);
+            FrmGenSubDatabase frmGenSubDatabase = new FrmGenSubDatabase(this.User);
             frmGenSubDatabase.MdiParent = this;
             frmGenSubDatabase.StartPosition = FormStartPosition.CenterScreen;
             frmGenSubDatabase.Show();
@@ -56,7 +56,7 @@ namespace Xb2.GUI.Main
 
         private void 删除地震目录子库ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmDelSubDatabase frmDelSubDatabase = new FrmDelSubDatabase(this.CUser);
+            FrmDelSubDatabase frmDelSubDatabase = new FrmDelSubDatabase(this.User);
             frmDelSubDatabase.MdiParent = this;
             frmDelSubDatabase.StartPosition = FormStartPosition.CenterScreen;
             frmDelSubDatabase.Show();
@@ -64,7 +64,7 @@ namespace Xb2.GUI.Main
 
         private void 生成地震目录标注库ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmGenLabelDatabase frmGenLabelDatabase = new FrmGenLabelDatabase(this.CUser);
+            FrmGenLabelDatabase frmGenLabelDatabase = new FrmGenLabelDatabase(this.User);
             frmGenLabelDatabase.MdiParent = this;
             frmGenLabelDatabase.StartPosition = FormStartPosition.CenterScreen;
             frmGenLabelDatabase.Show();
@@ -72,7 +72,7 @@ namespace Xb2.GUI.Main
 
         private void 管理地震目录标注库ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmEditLabelDatabase frmEditLabelDatabase = new FrmEditLabelDatabase(this.CUser);
+            FrmEditLabelDatabase frmEditLabelDatabase = new FrmEditLabelDatabase(this.User);
             frmEditLabelDatabase.MdiParent = this;
             frmEditLabelDatabase.StartPosition = FormStartPosition.CenterScreen;
             frmEditLabelDatabase.Show();
@@ -80,7 +80,7 @@ namespace Xb2.GUI.Main
 
         private void 管理测项ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser);
+            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.User);
             frmSelectMItem.MdiParent = this;
             frmSelectMItem.StartPosition = FormStartPosition.CenterScreen;
             frmSelectMItem.Show();
@@ -88,7 +88,7 @@ namespace Xb2.GUI.Main
 
         private void 管理原始数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmRawDataManage frmRawDataManage = new FrmRawDataManage(this.CUser);
+            FrmRawDataManage frmRawDataManage = new FrmRawDataManage(this.User);
             frmRawDataManage.MdiParent = this;
             frmRawDataManage.StartPosition = FormStartPosition.CenterScreen;
             frmRawDataManage.Show();
@@ -96,7 +96,7 @@ namespace Xb2.GUI.Main
 
         private void 新建测项ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmEditMItem frmEditMItem = new FrmEditMItem(Operation.Create, this.CUser);
+            FrmEditMItem frmEditMItem = new FrmEditMItem(Operation.Create, this.User);
             frmEditMItem.MdiParent = this;
             frmEditMItem.StartPosition = FormStartPosition.CenterScreen;
             frmEditMItem.Show();
@@ -104,7 +104,7 @@ namespace Xb2.GUI.Main
 
         private void 原始数据绘图ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser);
+            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.User);
             frmSelectMItem.StartPosition = FormStartPosition.CenterScreen;
             if (frmSelectMItem.ShowDialog() == DialogResult.OK)
             {
@@ -130,7 +130,7 @@ namespace Xb2.GUI.Main
 
         private void 消趋势ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmRegressionInput frmSingleInput = new FrmRegressionInput(this.CUser);
+            FrmRegressionInput frmSingleInput = new FrmRegressionInput(this.User);
             frmSingleInput.StartPosition = FormStartPosition.CenterScreen;
             var result = frmSingleInput.ShowDialog();
             if (result == DialogResult.OK)
@@ -156,7 +156,7 @@ namespace Xb2.GUI.Main
             }
             else
             {
-                frmDisplayCharts = new FrmDisplayCharts(this.CUser)
+                frmDisplayCharts = new FrmDisplayCharts(this.User)
                 {
                     MdiParent = this,
                     StartPosition = FormStartPosition.CenterScreen,
@@ -168,7 +168,7 @@ namespace Xb2.GUI.Main
 
         private void 管理基础数据ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmManageProcessedData frmManageProcessedData = new FrmManageProcessedData(this.CUser);
+            FrmManageProcessedData frmManageProcessedData = new FrmManageProcessedData(this.User);
             frmManageProcessedData.MdiParent = this;
             frmManageProcessedData.Show();
         }

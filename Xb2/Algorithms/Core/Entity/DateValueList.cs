@@ -107,7 +107,7 @@ namespace Xb2.Algorithms.Core.Entity
         {
             var sql = "select 观测日期,观测值 from {0} where 测项编号={1} order by 观测日期";
             sql = string.Format(sql, DbHelper.TnRData(), mItemId);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
             var ans = dt.RetrieveDateValues();
             Debug.Print("获取原始数据，测项编号:" + mItemId + "\n 返回 {0} 条数据", ans.Count);
             return ans;

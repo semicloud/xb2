@@ -19,7 +19,7 @@ namespace Xb2.GUI.Computing.Input
         public FrmRegressionInput(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
             if (this.RegresInput == null)
             {
                 this.RegresInput = new Xb2RegressionInput();
@@ -40,7 +40,7 @@ namespace Xb2.GUI.Computing.Input
             this.RegresInput.DatabaseId = 0;
             this.RegresInput.DatabaseName = string.Empty;
 
-            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.CUser)
+            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.User)
             {
                 StartPosition = FormStartPosition.CenterScreen
             };
@@ -61,11 +61,11 @@ namespace Xb2.GUI.Computing.Input
                 Debug.Print("测项编号：" + RegresInput.MItemId);
                 //根据测项编号和用户编号查询基础数据库信息
                 var sql = string.Format("select 编号,库名,是否默认 from {0} where 用户编号={1} and 测项编号={2}", DbHelper.TnProcessedDb(),
-                    this.CUser.ID, this.RegresInput.MItemId);
+                    this.User.ID, this.RegresInput.MItemId);
                 Debug.Print("根据测项编号和用户编号查询基础数据库信息：\n" + sql);
-                dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+                dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
                 bool hasDefaultDb = dt.AsEnumerable().Any(r => r.Field<bool>("是否默认"));
-                Debug.Print("用户{0}，测项{1}是否有默认基础数据库？{2}", this.CUser.ID, this.RegresInput.MItemId, hasDefaultDb);
+                Debug.Print("用户{0}，测项{1}是否有默认基础数据库？{2}", this.User.ID, this.RegresInput.MItemId, hasDefaultDb);
                 //将原始数据加到基础数据里
                 var dr = dt.NewRow();
                 dr["库名"] = "原始数据";
@@ -137,7 +137,7 @@ namespace Xb2.GUI.Computing.Input
             this.RegresInput.Start = dateTimePicker1.Value;
             this.RegresInput.End = dateTimePicker2.Value;
             //按照开始日期和结束日期截取数据
-            var dateValueList = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0].RetrieveDateValues();
+            var dateValueList = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0].RetrieveDateValues();
             var dateRange = new DateRange(this.RegresInput.Start, this.RegresInput.End);
             this.RegresInput.List = dateValueList.Between(dateRange);
             //下一步就是调用FrmDisplayChart中的方法来绘制图形
@@ -157,7 +157,7 @@ namespace Xb2.GUI.Computing.Input
 
         private void DetermineDateTime(string sql)
         {
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
             if (dt != null)
             {
                 Debug.Print("开始日期：{0}，结束日期：{1}",

@@ -20,7 +20,7 @@ namespace Xb2.GUI.Computing
         public FrmDisplayCharts(XbUser user)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
             this.Closed += FrmDisplayCharts_Closed;
             this.Load += FrmDisplayCharts_Load;
         }
@@ -156,7 +156,7 @@ namespace Xb2.GUI.Computing
                 MessageBox.Show("请选中一幅图进行标地震!");
                 return;
             }
-            FrmEditLabelDatabase frmEditLabelDatabase = new FrmEditLabelDatabase(this.CUser);
+            FrmEditLabelDatabase frmEditLabelDatabase = new FrmEditLabelDatabase(this.User);
             frmEditLabelDatabase.ShowDialog();
             var dt = frmEditLabelDatabase.ConfirmedDataTable;
             if (dt != null)

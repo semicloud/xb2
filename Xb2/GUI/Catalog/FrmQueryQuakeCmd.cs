@@ -15,13 +15,13 @@ namespace Xb2.GUI.Catalog
         public FrmQueryQuakeCmd(XbUser user, QueryCmdAction action)
         {
             InitializeComponent();
-            this.CUser = user;
+            this.User = user;
             this._action = action;
         }
 
         private void FrmQueryCmd_Load(object sender, System.EventArgs e)
         {
-            this.Text = this.Text + "[" + this.CUser.Name + "]";
+            this.Text = this.Text + "[" + this.User.Name + "]";
             //如果是用来查询，则给GridView挂上鼠标双击的事件，直接双击则使用已保存的查询条件
             if (this._action == QueryCmdAction.Use)
             {
@@ -43,7 +43,7 @@ namespace Xb2.GUI.Catalog
                 var frmGenSubDatabase = (FrmGenSubDatabase) this.Owner;
                 var cmd = frmGenSubDatabase.SqlBuilder.ToString();
                 var cmdName = this.textBox1.Text.Trim();
-                var userId = this.CUser.ID;
+                var userId = this.User.ID;
                 if (SaveCmd(userId, cmdName, cmd))
                 {
                     MessageBox.Show("保存成功！");
@@ -59,9 +59,9 @@ namespace Xb2.GUI.Catalog
         private void RefreshDataGridView()
         {
             var sql = "select 命令名称,命令文本 from {0} where 用户编号={1}";
-            sql = string.Format(sql, DbHelper.TnQCategory(), this.CUser.ID);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
-            var identifiedTable = DataHelper.IdentifyDataTable(dt);
+            sql = string.Format(sql, DbHelper.TnQCategory(), this.User.ID);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
+            var identifiedTable = DataTableHelper.IdentifyDataTable(dt);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = identifiedTable;
             this.dataGridView1.Columns["命令文本"].Visible = false;
@@ -76,13 +76,13 @@ namespace Xb2.GUI.Catalog
         private bool SaveCmd(int userId, string cmdName, string cmd)
         {
             var sql = "select * from " + DbHelper.TnQCategory();
-            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(),sql).Tables[0];
+            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString,sql).Tables[0];
             var dataRow = dataTable.NewRow();
             dataRow["用户编号"] = userId;
             dataRow["命令名称"] = cmdName;
             dataRow["命令文本"] = cmd;
             dataTable.Rows.Add(dataRow);
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString());
+            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
             var commandBuilder = new MySqlCommandBuilder(adapter);
             return adapter.Update(dataTable) > 0;
         }
