@@ -21,7 +21,7 @@ namespace Xb2.TestAndDemos
             this.User = user;
         }
 
-        public List<DateValue> DateValueList { get; set; } //观测数据
+        public List<DateValue> InputDateValueList { get; set; } //输入的观测数据
         public DateTime StartDate { get; set; } //开始日期
         public DateTime EndDate { get; set; } //结束日日期
         public int Period { get; set; } //观测周期
@@ -35,7 +35,7 @@ namespace Xb2.TestAndDemos
 
         private void FrmSingleInput_Load(object sender, EventArgs e)
         {
-            var kIndexes = DateValueHelper.GetKIndexes(this.DateValueList, this.StartDate, this.EndDate);
+            var kIndexes = DateValueHelper.GetKIndexes(this.InputDateValueList, this.StartDate, this.EndDate);
             dataGridView1.Rows.Clear();
             dataGridView1.Rows.Add();
             Enumerable.Range(0, kIndexes.Length)
@@ -51,9 +51,16 @@ namespace Xb2.TestAndDemos
                 return;
             }
             this.Period = Convert.ToInt32(textBox1.Text);
-            this.ProcessedDateValueList = new List<DateValue>(); //TODO 尚未完成
+            this.ProcessedDateValueList = new List<DateValue>(); //TODO 尚未完成，需要根据相应的处理方法进行处理
             Logger.Info("确定观测周期：{0}", this.Period);
             Logger.Info("处理后的基础数据，共 {0} 条", this.ProcessedDateValueList.Count);
+            this.DialogResult = DialogResult.OK;
+            this.Close();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

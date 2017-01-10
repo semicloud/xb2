@@ -42,3 +42,6 @@ cross fault data tool for national earthquake response support service of China
 #2017-1-8
 1. 进行了一些初步的重构操作，目前软件较复杂的地方在地震目录的查询和算法的封装接口上；
 2. 做了一个简单的输入Demo，准备明日与甲方讨论；
+
+#2017-1-10
+1. 又进行了一些重构，基本实现了单测项的接口，多测项的接口正在实现中；

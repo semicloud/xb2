@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using NLog;
 using Xb2.Config;
 using Xb2.Entity.Business;
 using Xb2.GUI.Controls;
@@ -17,35 +18,45 @@ namespace Xb2.GUI.Catalog
 {
     public partial class FrmGenSubDatabase : FrmBase
     {
-        private string baseSQL = "select date(发震日期) as 发震日期,time(发震时间) as 发震时间,"
-                                 + "经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点 from 系统_地震目录 where ";
-        private StringBuilder _sb;
 
+        // 查询命令模板
+        private string m_commandTemplate = "select date(发震日期) as 发震日期,time(发震时间) as 发震时间,"
+                                           + "经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点 from 系统_地震目录 where ";
+        private static readonly  Logger Logger = LogManager.GetCurrentClassLogger();
+
+
+        private StringBuilder m_stringBuilder; //用于构建查询命令的StringBuilder
         public StringBuilder SqlBuilder
         {
-            get { return this._sb; }
+            get { return this.m_stringBuilder; }
         }
 
         public FrmGenSubDatabase(XbUser user)
         {
             InitializeComponent();
             this.User = user;
-            this._sb = new StringBuilder();
+            this.m_stringBuilder = new StringBuilder();
         }
 
         //查询按钮
         private void button1_Click(object sender, EventArgs e)
         {
-            DateTime start = this.dateTimePicker1.Value;
-            DateTime end = this.dateTimePicker2.Value;
-            double mlow = Convert.ToDouble(this.textBox1.Text.Trim());
-            double mhigh = Convert.ToDouble(this.textBox2.Text.Trim());
+            DateTime startDate = this.dateTimePicker1.Value;
+            DateTime endDate = this.dateTimePicker2.Value;
+            double lowerMagnitude = Convert.ToDouble(this.textBox1.Text.Trim());
+            double upperMagnitude = Convert.ToDouble(this.textBox2.Text.Trim());
+
+            #region 参考地点输入条件的验证
 
             if (flowLayoutPanel1.GetTextBoxs().Any(t => t.Text.Trim().Equals("")))
             {
                 MessageBox.Show("参考地点输入不完整！");
                 return;
             }
+
+            #endregion
+
+            #region 圆形区域输入条件的验证
 
             var circleQueries =
                 flowLayoutPanel2.Controls.Cast<Control>().ToList().FindAll(c => c.GetType() == typeof(CircleQuery));
@@ -58,6 +69,11 @@ namespace Xb2.GUI.Catalog
                     return;
                 }
             }
+
+            #endregion
+
+            #region 矩形区域输入验证
+
             var rectQueries =
                 flowLayoutPanel3.Controls.Cast<Control>().ToList().FindAll(c => c.GetType() == typeof(RectQuery));
             foreach (var control in rectQueries)
@@ -69,16 +85,25 @@ namespace Xb2.GUI.Catalog
                     return;
                 }
             }
-            _sb = new StringBuilder(this.baseSQL);
-            _sb.AppendFormat("(发震日期 between \'{0}\' and \'{1}\' ) ", start.SStr(), end.SStr());
-            _sb.AppendFormat("and (震级值 between {0} and {1}) ", mlow, mhigh);
-            _sb.Append(GetLocationNameClause());
-            _sb.Append(GetCircleQueryClause());
-            _sb.Append(GetRectQueryClause());
-            _sb.AppendLine("order by 发震日期, 参考地点");
-            var qsql = _sb.ToString();
-            var dt = MySqlHelper.ExecuteDataset(Xb2Config.GetConnStr(), qsql).Tables[0];
+
+            #endregion
+
+            #region 按照查询条件拼接Select语句
+
+            m_stringBuilder = new StringBuilder(this.m_commandTemplate);
+            m_stringBuilder.AppendFormat("(发震日期 between \'{0}\' and \'{1}\' ) ", startDate.SStr(), endDate.SStr()); //加入发震日期的约束条件
+            m_stringBuilder.AppendFormat("and (震级值 between {0} and {1}) ", lowerMagnitude, upperMagnitude); //加入震级值约束条件
+            m_stringBuilder.Append(GetLocationNameClause()); //加入参考地点约束条件
+            m_stringBuilder.Append(GetCircleQueryClause()); //加入圆域查询约束条件
+            m_stringBuilder.Append(GetRectQueryClause()); //加入矩形区域查询约束条件
+            m_stringBuilder.AppendLine("order by 发震日期, 参考地点");
+            var commandText = m_stringBuilder.ToString();
+            Logger.Debug(commandText);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
             RefreshDataGridView(dt);
+
+            #endregion
+            
         }
 
         //获取矩形查询表达式

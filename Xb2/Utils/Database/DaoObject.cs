@@ -19,10 +19,11 @@ namespace Xb2.Utils.Database
         {
             var ans = -1;
             var sql = "select 编号 from 系统_用户 where 用户名='{1}' and 密码='{2}' and 管理员={3}";
-            sql = String.Format(sql, "系统_用户", userName, password, isAdmin);
-            var obj = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql);
+            var commandText = String.Format(sql, "系统_用户", userName, password, isAdmin);
+            var obj = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, commandText);
             if (obj != null) ans = Convert.ToInt32(obj);
-            Debug.Print("query user id by [{0},{1},{2}], return {3}", userName, password, isAdmin, ans);
+            Logger.Info("查询用户编号[{0},{1},{2}], 返回 {3}", userName, password, isAdmin, ans);
+            Logger.Debug(commandText);
             return ans;
         }
 
@@ -261,8 +262,8 @@ namespace Xb2.Utils.Database
         /// <returns></returns>
         public static DataTable GetProcessedData(int databaseId)
         {
-            var sql = "select 编号,观测日期,观测值 from {0} order by 观测日期";
-            var commandText = string.Format(sql, DbHelper.TnProcessedDbData());
+            var sql = "select 编号,观测日期,观测值 from {0} where 库编号={1} order by 观测日期";
+            var commandText = string.Format(sql, DbHelper.TnProcessedDbData(), databaseId);
             var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
             Logger.Debug(commandText);
             Logger.Info("查询编号为 {0} 的基础数据库，共返回 {1} 条观测数据", databaseId, dt.Rows.Count);

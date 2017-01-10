@@ -27,7 +27,6 @@ namespace Xb2.Utils.Database
             var viewNames = dt.GetColumnOfString("TABLE_NAME");
             return viewNames.Contains(viewName);
         }
-
         
 
         #region 表的名字

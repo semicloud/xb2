@@ -53,7 +53,7 @@ namespace Xb2.Utils
                 startDate.ToShortDateString(), endDate.ToShortDateString(), step, timeRanges.Count);
             foreach (var timeRange in timeRanges)
             {
-                Logger.Debug(timeRange);
+                Logger.Trace(timeRange);
             }
             return timeRanges;
         }

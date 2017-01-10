@@ -393,6 +393,12 @@
     <Compile Include="TestAndDemos\FrmInput2.Designer.cs">
       <DependentUpon>FrmInput2.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestAndDemos\FrmInput3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmInput3.Designer.cs">
+      <DependentUpon>FrmInput3.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestAndDemos\FrmLagrangeInterpolationDemo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -562,6 +568,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestAndDemos\FrmInput2.resx">
       <DependentUpon>FrmInput2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestAndDemos\FrmInput3.resx">
+      <DependentUpon>FrmInput3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestAndDemos\FrmLagrangeInterpolationDemo.resx">
       <DependentUpon>FrmLagrangeInterpolationDemo.cs</DependentUpon>
