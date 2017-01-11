@@ -37,10 +37,14 @@ namespace Xb2.GUI.Main
             this.User.IsAdmin = AdminRadioButton.Checked;
 
             var userId = DaoObject.GetUserId(this.User.Name, this.User.Password, this.User.IsAdmin);
-            if (userId != -1)
+            if (userId != -1 && userId!=-9999)
             {
                 this.User.ID = Convert.ToInt32(userId);
                 this.DialogResult = DialogResult.OK;
+            }
+            else if (userId == -9999)
+            {
+                MessageBox.Show("连接数据库失败！");
             }
             else
             {
