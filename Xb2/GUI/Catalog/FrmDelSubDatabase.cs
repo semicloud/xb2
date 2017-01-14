@@ -1,17 +1,17 @@
 ﻿using System;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using NLog;
 using Xb2.Entity.Business;
 using Xb2.GUI.Main;
-using Xb2.Utils;
 using Xb2.Utils.Database;
-using MBtns = System.Windows.Forms.MessageBoxButtons;
-using MIcons = System.Windows.Forms.MessageBoxIcon;
 
 namespace Xb2.GUI.Catalog
 {
     public partial class FrmDelSubDatabase : FrmBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public FrmDelSubDatabase(XbUser user)
         {
             InitializeComponent();
@@ -26,12 +26,21 @@ namespace Xb2.GUI.Catalog
 
         private void RefreshDataGridView()
         {
-            var sql = "select 子库名称 from {0} where 用户编号={1}";
-            sql = string.Format(sql, DbHelper.TnSubDb(), User.ID);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
-            dt = DataTableHelper.IdentifyDataTable(dt);
+            //var sql = "select 子库名称 from {0} where 用户编号={1}";
+            //sql = string.Format(sql, DbHelper.TnSubDb(), User.ID);
+            //var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
+            //dt = DataTableHelper.IdentifyDataTable(dt);
+
             this.dataGridView1.DataSource = null;
-            this.dataGridView1.DataSource = dt;
+            this.dataGridView1.DataSource = DaoObject.GetSubDatabaseInfos(this.User.ID);
+            if (this.dataGridView1.Columns["编号"]!=null)
+            {
+                this.dataGridView1.Columns["编号"].Visible = false;
+            }
+            if (this.dataGridView1.Columns["用户编号"] != null)
+            {
+                this.dataGridView1.Columns["用户编号"].Visible = false;
+            }
             this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
             this.dataGridView1.Columns[0].Width = 40;
@@ -42,17 +51,16 @@ namespace Xb2.GUI.Catalog
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var dgv = this.dataGridView1;
-            if (dgv.Rows.Count <= 0) return;
-            if (dgv.SelectedRows.Count == 0) return;
-            var ans = MessageBox.Show("确定删除吗？", "提问", MBtns.OKCancel, MIcons.Question);
+            if (dataGridView1.Rows.Count <= 0) return;
+            if (dataGridView1.SelectedRows.Count == 0) return;
+            var ans = MessageBox.Show("确定删除吗？", "提问", MessageBoxButtons.OKCancel, MessageBoxIcon.Question);
             if (ans == DialogResult.OK)
             {
-                var subDbName = dgv.SelectedRows[0].Cells["子库名称"].Value.ToString();
-                var sql = "delete from {0} where 用户编号={1} and 子库名称='{2}'";
-                sql = string.Format(sql,DbHelper.TnSubDb(), User.ID, subDbName);
-                var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql) ;
-                if (n >= 0)
+                var databaseName = dataGridView1.SelectedRows[0].Cells["子库名称"].Value.ToString();
+                var databaseId = Convert.ToInt32(dataGridView1.SelectedRows[0].Cells["编号"].Value);
+                Logger.Info("用户要删除的地震目录子库名称：{0}，编号：{1}", databaseName, databaseId);
+                var result = DaoObject.DeleteSubDatabase(this.User.ID, databaseId, databaseName);
+                if (result)
                 {
                     MessageBox.Show("删除成功！");
                     RefreshDataGridView();

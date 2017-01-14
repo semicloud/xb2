@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using Itenso.TimePeriod;
 using MySql.Data.MySqlClient;
 using NLog;
+using NUnit.Framework;
 
 namespace Xb2.Utils.Database
 {
@@ -123,9 +124,14 @@ namespace Xb2.Utils.Database
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public static DataTable GetSubDatabases(int userId)
+        public static DataTable GetSubDatabaseInfos(int userId)
         {
-            throw new NotImplementedException();
+            var commandText = "select * from {0} where 用户编号={1}";
+            commandText = string.Format(commandText, DbHelper.TnSubDb(), userId);
+            Logger.Debug(commandText);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            Logger.Info("查询用户 {0} 的地震目录子库， 返回 {1} 条记录", userId, dt.Rows.Count);
+            return DataTableHelper.IdentifyDataTable(dt);
         }
 
         /// <summary>
@@ -265,17 +271,24 @@ namespace Xb2.Utils.Database
         }
 
         /// <summary>
-        /// 根据用户编号和地震目录子库名称删除地震目录子库
+        /// 根据用户编号和地震目录子库名称删除地震目录子库，然后继续删除地震子库数据
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="databaseName"></param>
+        /// <param name="userId">用户编号</param>
+        /// <param name="databaseId">地震目录子库编号</param>
+        /// <param name="databaseName">地震目录子库名称</param>
         /// <returns></returns>
-        public static bool DeleteSubDatabase(int userId, string databaseName)
+        public static bool DeleteSubDatabase(int userId, int databaseId, string databaseName)
         {
-            throw new NotImplementedException();
+            // 注意：只需从主表中删除即可
+            // 因为有外键关联，删除主表中的内容即可以删除附表中的数据了
+            var commandText = "delete from {0} where 用户编号={1} and 子库名称='{2}'";
+            commandText = string.Format(commandText, DbHelper.TnSubDb(), userId, databaseName);
+            Logger.Debug(commandText);
+            var isDatabaseDeleted = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, commandText) > 0;
+            Logger.Info("删除用户 {0} 的地震目录子库 {1}，结果：{2}", userId, databaseName, isDatabaseDeleted);
+            return isDatabaseDeleted;
         }
 
-        /// <summary>
         /// 根据用户编号和地震目录子库名称获取地震目录
         /// </summary>
         /// <param name="userId"></param>
