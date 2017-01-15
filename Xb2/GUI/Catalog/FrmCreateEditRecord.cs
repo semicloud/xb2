@@ -1,50 +1,127 @@
-ï»¿using System;
+using System;
 using System.Data;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using NLog;
 using Xb2.Entity.Business;
 using Xb2.GUI.Main;
 using Xb2.Utils.Database;
 
-namespace Xb2.GUI.Catalog
+namespace Xb2.Entity
 {
     public partial class FrmCreateEditRecord : FrmBase
     {
-        private string _labelDatabaseName;
-        private Operation _operation;
-        private DataRow _dataRow;
-        private Int32 _editedId; //è¦ä¿®æ”¹çš„åœ°éœ‡ç›®å½•çš„Id
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        //æ„é€ å‡½æ•°ï¼Œéœ€è¦ä¼ å…¥
+        /// <summary>
+        /// µØÕğÄ¿Â¼±ê×¢¿âÃû³Æ
+        /// </summary>
+        private string m_labelDatabaseName;
+
+        /// <summary>
+        /// ²Ù×÷Àà±ğ
+        /// </summary>
+        private Operation m_operation;
+
+        /// <summary>
+        /// ÊäÈëµÄÊı¾İĞĞ
+        /// </summary>
+        private DataRow m_dataRow;
+
+        /// <summary>
+        /// ÒªĞŞ¸ÄµÄµØÕğÄ¿Â¼µÄId
+        /// </summary>
+        private Int32 m_editedId;
+
+        /// <summary>
+        /// ¹¹Ôìº¯Êı
+        /// </summary>
+        /// <param name="dataRow">1ÌõµØÕğÄ¿Â¼µÄDataRow</param>
+        /// <param name="dbname">±ê×¢¿âÃû³Æ</param>
+        /// <param name="operation">²Ù×÷ÀàĞÍ</param>
+        /// <param name="user">ÓÃ»§¶ÔÏó</param>
         public FrmCreateEditRecord(DataRow dataRow, string dbname, Operation operation,XbUser user)
         {
             InitializeComponent();
-            this._operation = operation;
-            this._dataRow = dataRow;
-            this._labelDatabaseName = dbname;
+            this.m_operation = operation;
+            this.m_dataRow = dataRow;
+            this.m_labelDatabaseName = dbname;
             this.User = user;
-            if (this._operation == Operation.Create)
+            //·¢ÕğÈÕÆÚºÍÊ±¼ä²»ÔÊĞí¸ü¸Ä
+            this.dateTimePicker1.Value = Convert.ToDateTime(dataRow["·¢ÕğÈÕÆÚ"]);
+            dateTimePicker1.Enabled = false;
+            this.dateTimePicker2.Value = Convert.ToDateTime(dataRow["·¢ÕğÈÕÆÚ"]);
+            dateTimePicker2.Enabled = false;
+            this.textBox1.Text = dataRow["Î³¶È"].ToString();
+            this.textBox2.Text = dataRow["¾­¶È"].ToString();
+            this.textBox3.Text = dataRow["Õğ¼¶Öµ"].ToString();
+            this.textBox4.Text = dataRow["Õğ¼¶µ¥Î»"].ToString();
+            this.textBox5.Text = dataRow["¶¨Î»²ÎÊı"].ToString();
+            this.textBox6.Text = dataRow["²Î¿¼µØµã"].ToString();
+            this.m_editedId = Convert.ToInt32(dataRow["±àºÅ"]);
+            Logger.Info("ÒªÇó¸ÄµÄµØÕğÄ¿Â¼ID£º" + this.m_editedId);
+        }
+
+        #region È·¶¨ºÍÈ¡Ïû°´Å¥
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            #region ÊäÈëÑéÖ¤
+            double t;
+            //Î³¶ÈÑéÖ¤
+            if (this.textBox1.Text.Trim() == string.Empty)
             {
-                this.Text = "æ–°å»ºåœ°éœ‡ç›®å½•";
+                MessageBox.Show("ÇëÊäÈëÎ³¶È£¡");
+                this.textBox1.Focus();
+                return;
             }
-            if (this._operation == Operation.Edit)
+            if (!double.TryParse(this.textBox1.Text.Trim(), out t))
             {
-                this.Text = "ç¼–è¾‘åœ°éœ‡ç›®å½•";
-                //å‘éœ‡æ—¥æœŸå’Œæ—¶é—´ä¸å…è®¸æ›´æ”¹
-                this.dateTimePicker1.Value = Convert.ToDateTime(dataRow["å‘éœ‡æ—¥æœŸ"]);
-                dateTimePicker1.Enabled = false;
-                this.dateTimePicker2.Value = Convert.ToDateTime(dataRow["å‘éœ‡æ—¥æœŸ"]);
-                dateTimePicker2.Enabled = false;
-                this.textBox1.Text = dataRow["çº¬åº¦"].ToString();
-                this.textBox2.Text = dataRow["ç»åº¦"].ToString();
-                this.textBox3.Text = dataRow["éœ‡çº§å€¼"].ToString();
-                this.textBox4.Text = dataRow["éœ‡çº§å•ä½"].ToString();
-                this.textBox5.Text = dataRow["å®šä½å‚æ•°"].ToString();
-                this.textBox6.Text = dataRow["å‚è€ƒåœ°ç‚¹"].ToString();
-                this._editedId = Convert.ToInt32(dataRow["ç¼–å·"]);
-                Debug.Print("è¦æ±‚æ”¹çš„åœ°éœ‡ç›®å½•IDï¼š" + this._editedId);
+                MessageBox.Show("Î³¶È±ØĞëÎªÒ»¸öÊı×Ö£¡");
+                this.textBox1.Focus();
+                return;
+            }
+            //¾­¶ÈÑéÖ¤
+            if (this.textBox2.Text.Trim() == string.Empty)
+            {
+                MessageBox.Show("ÇëÊäÈë¾­¶È£¡");
+                this.textBox2.Focus();
+                return;
+            }
+            if (!double.TryParse(this.textBox2.Text.Trim(), out t))
+            {
+                MessageBox.Show("¾­¶È±ØĞëÎªÒ»¸öÊı×Ö£¡");
+                this.textBox2.Focus();
+                return;
+            }
+            //Õğ¼¶ÖµÑéÖ¤
+            if (this.textBox3.Text.Trim() == string.Empty)
+            {
+                MessageBox.Show("ÇëÊäÈëÕğ¼¶Öµ£¡");
+                this.textBox3.Focus();
+                return;
+            }
+            if (!double.TryParse(this.textBox3.Text.Trim(), out t))
+            {
+                MessageBox.Show("Õğ¼¶Öµ±ØĞëÎªÒ»¸öÊı×Ö£¡");
+                this.textBox3.Focus();
+                return;
+            }
+            //²Î¿¼µØµãÑéÖ¤
+            if (this.textBox6.Text.Trim() == string.Empty)
+            {
+                MessageBox.Show("ÇëÊäÈë²Î¿¼µØµã£¡");
+                this.textBox6.Focus();
+                return;
+            }
+            #endregion
+
+            if (this.Process())
+            {
+                MessageBox.Show("²Ù×÷³É¹¦£¡");
+                this.DialogResult = DialogResult.OK;
+                this.Close();
             }
         }
 
@@ -54,81 +131,23 @@ namespace Xb2.GUI.Catalog
             this.Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            #region è¾“å…¥éªŒè¯
-            double t;
-            //çº¬åº¦éªŒè¯
-            if (this.textBox1.Text.Trim() == string.Empty)
-            {
-                MessageBox.Show("è¯·è¾“å…¥çº¬åº¦ï¼");
-                this.textBox1.Focus();
-                return;
-            }
-            if (!double.TryParse(this.textBox1.Text.Trim(), out t))
-            {
-                MessageBox.Show("çº¬åº¦å¿…é¡»ä¸ºä¸€ä¸ªæ•°å­—ï¼");
-                this.textBox1.Focus();
-                return;
-            }
-            //ç»åº¦éªŒè¯
-            if (this.textBox2.Text.Trim() == string.Empty)
-            {
-                MessageBox.Show("è¯·è¾“å…¥ç»åº¦ï¼");
-                this.textBox2.Focus();
-                return;
-            }
-            if (!double.TryParse(this.textBox2.Text.Trim(), out t))
-            {
-                MessageBox.Show("ç»åº¦å¿…é¡»ä¸ºä¸€ä¸ªæ•°å­—ï¼");
-                this.textBox2.Focus();
-                return;
-            }
-            //éœ‡çº§å€¼éªŒè¯
-            if (this.textBox3.Text.Trim() == string.Empty)
-            {
-                MessageBox.Show("è¯·è¾“å…¥éœ‡çº§å€¼ï¼");
-                this.textBox3.Focus();
-                return;
-            }
-            if (!double.TryParse(this.textBox3.Text.Trim(), out t))
-            {
-                MessageBox.Show("éœ‡çº§å€¼å¿…é¡»ä¸ºä¸€ä¸ªæ•°å­—ï¼");
-                this.textBox3.Focus();
-                return;
-            }
-            //å‚è€ƒåœ°ç‚¹éªŒè¯
-            if (this.textBox6.Text.Trim() == string.Empty)
-            {
-                MessageBox.Show("è¯·è¾“å…¥å‚è€ƒåœ°ç‚¹ï¼");
-                this.textBox6.Focus();
-                return;
-            }
-            #endregion
-
-            if (this.Process())
-            {
-                MessageBox.Show("æ“ä½œæˆåŠŸï¼");
-                this.DialogResult = DialogResult.OK;
-                this.Close();
-            }
-        }
-
         /// <summary>
-        /// æ›´æ–°æˆ–è€…åˆ›å»ºåœ°éœ‡ç›®å½•
+        /// ¸üĞÂ»òÕß´´½¨µØÕğÄ¿Â¼
         /// </summary>
         /// <returns></returns>
         private bool Process()
         {
+            #region »ñÈ¡ÊäÈë±äÁ¿
+
             var datetime1 = this.dateTimePicker1.Value.Date;
-            var datetime2= new DateTime();
-            if (_operation == Operation.Create)
+            var datetime2 = new DateTime();
+            if (m_operation == Operation.Create)
             {
                 datetime2 = this.dateTimePicker2.Value;
             }
-            if (_operation == Operation.Edit)
+            if (m_operation == Operation.Edit)
             {
-                var timespan = TimeSpan.Parse(_dataRow["å‘éœ‡æ—¶é—´"].ToString());
+                var timespan = TimeSpan.Parse(m_dataRow["·¢ÕğÊ±¼ä"].ToString());
                 datetime2 = new DateTime(datetime1.Year, datetime1.Month, datetime1.Day,
                     timespan.Hours, timespan.Minutes, timespan.Seconds);
             }
@@ -139,63 +158,75 @@ namespace Xb2.GUI.Catalog
             var locationParameter = this.textBox5.Text.Trim();
             var location = this.textBox6.Text.Trim();
 
-            var labelDbId = DaoObject.GetLabelDbId(_labelDatabaseName, User.ID);
-            var sql = "select * from {0} where æ ‡æ³¨åº“ç¼–å·={1}";
-            sql = string.Format(sql, DbHelper.TnLabelDbData(), labelDbId);
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
+            #endregion
+
+
+            var labelDatabaseId = DaoObject.GetLabelDbId(m_labelDatabaseName, User.ID);
+            var commandText = "select * from {0} where ±ê×¢¿â±àºÅ={1}";
+            commandText = string.Format(commandText, DbHelper.TnLabelDbData(), labelDatabaseId);
+            var adapter = new MySqlDataAdapter(commandText, DbHelper.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             builder.ConflictOption = ConflictOption.OverwriteChanges;
             var dataTable = new DataTable();
             adapter.Fill(dataTable);
-            //åˆ›å»ºåœ°éœ‡ç›®å½•
-            if (this._operation == Operation.Create)
+            //´´½¨µØÕğÄ¿Â¼
+            if (this.m_operation == Operation.Create)
             {
                 DataRow dataRow = dataTable.NewRow();
-                dataRow["å‘éœ‡æ—¥æœŸ"] = datetime1;
-                dataRow["å‘éœ‡æ—¶é—´"] = datetime2;
-                dataRow["çº¬åº¦"] = latitude;
-                dataRow["ç»åº¦"] = longitude;
-                dataRow["éœ‡çº§å€¼"] = magnitude;
-                dataRow["éœ‡çº§å•ä½"] = magnitudeUnit;
-                dataRow["å®šä½å‚æ•°"] = locationParameter;
-                dataRow["å‚è€ƒåœ°ç‚¹"] = location;
-                dataRow["æ ‡æ³¨åº“ç¼–å·"] = labelDbId;
+                dataRow["·¢ÕğÈÕÆÚ"] = datetime1;
+                dataRow["·¢ÕğÊ±¼ä"] = datetime2;
+                dataRow["Î³¶È"] = latitude;
+                dataRow["¾­¶È"] = longitude;
+                dataRow["Õğ¼¶Öµ"] = magnitude;
+                dataRow["Õğ¼¶µ¥Î»"] = magnitudeUnit;
+                dataRow["¶¨Î»²ÎÊı"] = locationParameter;
+                dataRow["²Î¿¼µØµã"] = location;
+                dataRow["±ê×¢¿â±àºÅ"] = labelDatabaseId;
                 dataTable.Rows.Add(dataRow);
                 return adapter.Update(dataTable) > 0;
             }
-            //æ›´æ–°åœ°éœ‡ç›®å½•
-            if (this._operation == Operation.Edit)
+            //¸üĞÂµØÕğÄ¿Â¼
+            if (this.m_operation == Operation.Edit)
             {
-                var dataRow = dataTable.Rows.Cast<DataRow>().ToList().Find(r => Convert.ToInt32(r["ç¼–å·"]) == this._editedId);
+                var dataRow =
+                    dataTable.Rows.Cast<DataRow>().ToList().Find(r => Convert.ToInt32(r["±àºÅ"]) == this.m_editedId);
                 if (dataRow != null)
                 {
-                    dataRow["å‘éœ‡æ—¥æœŸ"] = datetime1;
-                    dataRow["å‘éœ‡æ—¶é—´"] = datetime2;
-                    dataRow["çº¬åº¦"] = latitude;
-                    dataRow["ç»åº¦"] = longitude;
-                    dataRow["éœ‡çº§å€¼"] = magnitude;
-                    dataRow["éœ‡çº§å•ä½"] = magnitudeUnit;
-                    dataRow["å®šä½å‚æ•°"] = locationParameter;
-                    dataRow["å‚è€ƒåœ°ç‚¹"] = location;
+                    dataRow["·¢ÕğÈÕÆÚ"] = datetime1;
+                    dataRow["·¢ÕğÊ±¼ä"] = datetime2;
+                    dataRow["Î³¶È"] = latitude;
+                    dataRow["¾­¶È"] = longitude;
+                    dataRow["Õğ¼¶Öµ"] = magnitude;
+                    dataRow["Õğ¼¶µ¥Î»"] = magnitudeUnit;
+                    dataRow["¶¨Î»²ÎÊı"] = locationParameter;
+                    dataRow["²Î¿¼µØµã"] = location;
                     return adapter.Update(dataTable) > 0;
                 }
                 else
                 {
-                    Debug.Print("ERROR!DataRow is null!");
+                    Logger.Error("DataRow is NULL");
                 }
             }
             return false;
         }
-        
+
+        #endregion
+
+        private void FrmCreateEditRecord_Load(object sender, EventArgs e)
+        {
+            if (this.m_operation == Operation.Create)
+            {
+                this.Text = "ĞÂ½¨µØÕğÄ¿Â¼";
+            }
+            if (this.m_operation == Operation.Edit)
+            {
+                this.Text = "±à¼­µØÕğÄ¿Â¼";
+            }
+        }
+
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             this.dateTimePicker2.Value = this.dateTimePicker1.Value;
         }
-    }
-
-    public enum Operation
-    {
-        Create,
-        Edit,
     }
 }

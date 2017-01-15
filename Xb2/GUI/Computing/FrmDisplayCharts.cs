@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
+using NLog;
 using Xb2.Algorithms.Core.Entity;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
@@ -17,6 +18,8 @@ namespace Xb2.GUI.Computing
 {
     public partial class FrmDisplayCharts : FrmBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public FrmDisplayCharts(XbUser user)
         {
             InitializeComponent();

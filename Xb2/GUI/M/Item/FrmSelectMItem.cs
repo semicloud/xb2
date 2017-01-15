@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Xb2.Entity;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
 using Xb2.GUI.Controls;

@@ -304,13 +304,57 @@ namespace Xb2.Utils.Database
         #region 标注库
 
         /// <summary>
+        /// 获取userId用户的所有地震目录库，显示为地震标注库
+        /// 1. 地震目录总库
+        /// 2. 地震目录子库
+        /// 3. 地震目录标注库
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns>返回DataTable，由两列构成：子库名称，类别</returns>
+        public static DataTable GetLabelDatabaseInfosAll(int userId)
+        {
+            var commandText = "select 子库名称 from 系统_地震目录子库 where 用户编号=" + userId;
+            var dtMain = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            dtMain.Columns.Add("类别", typeof(string));
+            dtMain.FillColumn("类别", "子库");
+            var subDatabaseCount = dtMain.Rows.Count;
+            // 应甲方要求，将标注库也放在标注库里
+            commandText = "select 标注库名称 from 系统_地震目录标注库 where 用户编号=" + userId;
+            var dtLabelDatabase = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            var labelDatabaseCount = dtLabelDatabase.Rows.Count;
+            for (int i = 0; i < dtLabelDatabase.Rows.Count; i++)
+            {
+                var row = dtMain.NewRow();
+                row["子库名称"] = dtLabelDatabase.Rows[i]["标注库名称"].ToString();
+                row["类别"] = "标注库";
+                dtMain.Rows.Add(row);
+            }
+            // 应甲方要求，地震目录也放在子库里，即用户可以选择从直接从地震目录中生成子库
+            var dataRow = dtMain.NewRow();
+            dataRow["子库名称"] = DbHelper.TnCategory();
+            dataRow["类别"] = "地震目录";
+            dtMain.Rows.InsertAt(dataRow, 0);
+            // 增加序号列
+            dtMain = DataTableHelper.IdentifyDataTable(dtMain);
+            Logger.Info("查询用户 {0} 的地震子库，标注库信息：子库 {1} 个，" +
+                        "标注库 {2} 个，共 {3} 个（加入了地震目录总库）",
+                userId, subDatabaseCount, labelDatabaseCount, dtMain.Rows.Count);
+            return dtMain;
+        }
+
+        /// <summary>
         /// 获取用户标注库信息
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
         public static DataTable GetLabelDatabasesInfo(int userId)
         {
-            throw new NotImplementedException();
+            var commandText = "select * from {0} " + "where 用户编号={1}";
+            commandText = string.Format(commandText, DbHelper.TnLabelDb(), userId);
+            Logger.Debug(commandText);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            Logger.Info("查询用户 {0} 的标注库信息，返回 {1} 条", userId, dt.Rows.Count);
+            return dt;
         }
 
         /// <summary>
@@ -320,8 +364,127 @@ namespace Xb2.Utils.Database
         /// <param name="databaseName">标注库名称</param>
         /// <param name="dataTable">用户选择的地震目录</param>
         /// <returns></returns>
-        public static bool SaveLabelDatabase(int userId, string databaseName, DataTable dataTable)
+        public static int SaveLabelDatabase(int userId, string databaseName, DataTable dataTable)
         {
+            // 保存用户新建的标注库操作分为两步
+            // 1. 保存标注库基本信息：用户编号和标注库名，返回标注库编号(标注库名不允许重复)
+            // 2. 利用返回的标注库编号将标注库数据存入 系统_地震目录标注库数据 表
+
+            #region 查询是否存在同名的地震目录标注库
+
+            var commandText = "select * from 系统_地震目录标注库 where 用户编号=" + userId + " and 标注库名称='" + databaseName + "'";
+            var exists = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0].Rows.Count > 0;
+            Logger.Debug(commandText);
+            Logger.Info("查询用户 {0} 是否已经存在名为 {1} 的地震目录标注库？=>{2}", userId, databaseName, exists);
+
+            #endregion
+
+            if (!exists)
+            {
+                #region 如果不存在同名标注库，则新建地震目录标注库 记录
+
+                commandText = "insert into 系统_地震目录标注库(用户编号,标注库名称) values (" + userId + ",'" + databaseName + "')";
+                var isOk = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, commandText) > 0;
+                Logger.Debug(commandText);
+                Logger.Info("创建地震目录标注库记录：用户编号：{0}，标注库名称：{1}，创建结果：{2}", userId, databaseName, isOk);
+
+                #endregion
+
+                if (isOk)
+                {
+                    #region 获取新建的地震目录标注库编号
+
+                    commandText = "select * from 系统_地震目录标注库 where 用户编号=" + userId + " and 标注库名称='" + databaseName + "'";
+                    var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+                    var databaseId = Convert.ToInt32(dt.Rows[0]["编号"]);
+                    Logger.Debug(commandText);
+                    Logger.Info("查询用户 {0} 的名称为 {1} 的地震目录标注库编号为 {2}", userId, databaseName, databaseId);
+
+                    #endregion
+
+                    #region 保存地震目录标注库数据
+
+                    Logger.Info("开始保存地震目录标注库数据...，库编号：{0}，共 {1} 条地震目录...", databaseId, dataTable.Rows.Count);
+                    dt = new DataTable();
+                    commandText = "select * from 系统_地震目录标注库数据 where 标注库编号=" + databaseId;
+                    var adapter = new MySqlDataAdapter(commandText, DbHelper.ConnectionString);
+                    var builder = new MySqlCommandBuilder(adapter);
+                    adapter.Fill(dt);
+
+                    #region 填充 DataTable
+
+                    for (int i = 0; i < dataTable.Rows.Count; i++)
+                    {
+                        //找到选中的数据行，只保存选中的地震目录
+                        if (Convert.ToInt32(dataTable.Rows[i]["选择"]) == 1)
+                        {
+                            DataRow dr = dt.NewRow();
+                            //由于从数据库中截取了发震时间的时间部分，所有在这里得把
+                            //日期补上，才能重新填入数据库中
+                            var date = Convert.ToDateTime(dataTable.Rows[i]["发震日期"]);
+                            var time = DateTime.ParseExact(dataTable.Rows[i]["发震时间"].ToString(), "HH:mm:ss",
+                                CultureInfo.InvariantCulture);
+                            dr["标注库编号"] = databaseId;
+                            dr["发震日期"] = Convert.ToDateTime(dataTable.Rows[i]["发震日期"]);
+                            dr["发震时间"] = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute,
+                                time.Second);
+                            dr["纬度"] = Convert.ToInt32(dataTable.Rows[i]["纬度"]);
+                            dr["经度"] = Convert.ToInt32(dataTable.Rows[i]["经度"]);
+                            dr["震级单位"] = Convert.ToString(dataTable.Rows[i]["震级单位"]);
+                            dr["震级值"] = Convert.ToSingle(dataTable.Rows[i]["震级值"]);
+                            dr["定位参数"] = Convert.ToInt32(dataTable.Rows[i]["定位参数"]);
+                            dr["参考地点"] = Convert.ToString(dataTable.Rows[i]["参考地点"]);
+                            dt.Rows.Add(dr);
+                        }
+                    }
+
+                    #endregion
+
+                    var isSave = adapter.Update(dt) > 0;
+                    Logger.Info("保存地震目录标注库数据结果：" + isSave);
+                    if (isSave)
+                    {
+                        return 0;
+                    }
+                    else
+                    {
+                        Logger.Error("创建地震目录标注库 数据 失败");
+                        return 3;
+                    }
+
+                    #endregion
+                }
+                else
+                {
+                    Logger.Error("创建地震目录标注库 记录 失败");
+                    return 2;
+                }
+            }
+            else
+            {
+                Logger.Warn("用户 {0} 已存在名为 {1} 的地震目录标注库");
+                return 1;
+            }
+        }
+
+        /// <summary>
+        /// 在标注库中删除一个地震目录
+        /// </summary>
+        /// <param name="recordId">地震目录编号</param>
+        /// <returns></returns>
+        public static bool DeleteLabelDatabaseRecord(int recordId)
+        {
+            var commandText = "delete from {0} where 编号={1}";
+            commandText = string.Format(commandText, DbHelper.TnLabelDbData(), recordId);
+            Logger.Debug(commandText);
+            var ans = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, commandText) > 0;
+            Logger.Info("从标注库数据中删除编号为 {0} 的地震目录，结果：{1}", recordId, ans);
+            return ans;
+        }
+
+        public static bool CreateOrSaveLabelDatabaseRecord()
+        {
+            // 暂缓实现
             throw new NotImplementedException();
         }
 
@@ -369,13 +532,20 @@ namespace Xb2.Utils.Database
         /// <summary>
         /// 根据用户编号和标注库名称获取地震目录
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="databaseName"></param>
+        /// <param name="userId">用户编号</param>
+        /// <param name="databaseId">标注库编号</param>
+        /// <param name="databaseName">标注库名称</param>
         /// <returns></returns>
-        public static DataTable GetCategoriesFromLabelDatabase(int userId, string databaseName)
+        public static DataTable GetCategoriesFromLabelDatabase(int userId,int databaseId, string databaseName)
         {
-            //FrmGenLabelDatabase
-            throw new NotImplementedException();
+            var commandText =
+                "select 编号, date(发震日期) as 发震日期,time(发震时间) " +
+                "as 发震时间,经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点 from {0}  where 标注库编号={1}";
+            commandText = string.Format(commandText, DbHelper.TnLabelDbData(), databaseId);
+            Logger.Debug(commandText);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            Logger.Info("查询用户 {0} 的编号为 {1} 的地震目录标注库，共返回 {2} 条记录", userId, databaseId, dt.Rows.Count);
+            return dt;
         }
 
         #endregion

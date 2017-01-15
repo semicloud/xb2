@@ -127,17 +127,18 @@
     <Compile Include="Config\Xb2Config.cs" />
     <Compile Include="Entity\Business\Catalog\Q01File.cs" />
     <Compile Include="Entity\Business\XbUser.cs" />
-    <Compile Include="GUI\Catalog\FrmChooseSubDatabase.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Catalog\FrmChooseSubDatabase.designer.cs">
-      <DependentUpon>FrmChooseSubDatabase.cs</DependentUpon>
-    </Compile>
     <Compile Include="GUI\Catalog\FrmCreateEditRecord.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\Catalog\FrmCreateEditRecord.designer.cs">
       <DependentUpon>FrmCreateEditRecord.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Entity\Operation.cs" />
+    <Compile Include="GUI\Catalog\FrmChooseSubDatabase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Catalog\FrmChooseSubDatabase.designer.cs">
+      <DependentUpon>FrmChooseSubDatabase.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Catalog\FrmDelSubDatabase.cs">
       <SubType>Form</SubType>
@@ -428,11 +429,11 @@
     <Compile Include="Utils\DateHelper.cs" />
     <Compile Include="Utils\DateValueHelper.cs" />
     <Compile Include="Utils\ExtendMethods.cs" />
-    <EmbeddedResource Include="GUI\Catalog\FrmChooseSubDatabase.resx">
-      <DependentUpon>FrmChooseSubDatabase.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Catalog\FrmCreateEditRecord.resx">
       <DependentUpon>FrmCreateEditRecord.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Catalog\FrmChooseSubDatabase.resx">
+      <DependentUpon>FrmChooseSubDatabase.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Catalog\FrmDelSubDatabase.resx">
       <DependentUpon>FrmDelSubDatabase.cs</DependentUpon>

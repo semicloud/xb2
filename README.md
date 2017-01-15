@@ -52,3 +52,6 @@ cross fault data tool for national earthquake response support service of China
 
 #2017-1-14
 1. 基本完成了创建地震目录子库、删除地震目录子库的重构工作；
+
+#2017-1-15
+1. 基本完成了创建地震目录标注库，编辑地震目录等模块的重构工作；

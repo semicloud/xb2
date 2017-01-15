@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using Xb2.Entity.Business;
@@ -28,50 +29,38 @@ namespace Xb2.GUI.Catalog
 
         private void RefreshDataGridView()
         {
-            var sql = "select 子库名称 from 系统_地震目录子库 where 用户编号=" + this.User.ID;
-            var dtZK = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
-            dtZK.Columns.Add("类别", typeof(string));
-            dtZK.FillColumn("类别", "子库");
-            //应甲方要求，将标注库也放在标注库里
-            sql = "select 标注库名称 from 系统_地震目录标注库 where 用户编号=" + this.User.ID;
-            var dtBZK = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
-            for (int i = 0; i < dtBZK.Rows.Count; i++)
+            dataGridView1.DataSource = null;
+            dataGridView1.DataSource = DaoObject.GetLabelDatabaseInfosAll(this.User.ID);
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
+            dataGridView1.Columns[0].Width = 40;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.MultiSelect = false;
+            dataGridView1.AllowUserToResizeRows = false;
+            dataGridView1.AllowUserToResizeColumns = false;
+            dataGridView1.AllowUserToOrderColumns = false;
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
-                var row = dtZK.NewRow();
-                row["子库名称"] = dtBZK.Rows[i]["标注库名称"].ToString();
-                row["类别"] = "标注库";
-                dtZK.Rows.Add(row);
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            //地震目录也放在子库里，即用户可以选择从直接从地震目录中生成子库
-            var dataRow = dtZK.NewRow();
-            dataRow["子库名称"] = DbHelper.TnCategory();
-            dataRow["类别"] = "地震目录";
-            dtZK.Rows.InsertAt(dataRow, 0);
-            //增加序号列
-            dtZK = DataTableHelper.IdentifyDataTable(dtZK);
-            this.dataGridView1.DataSource = null;
-            this.dataGridView1.DataSource = dtZK;
-            this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.Columns[0].AutoSizeMode = DataGridViewAutoSizeColumnMode.None;
-            this.dataGridView1.Columns[0].Width = 40;
-            this.dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.AllowUserToResizeColumns = false;
         }
 
+        /// <summary>
+        /// 双击选中的单元格表示选定当前标注库
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void dataGridView1_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            var dgv = this.dataGridView1;
-            if (dgv.DataSource != null)
+            if (dataGridView1.DataSource != null)
             {
-                if (dgv.Rows.Count > 0)
+                if (dataGridView1.Rows.Count > 0)
                 {
-                    if (dgv.SelectedRows.Count > 0)
+                    if (dataGridView1.SelectedRows.Count > 0)
                     {
-                        var dbName = dgv.SelectedRows[0].Cells["子库名称"].Value.ToString();
-                        var type = dgv.SelectedRows[0].Cells["类别"].Value.ToString();
+                        var dbName = dataGridView1.SelectedRows[0].Cells["子库名称"].Value.ToString();
+                        var type = dataGridView1.SelectedRows[0].Cells["类别"].Value.ToString();
                         this.DbNameAndType = dbName + "," + type;
                         this.DialogResult = DialogResult.OK;
                         this.Close();

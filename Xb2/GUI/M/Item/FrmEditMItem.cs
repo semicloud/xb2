@@ -3,6 +3,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using Xb2.Entity;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
 using Xb2.GUI.Main;

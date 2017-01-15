@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using Xb2.Algorithms.Core.Entity;
 using Xb2.Algorithms.Core.Methods.Regression;
+using Xb2.Entity;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
 using Xb2.GUI.Computing;
