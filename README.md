@@ -59,3 +59,4 @@ cross fault data tool for national earthquake response support service of China
 #2017-1-16
 1. 基本完成了查测项功能的重构工作；
 2. 实现了几个利用Math.Net的扩展方法，使数学计算更简便；
+3. 基本完成了单测项、多测项数据接口的输入，等放完假再与甲方讨论；下一步工作就是逐步完成整个软件的重构工作，以便能够灵活适应用户需求；
