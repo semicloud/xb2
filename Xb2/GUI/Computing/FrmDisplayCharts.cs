@@ -161,7 +161,7 @@ namespace Xb2.GUI.Computing
             }
             FrmEditLabelDatabase frmEditLabelDatabase = new FrmEditLabelDatabase(this.User);
             frmEditLabelDatabase.ShowDialog();
-            var dt = frmEditLabelDatabase.ConfirmedDataTable;
+            var dt = frmEditLabelDatabase.SelectedCategories;
             if (dt != null)
             {
                 Debug.Print("有" + dt.Rows.Count + "条数据将被标地震！");

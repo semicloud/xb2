@@ -55,3 +55,7 @@ cross fault data tool for national earthquake response support service of China
 
 #2017-1-15
 1. 基本完成了创建地震目录标注库，编辑地震目录等模块的重构工作；
+
+#2017-1-16
+1. 基本完成了查测项功能的重构工作；
+2. 实现了几个利用Math.Net的扩展方法，使数学计算更简便；

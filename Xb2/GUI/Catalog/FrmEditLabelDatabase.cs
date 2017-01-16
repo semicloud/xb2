@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Diagnostics;
 using System.Drawing;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
@@ -18,7 +17,7 @@ namespace Xb2.GUI.Catalog
         /// <summary>
         /// 选定进行标地震的地震目录
         /// </summary>
-        public DataTable ConfirmedDataTable { get; private set; }
+        public DataTable SelectedCategories { get; private set; }
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
@@ -30,6 +29,7 @@ namespace Xb2.GUI.Catalog
 
         private void FrmEditLabelDatabase_Load(object sender, EventArgs e)
         {
+            // 根据用户编号查询地震标注库信息
             var dt = DaoObject.GetLabelDatabasesInfo(this.User.ID);
             RefreshDataGridView1(DataTableHelper.IdentifyDataTable(dt));
         }
@@ -228,8 +228,8 @@ namespace Xb2.GUI.Catalog
         {
             if (dataGridView2.DataSource != null)
             {
-                this.ConfirmedDataTable = null;
-                this.ConfirmedDataTable = (DataTable) dataGridView2.DataSource;
+                this.SelectedCategories = null;
+                this.SelectedCategories = (DataTable) dataGridView2.DataSource;
                 this.Close();
             }
         }

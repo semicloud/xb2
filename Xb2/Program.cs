@@ -16,13 +16,13 @@ namespace Xb2
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
+
             //XbUser user = new XbUser();
             //user.ID = 1;
             //user.Name = "admin";
             //user.IsAdmin = true;
             //user.Password = "admin";
-            //Application.Run(new FrmInput2(user));
+            //Application.Run(new FrmInput3());
 
             FrmLogin frmLogin = new FrmLogin();
             frmLogin.ShowDialog();

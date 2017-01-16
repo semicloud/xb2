@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Xb2.TestAndDemos
@@ -15,6 +9,14 @@ namespace Xb2.TestAndDemos
         public FrmInput3()
         {
             InitializeComponent();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FrmInputItemDetail frmInputItemDetail = new FrmInputItemDetail();
+            frmInputItemDetail.StartPosition = FormStartPosition.Manual;
+            frmInputItemDetail.Location = new Point(Cursor.Position.X + 20, Cursor.Position.Y + 20);
+            frmInputItemDetail.ShowDialog();
         }
     }
 }

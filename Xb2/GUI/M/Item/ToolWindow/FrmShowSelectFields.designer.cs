@@ -1,4 +1,4 @@
-﻿namespace XbApp.View.M.Item.ToolWindow
+﻿namespace Xb2.GUI.M.Item.ToolWindow
 {
     partial class FrmShowSelectFields
     {

@@ -46,7 +46,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
             {
                 //获取查测项界面，获取当前界面的SQL命令，保存之
                 var form = (FrmSelectMItem)this.Owner;
-                var cmd = form.SQL;
+                var cmd = form.CommandText;
                 var cmdName = this.textBox1.Text.Trim();
                 var userId = this.User.ID;
                 //命令名是否重复查询
