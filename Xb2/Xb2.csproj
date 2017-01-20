@@ -382,6 +382,12 @@
     <Compile Include="TestAndDemos\Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestAndDemos\Form2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\Form2.Designer.cs">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestAndDemos\FrmExportChartDemo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -411,6 +417,12 @@
     </Compile>
     <Compile Include="TestAndDemos\FrmInput4.Designer.cs">
       <DependentUpon>FrmInput4.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmInput5.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmInput5.Designer.cs">
+      <DependentUpon>FrmInput5.cs</DependentUpon>
     </Compile>
     <Compile Include="TestAndDemos\FrmInputItemDetail.cs">
       <SubType>Form</SubType>
@@ -582,6 +594,9 @@
     <EmbeddedResource Include="TestAndDemos\Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="TestAndDemos\Form2.resx">
+      <DependentUpon>Form2.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestAndDemos\FrmExportChartDemo.resx">
       <DependentUpon>FrmExportChartDemo.cs</DependentUpon>
     </EmbeddedResource>
@@ -596,6 +611,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="TestAndDemos\FrmInput4.resx">
       <DependentUpon>FrmInput4.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestAndDemos\FrmInput5.resx">
+      <DependentUpon>FrmInput5.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestAndDemos\FrmInputItemDetail.resx">
       <DependentUpon>FrmInputItemDetail.cs</DependentUpon>
