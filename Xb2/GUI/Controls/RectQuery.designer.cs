@@ -55,65 +55,65 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(461, 30);
+            this.panel1.Size = new System.Drawing.Size(527, 28);
             this.panel1.TabIndex = 0;
             // 
             // textBox4
             // 
-            this.textBox4.Location = new System.Drawing.Point(392, 2);
+            this.textBox4.Location = new System.Drawing.Point(448, 2);
             this.textBox4.Name = "textBox4";
-            this.textBox4.Size = new System.Drawing.Size(42, 23);
+            this.textBox4.Size = new System.Drawing.Size(47, 26);
             this.textBox4.TabIndex = 7;
             // 
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(330, 5);
+            this.label4.Location = new System.Drawing.Point(377, 5);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(56, 17);
+            this.label4.Size = new System.Drawing.Size(72, 16);
             this.label4.TabIndex = 6;
             this.label4.Text = "最大纬度";
             this.toolTip1.SetToolTip(this.label4, "右下角纬度");
             // 
             // textBox3
             // 
-            this.textBox3.Location = new System.Drawing.Point(282, 2);
+            this.textBox3.Location = new System.Drawing.Point(322, 2);
             this.textBox3.Name = "textBox3";
-            this.textBox3.Size = new System.Drawing.Size(42, 23);
+            this.textBox3.Size = new System.Drawing.Size(47, 26);
             this.textBox3.TabIndex = 5;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(220, 6);
+            this.label3.Location = new System.Drawing.Point(251, 6);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 17);
+            this.label3.Size = new System.Drawing.Size(72, 16);
             this.label3.TabIndex = 4;
             this.label3.Text = "最大经度";
             this.toolTip1.SetToolTip(this.label3, "右下角经度");
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(169, 2);
+            this.textBox2.Location = new System.Drawing.Point(193, 2);
             this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(42, 23);
+            this.textBox2.Size = new System.Drawing.Size(47, 26);
             this.textBox2.TabIndex = 3;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(106, 6);
+            this.label2.Location = new System.Drawing.Point(121, 6);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(56, 17);
+            this.label2.Size = new System.Drawing.Size(72, 16);
             this.label2.TabIndex = 2;
             this.label2.Text = "最小纬度";
             this.toolTip1.SetToolTip(this.label2, "左上角纬度");
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(60, 2);
+            this.textBox1.Location = new System.Drawing.Point(69, 2);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(42, 23);
+            this.textBox1.Size = new System.Drawing.Size(47, 26);
             this.textBox1.TabIndex = 1;
             // 
             // label1
@@ -121,20 +121,20 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(3, 6);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(56, 17);
+            this.label1.Size = new System.Drawing.Size(72, 16);
             this.label1.TabIndex = 0;
             this.label1.Text = "最小经度";
             this.toolTip1.SetToolTip(this.label1, "左上角经度");
             // 
             // RectQuery
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.panel1);
-            this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "RectQuery";
-            this.Size = new System.Drawing.Size(461, 30);
+            this.Size = new System.Drawing.Size(527, 28);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);

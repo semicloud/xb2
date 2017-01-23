@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using NLog;
 using Xb2.Entity.Business;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
@@ -12,6 +13,8 @@ namespace Xb2.GUI.M.Val.ProcessedData
 {
     public partial class FrmManageProcessedData : FrmBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public FrmManageProcessedData(XbUser user)
         {
             InitializeComponent();
@@ -20,24 +23,23 @@ namespace Xb2.GUI.M.Val.ProcessedData
 
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var form = new FrmSelectMItem(this.User);
-            form.Owner = this;
+            var frmSelectMItem = new FrmSelectMItem(this.User) {Owner = this};
             //选完项后加载选项结果
-            if (form.ShowDialog() == DialogResult.OK)
+            if (frmSelectMItem.ShowDialog() == DialogResult.OK)
             {
                 var colNames = new[] { "编号", "观测单位", "地名", "方法名", "测项名" };
                 listBox1.DataSource = null;
                 listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
-                listBox1.DataSource = form.Result.GetDataLine(",", colNames);
+                listBox1.DataSource = frmSelectMItem.Result.GetDataLine(",", colNames);
             }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            var itemID = GetCurrentMItemID();
-            if (itemID != -1)
+            var itemId = GetCurrentMItemId();
+            if (itemId != -1)
             {
-                RefreshDataGridView1(itemID);
+                RefreshDataGridView1(itemId);
             }
             else
             {
@@ -59,16 +61,42 @@ namespace Xb2.GUI.M.Val.ProcessedData
             dataGridView1.AllowUserToResizeRows = false;
             dataGridView1.MultiSelect = false;
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Columns["编号"].FillWeight = 2;
-            dataGridView1.Columns["测项编号"].FillWeight = 4;
-            dataGridView1.Columns["观测单位"].FillWeight = 4;
-            dataGridView1.Columns["地名"].FillWeight = 4;
-            dataGridView1.Columns["测项名"].FillWeight = 4;
-            dataGridView1.Columns["方法名"].FillWeight = 4;
-            dataGridView1.Columns["基础数据库名"].FillWeight = 20;
-            dataGridView1.Columns["是否默认"].FillWeight = 4;
+            if (dataGridView1.Columns["编号"] != null)
+            {
+                dataGridView1.Columns["编号"].FillWeight = 2;
+            }
+            if (dataGridView1.Columns["测项编号"] != null)
+            {
+                dataGridView1.Columns["测项编号"].FillWeight = 4;
+            }
+            if (dataGridView1.Columns["观测单位"] != null)
+            {
+                dataGridView1.Columns["观测单位"].FillWeight = 4;
+            }
+            if (dataGridView1.Columns["地名"] != null)
+            {
+                dataGridView1.Columns["地名"].FillWeight = 4;
+            }
+            if (dataGridView1.Columns["测项名"] != null)
+            {
+                dataGridView1.Columns["测项名"].FillWeight = 4;
+            }
+            if (dataGridView1.Columns["方法名"] != null)
+            {
+                dataGridView1.Columns["方法名"].FillWeight = 4;
+            }
+            if (dataGridView1.Columns["基础数据库名"] != null)
+            {
+                dataGridView1.Columns["基础数据库名"].FillWeight = 20;
+            }
+            if (dataGridView1.Columns["是否默认"] != null)
+            {
+                dataGridView1.Columns["是否默认"].FillWeight = 4;
+            }
+
             foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
+                column.SortMode = DataGridViewColumnSortMode.NotSortable;
                 if (column.Name != "是否默认")
                 {
                     column.ReadOnly = true;
@@ -77,11 +105,25 @@ namespace Xb2.GUI.M.Val.ProcessedData
             dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
         }
 
+        private void RefreshDataGridView2(int processedDatabaseId)
+        {
+            dataGridView2.DataSource = null;
+            dataGridView2.DataSource = DaoObject.GetProcessedData(processedDatabaseId);
+            dataGridView2.RowHeadersVisible = false;
+            dataGridView2.AllowUserToResizeRows = false;
+            dataGridView2.AllowUserToResizeColumns = false;
+            dataGridView2.AllowUserToOrderColumns = false;
+            foreach (DataGridViewColumn dataGridViewColumn in dataGridView2.Columns)
+            {
+                dataGridViewColumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
+        }
+
         /// <summary>
         /// 获得当前选中的测项的编号
         /// </summary>
         /// <returns></returns>
-        private int GetCurrentMItemID()
+        private int GetCurrentMItemId()
         {
             if (listBox1.DataSource == null) return -1;
             var line = listBox1.SelectedValue.ToString();
@@ -107,25 +149,31 @@ namespace Xb2.GUI.M.Val.ProcessedData
                 if (isChanged)
                 {
                     MessageBox.Show("更改默认基础数据成功！已保存！");
-                    RefreshDataGridView1(GetCurrentMItemID());
+                    RefreshDataGridView1(GetCurrentMItemId());
                 }
                 else
                 {
                     MessageBox.Show("更改默认基础数据出现问题！");
                 }
             }
+            // 没有单击”是否默认“列，则显示基础数据
             if (e.RowIndex > -1 && dataGridView1.Columns[e.ColumnIndex].HeaderText != "是否默认")
             {
                 dataGridView1.Rows[e.RowIndex].Selected = true;
-                //MessageBox.Show("选中了！");
-                //TODO Start at Here!
-                Debug.Print("Run Here!");
+                var processedDatabaseId = Convert.ToInt32(dataGridView1.Rows[e.RowIndex].Cells["编号"].Value);
+                Logger.Info("选定的基础数据库编号：" + processedDatabaseId);
+                RefreshDataGridView2(processedDatabaseId);
             }
         }
 
+        /// <summary>
+        /// 更改默认基础数据库
+        /// </summary>
+        /// <param name="dbId"></param>
+        /// <returns></returns>
         private bool ChangeDefaultDatabase(int dbId)
         {
-            var itemId = GetCurrentMItemID();
+            var itemId = GetCurrentMItemId();
             var userId = User.ID;
             Debug.Print("更改基础数据库{0}为默认基础数据库，测项编号{1}，用户编号{2}", dbId, itemId, userId);
             var sql = "update {0} set 是否默认=0 where 用户编号={1} and 测项编号={2}";

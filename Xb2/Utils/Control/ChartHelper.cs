@@ -11,11 +11,10 @@ using System.Windows.Forms.DataVisualization.Charting;
 using Accord.Math;
 using MathNet.Numerics;
 using MathNet.Numerics.Statistics;
-using Xb2.Algorithms.Core;
+using NLog;
 using Xb2.Algorithms.Core.Entity;
 using Xb2.Algorithms.Numberical;
 using Xb2.Config;
-using Xb2.GUI.Computing;
 using Xb2.GUI.M.Val.ProcessedData;
 using XbApp.View.M.Value.ProcessedData;
 
@@ -26,6 +25,8 @@ namespace Xb2.Utils.Control
     /// </summary>
     public static class ChartHelper
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         #region Chart控件的相关设置
 
         /// <summary>
@@ -112,6 +113,7 @@ namespace Xb2.Utils.Control
         /// 该Chart中的ChartArea[0]的Tag被设置为一个
         /// List of String
         /// 用于记录用户的基础数据操作记录
+        /// 
         /// 该方法：
         /// 设置的Chart的堆栈对象，存储在Chart的Tag属性中
         /// 设置了Chart的各种基本属性，X轴，Y轴等
@@ -123,18 +125,24 @@ namespace Xb2.Utils.Control
             var chart = new Chart
             {
                 Dock = DockStyle.Fill,
-                BackColor = Color.Transparent,
-                //绑定用于撤销的数据源堆栈
-                Tag = new Stack<DataTable>()
+                BackColor = Color.Transparent, // 控件背景透明
+                // 绑定用于撤销的数据源堆栈
+                Tag = new Stack<DataTable>() // 用于撤销操作的Stack of DataTable
             };
             //ChartArea对象的设置
             {
-                if (!chart.ChartAreas.Any()) chart.ChartAreas.Add(new ChartArea());
-                chart.ChartAreas[0].BackColor = Color.Transparent;
-                chart.ChartAreas[0].AxisX.LabelStyle.Format = X_FORMAT;
-                chart.ChartAreas[0].AxisY.LabelStyle.Format = Y_FORMAT;
-                chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
-                chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
+                if (chart.ChartAreas.Count == 0)
+                {
+                    chart.ChartAreas.Add(new ChartArea());
+                }
+                chart.ChartAreas[0].BackColor = Color.Transparent; // ChartArea背景透明
+                chart.ChartAreas[0].AxisX.LabelStyle.Format = X_FORMAT; // X轴默认样式
+                chart.ChartAreas[0].AxisY.LabelStyle.Format = Y_FORMAT; // Y轴默认样式
+                chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false; // X轴主网格线不可见
+                chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false; // Y轴主网格线不可见
+
+                #region Test Code, May be use someday
+
                 //chart.ChartAreas[0].AxisX.MajorGrid.LineColor = Color.Green;
                 //chart.ChartAreas[0].AxisY.MajorGrid.LineColor = Color.Green;
                 //chart.ChartAreas[0].AxisX.MinorGrid.Enabled = true;
@@ -145,16 +153,15 @@ namespace Xb2.Utils.Control
                 //chart.ChartAreas[0].AxisX.MajorGrid.IntervalType = DateTimeIntervalType.Years;
                 //chart.ChartAreas[0].AxisX.MajorGrid.Interval = 1;
 
-
-                chart.ChartAreas[0].AxisX.ArrowStyle = ARROW_STYLE;
-                chart.ChartAreas[0].AxisY.ArrowStyle = ARROW_STYLE;
-
-                //绑定用于日志记录的List
-                chart.ChartAreas[0].Tag = new List<string>();
-
                 //chart.ChartAreas[0].BackColor = Color.LightGreen;
                 //chart.BackColor = Color.LightBlue;
+                #endregion
+
+                chart.ChartAreas[0].AxisX.ArrowStyle = ARROW_STYLE; // X轴箭头类型
+                chart.ChartAreas[0].AxisY.ArrowStyle = ARROW_STYLE; // Y轴箭头类型
+                chart.ChartAreas[0].Tag = new List<string>();// 绑定用于日志记录的List
             }
+            Logger.Info("获取Chart模板" + chart.Name);
             return chart;
         }
 
@@ -163,49 +170,6 @@ namespace Xb2.Utils.Control
             //这个方法用于使用给定的最大最小值调整图件的坐标
             //根据用户的需求来处理吧
             return null;
-        }
-
-        /// <summary>
-        /// 将Chart控件与数据源绑定
-        /// 然后返回Chart控件
-        /// </summary>
-        /// <param name="chart"></param>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        public static Chart BindChartWithData(Chart chart, DataTable dt)
-        {
-            if (chart == null) throw new NullReferenceException("Chart not be null!");
-            chart.ChartAreas[0].BackColor = Color.Transparent;
-            chart.ChartAreas[0].AxisX.LabelStyle.Format = X_FORMAT;
-            chart.ChartAreas[0].AxisY.LabelStyle.Format = Y_FORMAT;
-            chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
-            chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
-            var maxy = (double) dt.Compute(string.Format("MAX({0})", Y_TITLE), "");
-            var miny = (double) dt.Compute(string.Format("MIN({0})", Y_TITLE), "");
-            var maxx = (DateTime) dt.Compute(string.Format("MAX({0})", X_TITLE), "");
-            var minx = (DateTime) dt.Compute(string.Format("MIN({0})", X_TITLE), "");
-            var sd = dt.GetColumnOfDouble("观测值").StandardDeviation();
-            Debug.Print("观测值标准差：" + sd);
-            chart.DataSource = dt;
-            //Y_Expand的范围为上下一个标准差，因为有的时候数据中
-            //有异常值，Y_Expand设置的太小就点不到数据点上 (⊙﹏⊙)b
-            chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(maxy) + sd;
-            chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(miny) - sd;
-            chart.ChartAreas[0].AxisX.Maximum = Convert.ToDateTime(maxx).AddMonths(X_EXPAND).ToOADate();
-            chart.ChartAreas[0].AxisX.Minimum = Convert.ToDateTime(minx).AddMonths(-X_EXPAND).ToOADate();
-            if (!chart.Series.Any()) chart.Series.Add(new Series());
-            chart.Series[0].ChartType = SeriesChartType.Line;
-            chart.Series[0].XValueType = ChartValueType.Date;
-            chart.Series[0].YValueType = ChartValueType.Double;
-            chart.Series[0].XValueMember = X_TITLE;
-            chart.Series[0].YValueMembers = Y_TITLE;
-            chart.Series[0].Color = Color.Black;
-            chart.Series[0].MarkerStyle = MARKER_STYLE;
-            chart.Series[0].MarkerColor = MARKER_COLOR;
-            chart.Series[0].MarkerSize = MARKER_SIZE;
-            chart.DataBind();
-            chart.Series[0].Points.Apply(p => p.ToolTip = DateTime.FromOADate(p.XValue).SStr() + p.YValues[0]);
-            return chart;
         }
 
         /// <summary>
@@ -661,12 +625,73 @@ namespace Xb2.Utils.Control
         #region 用于基础数据处理的Chart控件
 
         /// <summary>
-        /// 获取一个没有事件，没有数据的普通Chart
+        /// 获取一个没有事件，没有数据的普通Chart控件
         /// </summary>
         /// <returns></returns>
         public static Chart GetOrdinaryChart()
         {
             return GetTemplateChart();
+        }
+
+        /// <summary>
+        /// 将Chart控件与数据源绑定
+        /// 然后返回Chart控件
+        /// </summary>
+        /// <param name="chart"></param>
+        /// <param name="dt"></param>
+        /// <returns></returns>
+        public static Chart BindChartWithData(Chart chart, DataTable dt)
+        {
+            if (chart == null) throw new NullReferenceException("Chart not be null!");
+            chart.ChartAreas[0].BackColor = Color.Transparent;
+            chart.ChartAreas[0].AxisX.LabelStyle.Format = X_FORMAT;
+            chart.ChartAreas[0].AxisY.LabelStyle.Format = Y_FORMAT;
+            chart.ChartAreas[0].AxisX.MajorGrid.Enabled = false;
+            chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
+            Logger.Info("Chart控件数据绑定中，共 {0} 个数据点", dt.Rows.Count);
+
+            var maxy = (double) dt.Compute(string.Format("MAX({0})", Y_TITLE), "");
+            var miny = (double) dt.Compute(string.Format("MIN({0})", Y_TITLE), "");
+            var maxx = (DateTime) dt.Compute(string.Format("MAX({0})", X_TITLE), "");
+            var minx = (DateTime) dt.Compute(string.Format("MIN({0})", X_TITLE), "");
+            var sd = dt.GetColumnOfDouble("观测值").StandardDeviation(); // 观测值的标准差，用于确定Y轴的范围
+            Logger.Info("x_min:{0},x_max:{1},y_min:{2},y_max:{3},y_sd:{4}",
+                minx.ToShortDateString(), maxx.ToShortDateString(), miny, maxy, sd);
+            
+            chart.DataSource = dt;
+            //Y_Expand的范围为上下一个标准差，因为有的时候数据中
+            //有异常值，Y_Expand设置的太小就点不到数据点上 (⊙﹏⊙)b
+            chart.ChartAreas[0].AxisY.Maximum = Convert.ToDouble(maxy) + sd;
+            chart.ChartAreas[0].AxisY.Minimum = Convert.ToDouble(miny) - sd;
+            Logger.Info("AxisY.Min:{0}, AxisY.Max：{1}", Convert.ToDouble(miny) - sd, Convert.ToDouble(maxy) + sd);
+            
+            chart.ChartAreas[0].AxisX.Maximum = Convert.ToDateTime(maxx).AddMonths(X_EXPAND).ToOADate();
+            chart.ChartAreas[0].AxisX.Minimum = Convert.ToDateTime(minx).AddMonths(-X_EXPAND).ToOADate();
+            Logger.Info("AxisX.Min:{0}, AxisX.Max:{1}",
+                Convert.ToDateTime(minx).AddMonths(-X_EXPAND).ToOADate(),
+                Convert.ToDateTime(maxx).AddMonths(X_EXPAND).ToOADate());
+
+            if (!chart.Series.Any()) chart.Series.Add(new Series());
+            chart.Series[0].ChartType = SeriesChartType.Line; // 折线类型
+            chart.Series[0].XValueType = ChartValueType.Date; // X轴的类型是日期
+            chart.Series[0].YValueType = ChartValueType.Double; // Y轴的类型是Double
+            // 在为Chart控件指定DataSource的情况下，可以通过设置XValueMemeber的形式
+            // 添加数据点
+            chart.Series[0].XValueMember = X_TITLE; 
+            chart.Series[0].YValueMembers = Y_TITLE;
+            chart.Series[0].Color = Color.Black; // 折线颜色
+            chart.Series[0].MarkerStyle = MARKER_STYLE; // 数据点标记样式
+            chart.Series[0].MarkerColor = MARKER_COLOR; // 数据点标记颜色
+            chart.Series[0].MarkerSize = MARKER_SIZE; // 数据点标记大小
+            chart.DataBind();
+            Logger.Info("添加Series...");
+            // 设置鼠标移动到数据点上的Tooltip
+            foreach (DataPoint dataPoint in chart.Series[0].Points)
+            {
+                dataPoint.ToolTip = DateTime.FromOADate(dataPoint.XValue).ToShortDateString()
+                                    + ", " + dataPoint.YValues[0];
+            }
+            return chart;
         }
 
         #region 突跳处理
@@ -684,19 +709,20 @@ namespace Xb2.Utils.Control
         /// <returns></returns>
         public static Chart GetPointMovingChart()
         {
-            //获取模板chart，但并没有绑定数据，你看，该方法也没有数据源参数传进来
+            Logger.Info("正在进行突跳处理...");
+            // 获取模板chart，但并没有绑定数据，你看，该方法也没有数据源参数传进来
             var baseChart = GetTemplateChart();
-            //选中的数据点
+            // 突跳点
             DataPoint testPoint = null;
-            //用于记录操作日志的点
+            // 用于记录操作日志的点
             DateValue initDateValue = null;
             DateValue editedDateValue = null;
             //控制点
             double maxYPos = 0;
             double minYPos = 0;
-            //检测鼠标按下的区域是否是数据点，如果是数据点，则将该点赋值给testpoint
-            //并设置testpoint的自定义属性i为数据点的索引值
-            //然后，将当前chart的数据源（DataTable）入栈，用于撤销操作
+            // 检测鼠标按下的区域是否是数据点，如果是数据点，则将该点赋值给testpoint
+            // 并设置testpoint的自定义属性i为数据点的索引值
+            // 然后，将当前chart的数据源（DataTable）入栈，用于撤销操作
             baseChart.MouseDown += delegate(object sender, MouseEventArgs e)
             {
                 if (e.Button != MouseButtons.Left) return;
@@ -704,55 +730,59 @@ namespace Xb2.Utils.Control
                 var stack = (Stack<DataTable>) baseChart.Tag;
                 if (ht.ChartElementType == ChartElementType.DataPoint)
                 {
-                    //找到点击的数据点
+                    // 记录突跳点
                     testPoint = baseChart.Series[0].Points[ht.PointIndex];
                     initDateValue = new DateValue(DateTime.FromOADate(testPoint.XValue), testPoint.YValues[0]);
-                    //将当前的数据源入栈，注意Copy哦，这可是活生生的引用传递和值传递的例子啊
+                    // 将当前的数据源入栈，注意Copy哦，这可是活生生的引用传递和值传递的例子啊
                     stack.Push(baseChart.GetTable().Copy());
-                    Debug.Print("push datatable to stack, current stack size {0}", stack.Count);
+                    Logger.Info("选中突跳点：{0}，{1}", initDateValue.Date.ToShortDateString(), initDateValue.Value);
+                    Debug.Print("数据源入栈, 当前栈容量为 {0}", stack.Count);
                 }
             };
 
             //鼠标移动时，根据鼠标的像素位置计算testpoint数据点的Y值
-            //同时获取testpoint的Lable，并刷新Chart控件
+            //同时获取testpoint的Label，并刷新Chart控件
             baseChart.MouseMove += delegate(object sender, MouseEventArgs e)
             {
                 if (testPoint == null) return;
                 if (e.Button != MouseButtons.Left) return;
-                //鼠标必须在最大范围内移动才行
+                // 鼠标必须在最大范围内移动才行，超出这个范围会出现异常
                 if (e.Y >= minYPos && e.Y <= maxYPos)
                 {
                     testPoint.YValues[0] = baseChart.ChartAreas[0].AxisY.PixelPositionToValue(e.Y);
                     testPoint.Label = testPoint.GetLabel();
+                    Logger.Info("移动突跳点：{0}", testPoint.YValues[0]);
                     baseChart.Invalidate();
                 }
             };
 
+            // 重新绘制控件时需要重新计算一下Y轴的范围
             baseChart.PostPaint += (sender, e) =>
             {
                 maxYPos = baseChart.ChartAreas[0].AxisY.ValueToPixelPosition(baseChart.ChartAreas[0].AxisY.Minimum);
                 minYPos = baseChart.ChartAreas[0].AxisY.ValueToPixelPosition(baseChart.ChartAreas[0].AxisY.Maximum);
             };
 
-            //鼠标松开时，获取testpoint的自定义属性，即编辑点的索引值
-            //根据该索引值找到Chart数据源中对应的值，并更改这个值
-            //这样做的原因是Chart和DataTable之间，我没有发现双向更新机制机制
-            //如果不这样做的话，编辑后的数据点的值是无法保存回数据源中的
+            // 鼠标松开时，获取testpoint的自定义属性，即编辑点的索引值
+            // 根据该索引值找到Chart数据源中对应的值，并更改这个值
+            // 这样做的原因是Chart和DataTable之间，我没有发现双向更新机制机制
+            // 如果不这样做的话，编辑后的数据点的值是无法保存回数据源中的
             baseChart.MouseUp += delegate(object sender, MouseEventArgs e)
             {
                 if (testPoint != null)
                 {
-                    //获取修改点的索引和编辑后的值
-                    //修改datatable中相应的值
-                    //否则datatable中的值不会更新
+                    // 获取修改点的索引和编辑后的值
+                    // 修改datatable中相应的值
+                    // 否则datatable中的值不会更新
                     var index = baseChart.Series[0].Points.IndexOf(testPoint);
                     var editedValue = Math.Round(testPoint.YValues[0], Xb2Config.GetPrecision());
                     baseChart.GetTable().Rows[index][Y_TITLE] = editedValue;
                     baseChart.GetTable().AcceptChanges();
                     baseChart.DataBind();
                     editedDateValue = new DateValue(DateTime.FromOADate(testPoint.XValue), editedValue);
+                    Logger.Info("移动后突跳点的观测值为：" + editedDateValue.Value);
                     baseChart.GetLogger().Add(GetLog("突跳处理（图解法），" + initDateValue + "→" + editedDateValue));
-                    //去掉label，不加这一句label会始终显示
+                    // 去掉label，不加这一句label会始终显示
                     initDateValue = null;
                     editedDateValue = null;
                     testPoint.Label = null;
@@ -3116,7 +3146,7 @@ namespace Xb2.Utils.Control
         /// <returns></returns>
         private static string GetLabel(this DataPoint dp)
         {
-            return dp.GetDateStr() + "\n" + dp.GetValue();
+            return dp.GetDateStr() + "\n\r" + dp.GetValue();
         }
 
         /// <summary>
@@ -3136,7 +3166,7 @@ namespace Xb2.Utils.Control
         /// <returns></returns>
         public static string GetDateStr(this DataPoint dataPoint)
         {
-            return dataPoint.GetDate().ToShortDateString();
+            return dataPoint.GetDate().ToString("yyyy-MM-dd");
         }
 
         /// <summary>

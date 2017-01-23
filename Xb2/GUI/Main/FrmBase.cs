@@ -6,7 +6,7 @@ namespace Xb2.GUI.Main
     public partial class FrmBase : Form
     {
         /// <summary>
-        /// 当前登录的用户CurrentUser
+        /// 当前登录的用户
         /// </summary>
         public XbUser User { get; set; }
 

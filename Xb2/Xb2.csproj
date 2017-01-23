@@ -81,6 +81,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Algorithms\Core\Entity\AbstractInput.cs" />
     <Compile Include="Algorithms\Core\Entity\CalcDescription.cs" />
     <Compile Include="Algorithms\Core\Entity\CalcResult.cs" />
     <Compile Include="Algorithms\Core\Entity\DateRange.cs" />
@@ -241,6 +242,18 @@
     </Compile>
     <Compile Include="GUI\Controls\RectQuery.designer.cs">
       <DependentUpon>RectQuery.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\FrmNZBInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\FrmNZBInput.Designer.cs">
+      <DependentUpon>FrmNZBInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\FrmXQSInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\FrmXQSInput.Designer.cs">
+      <DependentUpon>FrmXQSInput.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Main\FrmBase.cs">
       <SubType>Form</SubType>
@@ -515,6 +528,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\RectQuery.resx">
       <DependentUpon>RectQuery.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\FrmNZBInput.resx">
+      <DependentUpon>FrmNZBInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\FrmXQSInput.resx">
+      <DependentUpon>FrmXQSInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Main\FrmBase.resx">
       <DependentUpon>FrmBase.cs</DependentUpon>

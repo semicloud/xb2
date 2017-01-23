@@ -229,15 +229,17 @@ namespace Xb2.GUI.M.Item
         {
             var posx = Cursor.Position.X + DIST_TO_MOUSE;
             var posy = Cursor.Position.Y + DIST_TO_MOUSE;
-            var form = new FrmRegionSelectMItem(this.User);
-            form.Owner = this;
-            form.StartPosition = FormStartPosition.Manual;
-            form.Location = new Point(posx, posy);
-            var r = form.ShowDialog();
-            //设置视图名称，字段查询皆从该视图中查询
-            if (r == DialogResult.OK)
+            var frmRegionSelectMItem = new FrmRegionSelectMItem(this.User)
             {
-                this.m_viewName = form.ViewName;
+                Owner = this,
+                StartPosition = FormStartPosition.Manual,
+                Location = new Point(posx, posy)
+            };
+            var dialogResult = frmRegionSelectMItem.ShowDialog();
+            //设置视图名称，字段查询皆从该视图中查询
+            if (dialogResult == DialogResult.OK)
+            {
+                this.m_viewName = frmRegionSelectMItem.ViewName;
             }
         }
 

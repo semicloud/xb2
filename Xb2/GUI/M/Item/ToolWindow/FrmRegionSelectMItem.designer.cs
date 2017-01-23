@@ -88,7 +88,7 @@
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 603);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(896, 568);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
             // panel1
@@ -97,7 +97,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(425, 597);
+            this.panel1.Size = new System.Drawing.Size(486, 562);
             this.panel1.TabIndex = 0;
             // 
             // tableLayoutPanel2
@@ -115,7 +115,7 @@
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 45F));
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(425, 597);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(486, 562);
             this.tableLayoutPanel2.TabIndex = 1;
             // 
             // panel2
@@ -125,7 +125,7 @@
             this.panel2.Location = new System.Drawing.Point(3, 4);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(419, 51);
+            this.panel2.Size = new System.Drawing.Size(480, 48);
             this.panel2.TabIndex = 4;
             // 
             // groupBox2
@@ -136,7 +136,7 @@
             this.groupBox2.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox2.Location = new System.Drawing.Point(0, 0);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(419, 51);
+            this.groupBox2.Size = new System.Drawing.Size(480, 48);
             this.groupBox2.TabIndex = 1;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "保存查询条件";
@@ -144,24 +144,24 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(6, 23);
+            this.label1.Location = new System.Drawing.Point(7, 22);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(32, 17);
+            this.label1.Size = new System.Drawing.Size(40, 16);
             this.label1.TabIndex = 6;
             this.label1.Text = "名称";
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(44, 20);
+            this.textBox1.Location = new System.Drawing.Point(50, 19);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(257, 23);
+            this.textBox1.Size = new System.Drawing.Size(293, 26);
             this.textBox1.TabIndex = 5;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(307, 17);
+            this.button3.Location = new System.Drawing.Point(349, 17);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 28);
+            this.button3.Size = new System.Drawing.Size(86, 28);
             this.button3.TabIndex = 4;
             this.button3.Text = "保存(&S)";
             this.button3.UseVisualStyleBackColor = true;
@@ -171,10 +171,10 @@
             // 
             this.panel3.Controls.Add(this.groupBox3);
             this.panel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel3.Location = new System.Drawing.Point(3, 63);
+            this.panel3.Location = new System.Drawing.Point(3, 60);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(419, 260);
+            this.panel3.Size = new System.Drawing.Size(480, 244);
             this.panel3.TabIndex = 5;
             // 
             // groupBox3
@@ -185,7 +185,7 @@
             this.groupBox3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox3.Size = new System.Drawing.Size(419, 260);
+            this.groupBox3.Size = new System.Drawing.Size(480, 244);
             this.groupBox3.TabIndex = 4;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "圆域查询";
@@ -197,13 +197,13 @@
             this.tableLayoutPanel5.Controls.Add(this.panel4, 0, 0);
             this.tableLayoutPanel5.Controls.Add(this.flowLayoutPanel2, 0, 1);
             this.tableLayoutPanel5.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 20);
+            this.tableLayoutPanel5.Location = new System.Drawing.Point(3, 23);
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.RowCount = 2;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(413, 236);
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(474, 217);
             this.tableLayoutPanel5.TabIndex = 1;
             // 
             // panel4
@@ -214,15 +214,15 @@
             this.panel4.Location = new System.Drawing.Point(3, 4);
             this.panel4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(407, 39);
+            this.panel4.Size = new System.Drawing.Size(468, 35);
             this.panel4.TabIndex = 0;
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(69, 6);
+            this.button5.Location = new System.Drawing.Point(79, 6);
             this.button5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(58, 28);
+            this.button5.Size = new System.Drawing.Size(66, 26);
             this.button5.TabIndex = 1;
             this.button5.Text = "-(&N)";
             this.button5.UseVisualStyleBackColor = true;
@@ -233,7 +233,7 @@
             this.button8.Location = new System.Drawing.Point(3, 6);
             this.button8.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(58, 28);
+            this.button8.Size = new System.Drawing.Size(66, 26);
             this.button8.TabIndex = 0;
             this.button8.Text = "+(&C)";
             this.button8.UseVisualStyleBackColor = true;
@@ -244,10 +244,10 @@
             this.flowLayoutPanel2.AutoScroll = true;
             this.flowLayoutPanel2.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 51);
+            this.flowLayoutPanel2.Location = new System.Drawing.Point(3, 47);
             this.flowLayoutPanel2.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowLayoutPanel2.Name = "flowLayoutPanel2";
-            this.flowLayoutPanel2.Size = new System.Drawing.Size(407, 181);
+            this.flowLayoutPanel2.Size = new System.Drawing.Size(468, 166);
             this.flowLayoutPanel2.TabIndex = 1;
             this.flowLayoutPanel2.Tag = "0";
             // 
@@ -255,9 +255,9 @@
             // 
             this.panel6.Controls.Add(this.groupBox4);
             this.panel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel6.Location = new System.Drawing.Point(3, 330);
+            this.panel6.Location = new System.Drawing.Point(3, 311);
             this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(419, 264);
+            this.panel6.Size = new System.Drawing.Size(480, 248);
             this.panel6.TabIndex = 6;
             // 
             // groupBox4
@@ -268,7 +268,7 @@
             this.groupBox4.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.groupBox4.Name = "groupBox4";
             this.groupBox4.Padding = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.groupBox4.Size = new System.Drawing.Size(419, 264);
+            this.groupBox4.Size = new System.Drawing.Size(480, 248);
             this.groupBox4.TabIndex = 5;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "矩形域查询";
@@ -280,13 +280,13 @@
             this.tableLayoutPanel6.Controls.Add(this.panel5, 0, 0);
             this.tableLayoutPanel6.Controls.Add(this.flowLayoutPanel3, 0, 1);
             this.tableLayoutPanel6.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 20);
+            this.tableLayoutPanel6.Location = new System.Drawing.Point(3, 23);
             this.tableLayoutPanel6.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.tableLayoutPanel6.Name = "tableLayoutPanel6";
             this.tableLayoutPanel6.RowCount = 2;
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 80F));
-            this.tableLayoutPanel6.Size = new System.Drawing.Size(413, 240);
+            this.tableLayoutPanel6.Size = new System.Drawing.Size(474, 221);
             this.tableLayoutPanel6.TabIndex = 1;
             // 
             // panel5
@@ -297,15 +297,15 @@
             this.panel5.Location = new System.Drawing.Point(3, 4);
             this.panel5.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(407, 40);
+            this.panel5.Size = new System.Drawing.Size(468, 36);
             this.panel5.TabIndex = 0;
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(69, 6);
+            this.button9.Location = new System.Drawing.Point(79, 6);
             this.button9.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(58, 28);
+            this.button9.Size = new System.Drawing.Size(66, 26);
             this.button9.TabIndex = 3;
             this.button9.Text = "-(&K)";
             this.button9.UseVisualStyleBackColor = true;
@@ -316,7 +316,7 @@
             this.button10.Location = new System.Drawing.Point(3, 6);
             this.button10.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(58, 28);
+            this.button10.Size = new System.Drawing.Size(66, 26);
             this.button10.TabIndex = 2;
             this.button10.Text = "+(&R)";
             this.button10.UseVisualStyleBackColor = true;
@@ -327,10 +327,10 @@
             this.flowLayoutPanel3.AutoScroll = true;
             this.flowLayoutPanel3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.flowLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 52);
+            this.flowLayoutPanel3.Location = new System.Drawing.Point(3, 48);
             this.flowLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.flowLayoutPanel3.Name = "flowLayoutPanel3";
-            this.flowLayoutPanel3.Size = new System.Drawing.Size(407, 184);
+            this.flowLayoutPanel3.Size = new System.Drawing.Size(468, 169);
             this.flowLayoutPanel3.TabIndex = 1;
             this.flowLayoutPanel3.Tag = "0";
             // 
@@ -340,12 +340,12 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutPanel3.Controls.Add(this.groupBox5, 0, 0);
             this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(434, 3);
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(495, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
             this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 597F));
-            this.tableLayoutPanel3.Size = new System.Drawing.Size(347, 597);
+            this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 562F));
+            this.tableLayoutPanel3.Size = new System.Drawing.Size(398, 562);
             this.tableLayoutPanel3.TabIndex = 1;
             // 
             // groupBox5
@@ -354,7 +354,7 @@
             this.groupBox5.Dock = System.Windows.Forms.DockStyle.Fill;
             this.groupBox5.Location = new System.Drawing.Point(3, 3);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(341, 591);
+            this.groupBox5.Size = new System.Drawing.Size(392, 556);
             this.groupBox5.TabIndex = 1;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "区域查询条件";
@@ -365,11 +365,11 @@
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 19);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 22);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(335, 569);
+            this.dataGridView1.Size = new System.Drawing.Size(386, 531);
             this.dataGridView1.TabIndex = 0;
             this.dataGridView1.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseClick);
             this.dataGridView1.CellMouseDoubleClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView1_CellMouseDoubleClick);
@@ -390,11 +390,11 @@
             // 
             // FrmRegionSelectMItem
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 17F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(784, 603);
+            this.ClientSize = new System.Drawing.Size(896, 568);
             this.Controls.Add(this.tableLayoutPanel1);
-            this.Font = new System.Drawing.Font("微软雅黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.SizableToolWindow;
             this.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
             this.Name = "FrmRegionSelectMItem";

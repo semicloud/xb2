@@ -3,9 +3,9 @@ using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using NLog;
 using Xb2.Entity;
 using Xb2.Entity.Business;
-using Xb2.GUI.Catalog;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
 using Xb2.Utils;
@@ -15,11 +15,15 @@ namespace Xb2.GUI.M.Val.Rawdata
 {
     public partial class FrmRawDataManage : FrmBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public FrmRawDataManage(XbUser user)
         {
             InitializeComponent();
-            this.User = user;
+            User = user;
         }
+
+        #region 选测项菜单、清空测项菜单
 
         /// <summary>
         /// 选测项菜单
@@ -28,7 +32,7 @@ namespace Xb2.GUI.M.Val.Rawdata
         /// <param name="e"></param>
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            var form = new FrmSelectMItem(this.User);
+            var form = new FrmSelectMItem(User);
             form.Owner = this;
             //选完项后加载选项结果
             if (form.ShowDialog() == DialogResult.OK)
@@ -45,13 +49,16 @@ namespace Xb2.GUI.M.Val.Rawdata
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void toolStripMenuItem2_Click(object sender, System.EventArgs e)
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             dataGridView1.DataSource = null;
             listBox1.SelectedIndexChanged -= listBox1_SelectedIndexChanged;
             listBox1.DataSource = null;
         }
 
+        #endregion
+
+        #region 原始数据 新增、编辑、删除、导入菜单
         /// <summary>
         /// 新建原始数据
         /// </summary>
@@ -61,8 +68,9 @@ namespace Xb2.GUI.M.Val.Rawdata
         {
             if (listBox1.SelectedValue != null)
             {
-                int itemID = GetCurrentMItemID();
-                var form = new FrmEditRawData(Operation.Create, itemID);
+                int itemId = GetCurrentMItemId();
+                Logger.Info("用户 {0} 新建测项 {1} 的原始数据", this.User.ID, itemId);
+                var form = new FrmEditRawData(Operation.Create, itemId);
                 form.Owner = this;
                 form.StartPosition = FormStartPosition.CenterScreen;
                 form.ShowDialog();
@@ -95,13 +103,13 @@ namespace Xb2.GUI.M.Val.Rawdata
         }
 
         /// <summary>
-        /// 删除菜单
+        /// 删除菜单，可多项删除原始数据
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void toolStripMenuItem5_Click(object sender, EventArgs e)
         {
-            var itemId = GetCurrentMItemID();
+            var itemId = GetCurrentMItemId();
             if (itemId != -1)
             {
                 if (dataGridView1.SelectedRows.Count > 0)
@@ -142,7 +150,7 @@ namespace Xb2.GUI.M.Val.Rawdata
         /// <param name="e"></param>
         private void toolStripMenuItem6_Click(object sender, EventArgs e)
         {
-            var itemId = GetCurrentMItemID();
+            var itemId = GetCurrentMItemId();
             if (itemId != -1)
             {
                 var dialog = new OpenFileDialog();
@@ -179,11 +187,13 @@ namespace Xb2.GUI.M.Val.Rawdata
             }
         }
 
+        #endregion
+
         /// <summary>
         /// 获得当前选中的测项的编号
         /// </summary>
         /// <returns></returns>
-        private int GetCurrentMItemID()
+        private int GetCurrentMItemId()
         {
             if (listBox1.DataSource == null) return -1;
             var line = listBox1.SelectedValue.ToString();
@@ -191,46 +201,40 @@ namespace Xb2.GUI.M.Val.Rawdata
             return id;
         }
 
+        #region 绑定原始数据的DataGridView
         /// <summary>
         /// 使用测项编号刷新原始数据表
         /// </summary>
         /// <param name="itemId"></param>
         public void RefreshRawData(int itemId)
         {
-            var sql = "select * from {0} where 测项编号={1} order by 观测日期";
-            sql = string.Format(sql, DbHelper.TnRData(), itemId);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
-            RefreshDataGridView(dt);
-        }
-
-        private void RefreshDataGridView(DataTable dt)
-        {
-            this.dataGridView1.DataSource = null;
-            this.dataGridView1.DataSource = dt;
-            this.dataGridView1.RowHeadersVisible = false;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.AllowUserToResizeColumns = false;
-            this.dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridView1.Columns["观测日期"].DefaultCellStyle.Format = "yyyy/MM/dd";
-
+            var dt = DaoObject.GetRawData(itemId);
+            dataGridView1.DataSource = null;
+            dataGridView1.DataSource = dt;
+            dataGridView1.RowHeadersVisible = false;
+            dataGridView1.AllowUserToResizeRows = false;
+            dataGridView1.AllowUserToResizeColumns = false;
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            if (dataGridView1.Columns["观测日期"] != null)
+            {
+                dataGridView1.Columns["观测日期"].DefaultCellStyle.Format = "yyyy/MM/dd";
+            }
             //编号、测项编号列隐藏
-            dataGridView1.Columns["编号"].Visible = false;
-            dataGridView1.Columns["测项编号"].Visible = false;
+            if (dataGridView1.Columns["编号"] != null && dataGridView1.Columns["测项编号"] != null)
+            {
+                dataGridView1.Columns["编号"].Visible = false;
+                dataGridView1.Columns["测项编号"].Visible = false;
+            }
+            foreach (DataGridViewColumn dataGridViewCoumn in dataGridView1.Columns)
+            {
+                dataGridViewCoumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
         }
 
-        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var itemID = GetCurrentMItemID();
-            if (itemID != -1)
-            {
-                this.RefreshRawData(itemID);
-            }
-            else
-            {
-                MessageBox.Show("未获取测项!");
-            }
-        }
+        #endregion
+
+        #region 选中的要编辑的原始数据多于一行，则不允许编辑
 
         private void dataGridView1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -241,5 +245,24 @@ namespace Xb2.GUI.M.Val.Rawdata
                 contextMenuStrip2.Show(Cursor.Position);
             }
         }
+
+        #endregion
+
+        #region 单击列表菜单更换选定的测项
+
+        private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var itemId = GetCurrentMItemId();
+            if (itemId != -1)
+            {
+                RefreshRawData(itemId);
+            }
+            else
+            {
+                MessageBox.Show("未获取测项!");
+            }
+        }
+
+        #endregion
     }
 }

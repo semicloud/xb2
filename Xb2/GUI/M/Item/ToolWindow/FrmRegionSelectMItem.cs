@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using NLog;
 using Xb2.Entity.Business;
 using Xb2.GUI.Controls;
 using Xb2.GUI.Main;
@@ -13,8 +14,19 @@ using Xb2.Utils.Database;
 
 namespace Xb2.GUI.M.Item.ToolWindow
 {
+    /// <summary>
+    /// 区域查询的处理逻辑：
+    /// 用户输入区域查询条件
+    /// 点击保存按钮
+    /// 后台开始按照用户输入的查询条件拼接查询语句
+    /// 将查询语句保存为视图，并把视图取一个名字存在数据库里（名字不可重复）
+    /// 用户在 选测项 界面上选择 区域查询时
+    /// 其实就是在不同的 区域查询视图上 进行查询
+    /// </summary>
     public partial class FrmRegionSelectMItem : FrmBase
     {
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
         public FrmRegionSelectMItem(XbUser user)
         {
             this.InitializeComponent();
@@ -25,6 +37,8 @@ namespace Xb2.GUI.M.Item.ToolWindow
         /// 返回的数据视图名
         /// </summary>
         public string ViewName { get; private set; }
+
+        #region 加减圆域查询，加减矩形域查询
 
         /// <summary>
         /// 圆域查询+
@@ -90,15 +104,9 @@ namespace Xb2.GUI.M.Item.ToolWindow
             }
         }
 
-        /// <summary>
-        /// 关闭按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+        #endregion
+
+        #region 保存按钮
 
         /// <summary>
         /// 保存按钮
@@ -108,6 +116,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
         private void button3_Click(object sender, EventArgs e)
         {
             var viewDisplayName = textBox1.Text.Trim();
+            Logger.Info("View Disply Name:{0}", viewDisplayName);
 
             #region 输入检查
 
@@ -144,34 +153,38 @@ namespace Xb2.GUI.M.Item.ToolWindow
 
             #endregion
 
-            //是否有重名的区域查询条件？
-            var sql = "select count(*) from {0} where 用户编号={1} and 视图名称='{2}'";
-            sql = string.Format(sql, DbHelper.TnRQMItem(), this.User.ID, viewDisplayName);
-            Debug.Print(sql);
-            var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql));
+            // 是否有重名的区域查询条件？
+            var commandText = "select count(*) from {0} where 用户编号={1} and 视图名称='{2}'";
+            commandText = string.Format(commandText, DbHelper.TnRQMItem(), this.User.ID, viewDisplayName);
+            Logger.Debug(commandText);
+            var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, commandText));
+            Logger.Info("查询是否存在名为 {0} 的视图 ？ {1}", viewDisplayName, n > 0);
             if (n > 0)
             {
                 MessageBox.Show("已经存在名称【" + viewDisplayName + "】，未保存！");
                 return;
             }
-            //生成视图创建语句，创建视图
-            //视图名不允许有-，所以替换为_
+
+            // 生成视图创建语句，创建视图
+            // 视图名不允许有-，所以替换为_，视图名为用户名_GUID
             var viewName = this.User.Name + "_" + Guid.NewGuid().ToString().Replace('-', '_');
-            var viewSQL = string.Format("create view {0} as " + this.GetSql(), viewName);
-            Debug.Print(viewSQL);
-            MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, viewSQL);
-            Debug.Print(viewSQL);
-            //视图如果创建成功了，向数据库中写入记录
+            Logger.Info("视图名：" + viewName);
+            var viewCommandText = string.Format("create view {0} as " + this.GetCommandText(), viewName);
+            MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, viewCommandText);
+            Logger.Debug("视图创建语句：" + viewCommandText);
+
+            // 视图如果创建成功了，向数据库中写入记录
             if (DbHelper.HasView(viewName))
             {
-                sql = "insert into {0}(用户编号,视图名称,视图体) values ({1},'{2}','{3}')";
-                sql = string.Format(sql, DbHelper.TnRQMItem(), this.User.ID, viewDisplayName, viewName);
-                Debug.Print(sql);
-                n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql);
+                commandText = "insert into {0}(用户编号,视图名称,视图体) values ({1},'{2}','{3}')";
+                commandText = string.Format(commandText, DbHelper.TnRQMItem(), this.User.ID, viewDisplayName, viewName);
+                Logger.Debug(commandText);
+                n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, commandText);
+                Logger.Info("保存视图记录 " + (n > 0));
                 if (n > 0)
                 {
                     MessageBox.Show("保存成功！");
-                    this.RefreshDataGridView();
+                    RefreshDataGridView();
                 }
             }
             else
@@ -180,43 +193,9 @@ namespace Xb2.GUI.M.Item.ToolWindow
             }
         }
 
-        /// <summary>
-        /// 确定按钮
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
-        {
-            #region 输入检查
+        #endregion
 
-            //查询控件的个数不能都为0
-            if (this.GetCircleQueries().Count == 0 && this.GetRectQueries().Count == 0)
-            {
-                MessageBox.Show("查询条件为空！");
-                return;
-            }
-            //圆域查询条件检查
-            foreach (var cquery in this.GetCircleQueries())
-            {
-                if (!cquery.IsLegalInput())
-                {
-                    MessageBox.Show("圆形查询条件输入不完整！");
-                    return;
-                }
-            }
-            //矩形域查询条件检查
-            foreach (var rquery in this.GetRectQueries())
-            {
-                if (!rquery.IsLegalInput())
-                {
-                    MessageBox.Show("矩形查询条件输入不完整！");
-                    return;
-                }
-            }
-
-            #endregion
-
-        }
+        #region 获取界面上的圆域查询控件 和 矩形域查询控件
 
         /// <summary>
         /// 获取圆域查询控件
@@ -239,6 +218,10 @@ namespace Xb2.GUI.M.Item.ToolWindow
             var circleQueries = f2Controls.FindAll(c => c.GetType() == typeof(RectQuery));
             return circleQueries.Cast<RectQuery>().ToList();
         }
+
+        #endregion
+
+        #region 解析查询控件上的查询表达式，和生成查询命令
 
         /// <summary>
         /// 获得矩形域查询表达式
@@ -287,6 +270,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
                         lat2);
                 }
             }
+            Logger.Debug("矩形域查询表达式：" + builder);
             return builder.ToString();
         }
 
@@ -324,6 +308,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
                     builder.AppendFormat("or in_circle({0},{1},经度,纬度,{2}) ", lng, lat, dist);
                 }
             }
+            Logger.Debug("圆域查询表达式：" + builder);
             return builder.ToString();
         }
 
@@ -331,20 +316,24 @@ namespace Xb2.GUI.M.Item.ToolWindow
         /// 获得用于创建（定义）视图的sql语句
         /// </summary>
         /// <returns></returns>
-        private string GetSql()
+        private string GetCommandText()
         {
-            var sb = new StringBuilder(string.Format("select * from {0} where ", DbHelper.TnMItem()));
-            sb.Append(this.GetCircleQueryClause());
-            sb.Append(this.GetRectQueryClause());
-            var sql = sb.ToString();
-            sql = sql.Replace("and", "");
-            //由于和地震目录使用了同一个距离查询参数
-            //所以必须和地震目录的经纬度格式统一
-            sql = sql.Replace("纬度", "lnglat_to_int(纬度)");
-            sql = sql.Replace("经度", "lnglat_to_int(经度)");
-            Debug.Print(sql);
-            return sql;
+            var stringBuilder = new StringBuilder(string.Format("select * from {0} where ", DbHelper.TnMItem()));
+            Logger.Debug("拼接区域查询SQL语句，基本查询语句：" + stringBuilder);
+            stringBuilder.Append(GetCircleQueryClause());
+            stringBuilder.Append(GetRectQueryClause());
+            Logger.Debug("拼接完成：{0}", stringBuilder);
+            var commandText = stringBuilder.ToString();
+            commandText = commandText.Replace("and", "");
+            // 由于和地震目录使用了同一个距离查询参数
+            // 所以必须和地震目录的经纬度格式统一
+            commandText = commandText.Replace("纬度", "lnglat_to_int(纬度)");
+            commandText = commandText.Replace("经度", "lnglat_to_int(经度)");
+            Logger.Debug("稍作字符串处理，得到最终的查询语句：" + commandText);
+            return commandText;
         }
+
+        #endregion
 
         private void FrmRegionSelectMItem_Load(object sender, EventArgs e)
         {
@@ -353,10 +342,12 @@ namespace Xb2.GUI.M.Item.ToolWindow
 
         private void RefreshDataGridView()
         {
-            var sql = "select 编号,视图名称 as 名称,视图体 from {0} where 用户编号={1}";
-            sql = string.Format(sql, DbHelper.TnRQMItem(), this.User.ID);
-            Debug.Print(sql);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
+            var commandText = "select 编号,视图名称 as 名称,视图体 from {0} where 用户编号={1}";
+            commandText = string.Format(commandText, DbHelper.TnRQMItem(), this.User.ID);
+            Logger.Debug(commandText);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            Logger.Info("查询用户 {0} 的区域查询视图信息， 共返回 {1} 条", this.User.ID, dt.Rows.Count);
+            
             //加入测项表，即不使用区域查询
             var dr = dt.NewRow();
             dr["名称"] = "测项";
@@ -371,13 +362,33 @@ namespace Xb2.GUI.M.Item.ToolWindow
             dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dataGridView1.AllowUserToResizeRows = false;
             dataGridView1.AllowUserToResizeColumns = false;
-            dataGridView1.Columns["序号"].FillWeight = 10;
-            dataGridView1.Columns["名称"].FillWeight = 50;
+            if (dataGridView1.Columns["序号"] != null)
+            {
+                dataGridView1.Columns["序号"].FillWeight = 10;
+            }
+            if (dataGridView1.Columns["名称"] != null)
+            {
+                dataGridView1.Columns["名称"].FillWeight = 50;
+            }
             //隐藏视图体列、编号列
-            dataGridView1.Columns["视图体"].Visible = false;
-            dataGridView1.Columns["编号"].Visible = false;
+            if (dataGridView1.Columns["视图体"] != null)
+            {
+                dataGridView1.Columns["视图体"].Visible = false;
+            }
+            if (dataGridView1.Columns["编号"] != null)
+            {
+                dataGridView1.Columns["编号"].Visible = false;
+            }
+            // 设置DataGridView不可排序
+            foreach (DataGridViewColumn datagridviewcolumn in dataGridView1.Columns)
+            {
+                datagridviewcolumn.SortMode = DataGridViewColumnSortMode.NotSortable;
+            }
         }
 
+        
+        #region 双击选中的数据行，则选中当前的区域查询视图并关闭窗体
+        
         private void dataGridView1_CellMouseDoubleClick(object sender,
             DataGridViewCellMouseEventArgs e)
         {
@@ -386,10 +397,15 @@ namespace Xb2.GUI.M.Item.ToolWindow
                 //获取视图名，关闭
                 var viewName = dataGridView1.Rows[e.RowIndex].Cells["视图体"].Value.ToString();
                 this.ViewName = viewName;
+                Logger.Info("用户当前选中区域查询视图：" + this.ViewName);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }
         }
+
+        #endregion
+
+        #region 右击选中的数据行，显示删除区域查询视图的菜单和事件
 
         /// <summary>
         /// 右键单击DataGridView，显示删除菜单
@@ -415,24 +431,25 @@ namespace Xb2.GUI.M.Item.ToolWindow
             if (dataGridView1.SelectedRows.Count > 0)
             {
                 var row = dataGridView1.SelectedRows[0];
-                var vn = row.Cells["视图体"].Value.ToString();
+                var viewName = row.Cells["视图体"].Value.ToString();
                 //测项表不能删除
-                if (vn.Equals(DbHelper.TnMItem()))
+                if (viewName.Equals(DbHelper.TnMItem()))
                 {
                     MessageBox.Show("测项表不可删除！");
                     return;
                 }
                 var id = Convert.ToInt32(row.Cells["编号"].Value);
-                Debug.Print("编号：{0}，视图体:{1}", id, vn);
-                var sql = "drop view " + vn;
-                Debug.Print(sql);
-                MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql);
-                if (!DbHelper.HasView(vn))
+                Logger.Info("要删除的区域查询视图：{0}，视图体:{1}", id, viewName);
+                var commandText = "drop view " + viewName;
+                Logger.Debug(commandText);
+                MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, commandText);
+                if (!DbHelper.HasView(viewName))
                 {
-                    sql = "delete from {0} where 编号={1}";
-                    sql = string.Format(sql, DbHelper.TnRQMItem(), id);
-                    Debug.Print(sql);
-                    var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql);
+                    commandText = "delete from {0} where 编号={1}";
+                    commandText = string.Format(commandText, DbHelper.TnRQMItem(), id);
+                    Logger.Debug(commandText);
+                    var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, commandText);
+                    Logger.Info("删除视图记录，编号=" + id + "，" + (n > 0));
                     if (n > 0)
                     {
                         MessageBox.Show("已删除！");
@@ -443,6 +460,6 @@ namespace Xb2.GUI.M.Item.ToolWindow
 
         }
 
-
+        #endregion
     }
 }

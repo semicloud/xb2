@@ -11,6 +11,7 @@ using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
 using Xb2.GUI.Computing;
 using Xb2.GUI.Computing.Input;
+using Xb2.GUI.Input;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.M.Val.ProcessedData;
 using Xb2.GUI.M.Val.Rawdata;
@@ -131,18 +132,21 @@ namespace Xb2.GUI.Main
 
         private void 消趋势ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmRegressionInput frmSingleInput = new FrmRegressionInput(this.User);
-            frmSingleInput.StartPosition = FormStartPosition.CenterScreen;
-            var result = frmSingleInput.ShowDialog();
-            if (result == DialogResult.OK)
-            {
-                var input = frmSingleInput.RegresInput;
-                Xb2Regression regression = new Xb2Regression(input);
-                var frmDisplayCharts = OpenChartForm();
-                frmDisplayCharts.AddChart(regression.GetFittingLine());
-                frmDisplayCharts.AddChart(regression.GetResidualLine());
-                frmDisplayCharts.AddChart(regression.GetRawLine());
-            }
+            // 这些代码还要
+            //FrmRegressionInput frmSingleInput = new FrmRegressionInput(this.User);
+            //frmSingleInput.StartPosition = FormStartPosition.CenterScreen;
+            //var result = frmSingleInput.ShowDialog();
+            //if (result == DialogResult.OK)
+            //{
+            //    var input = frmSingleInput.RegresInput;
+            //    Xb2Regression regression = new Xb2Regression(input);
+            //    var frmDisplayCharts = OpenChartForm();
+            //    frmDisplayCharts.AddChart(regression.GetFittingLine());
+            //    frmDisplayCharts.AddChart(regression.GetResidualLine());
+            //    frmDisplayCharts.AddChart(regression.GetRawLine());
+            //}
+            FrmXQSInput frmXqsInput = new FrmXQSInput(this.User);
+            frmXqsInput.ShowDialog();
         }
 
         private FrmDisplayCharts OpenChartForm()

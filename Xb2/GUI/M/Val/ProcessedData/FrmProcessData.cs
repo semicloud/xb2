@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using MySql.Data.MySqlClient;
+using NLog;
 using Xb2.Algorithms.Numberical;
 using Xb2.Config;
 using Xb2.Entity.Business;
@@ -30,7 +31,9 @@ namespace Xb2.GUI.M.Val.ProcessedData
         /// <summary>
         /// 基础数据库编号
         /// </summary>
-        private int _processedDataDbId;
+        private int _processedDataDatabaseId;
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
         public FrmProcessData(XbUser user)
         {
@@ -43,26 +46,95 @@ namespace Xb2.GUI.M.Val.ProcessedData
             this.label1.Text = string.Empty;
         }
 
+        #region 选测项、选基础数据库按钮
+        /// <summary>
+        /// 选测项
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button2_Click(object sender, EventArgs e)
+        {
+            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(User);
+            frmSelectMItem.StartPosition = FormStartPosition.CenterScreen;
+            var dialogResult = frmSelectMItem.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                var result = frmSelectMItem.Result;
+
+                #region 测项选择验证，只能选择一个测项
+
+                if (result.Rows.Count == 0)
+                {
+                    MessageBox.Show("未选择测项！");
+                    return;
+                }
+                if (result.Rows.Count > 1)
+                {
+                    MessageBox.Show("最多选择一个测项");
+                    return;
+                }
+
+                #endregion
+               
+                if (result.Rows.Count == 1)
+                {
+                    var dataRow = result.Rows[0];
+                    var title = "生成基础数据-" + dataRow["观测单位"] + "-" + dataRow["地名"] + "-" + dataRow["方法名"] + "-" +
+                                dataRow["测项名"];
+                    this.Text = title;
+                    // 在这里设置了_itemId的值
+                    _itemId = Convert.ToInt32(dataRow["编号"]);
+                    _processedDataDatabaseId = 0;
+                    Logger.Info("正在准备生成测项 {0} 的基础数据：{1}", _itemId, title);
+                    // 根据选中的测项加载原始数据，并初始化绘图控件
+                    InitializeChart(_itemId);
+                }
+                else
+                {
+                    MessageBox.Show("选测项失败！");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 加基础数据
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button3_Click(object sender, EventArgs e)
+        {
+            FrmShowProcessedDataDb frmShowProcessedDataDb = new FrmShowProcessedDataDb(User);
+            frmShowProcessedDataDb.StartPosition = FormStartPosition.CenterScreen;
+            frmShowProcessedDataDb.Text = string.Format("用户【{0}】的基础数据库", User.ID);
+            var confirm = frmShowProcessedDataDb.ShowDialog();
+            if (confirm == DialogResult.OK)
+            {
+                _itemId = frmShowProcessedDataDb.ItemId;
+                _processedDataDatabaseId = frmShowProcessedDataDb.DbId;
+                InitializeChart(_itemId,_processedDataDatabaseId);
+            }
+        }
+
+        #endregion
+
+        #region 初始化Chart控件
         /// <summary>
         /// 初始化Chart，该方法用于加载原始数据
         /// </summary>
         /// <param name="itemId"></param>
         private void InitializeChart(int itemId)
         {
-            var sql = "select 观测日期,观测值 from {0} where 测项编号={1} order by 观测日期";
-            sql = string.Format(sql, DbHelper.TnRData(), itemId);
-            Debug.Print("_itemId:" + itemId);
-            Debug.Print("sql:" + sql);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
-
-            //初始化Chart控件
+            var dt = DaoObject.GetRawData(itemId);
+            
+            // 初始化基础数据Chart控件
             groupBox1.Controls.Add(ChartHelper.GetOrdinaryChart());
-            ChartHelper.BindChartWithData(this.GetCurrentChart(), dt);
+            ChartHelper.BindChartWithData(this.GetCurrentChart(),dt);
             this.GetCurrentChart().GetLogger().Clear();
             this.GetCurrentChart().GetStack().Clear();
             this.GetCurrentChart().ContextMenuStrip = null;
             this.GetCurrentChart().ContextMenuStrip = contextMenuStrip1;
 
+            // 初始化原始数据Chart控件
             groupBox2.Controls.Add(ChartHelper.GetOrdinaryChart());
             ChartHelper.BindChartWithData(this.GetSourceChart(), dt);
             this.label1.Text = "";
@@ -80,11 +152,11 @@ namespace Xb2.GUI.M.Val.ProcessedData
             var dtSource = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
 
             var sql2 = "select 观测日期,观测值 from {0} where 库编号={1} order by 观测日期";
-            sql2 = string.Format(sql2, DbHelper.TnProcessedDbData(), _processedDataDbId);
+            sql2 = string.Format(sql2, DbHelper.TnProcessedDbData(), _processedDataDatabaseId);
             var dtProcessed = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql2).Tables[0];
 
             var sql3 = "select 操作记录 from {0} where 编号={1}";
-            sql3 = string.Format(sql3, DbHelper.TnProcessedDb(), _processedDataDbId);
+            sql3 = string.Format(sql3, DbHelper.TnProcessedDb(), _processedDataDatabaseId);
             var strLog = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql3);
 
             //初始化Chart控件
@@ -100,6 +172,10 @@ namespace Xb2.GUI.M.Val.ProcessedData
             ChartHelper.BindChartWithData(this.GetSourceChart(), dtSource);
             this.label1.Text = "";
         }
+
+        #endregion
+
+        #region 获取当前正在进行编辑的Chart控件、获取静态Chart控件
 
         /// <summary>
         /// 获得当前正在编辑的Chart控件
@@ -122,6 +198,37 @@ namespace Xb2.GUI.M.Val.ProcessedData
                 throw new ArgumentException("No [Chart] Control in Groupbox!");
             return (Chart) groupBox2.Controls[0];
         }
+
+        #endregion
+
+        #region 随着处理方法的改变，切换界面上的Chart控件
+
+        /// <summary>
+        /// 更改groupbox1中的Chart控件
+        /// 由于需要使用不同的数据处理方法
+        /// 每种数据处理方法绑定的鼠标事件不相同
+        /// 所以就使用了“切换鼠标事件”的方法来切换
+        /// 不同的数据处理方法
+        /// </summary>
+        /// <param name="chart"></param>
+        private void ChangeChart(Chart chart)
+        {
+            //获取当前Chart的数据源和堆栈，其中数据源用于传递数据，堆栈用于撤销用户操作
+            var dt = GetCurrentChart().GetTable();
+            var stack = GetCurrentChart().GetStack();
+            var list = GetCurrentChart().GetLogger();
+            //然后赋值给目标Chart
+            ChartHelper.BindChartWithData(chart, dt);
+            chart.ContextMenuStrip = contextMenuStrip1;
+            chart.SetStack(stack);
+            chart.SetLogger(list);
+            groupBox1.Controls.Clear();
+            groupBox1.Controls.Add(chart);
+        }
+
+        #endregion
+
+        #region 重做、保存菜单
 
         private void 重做ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -155,7 +262,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
                 FrmSaveProcessedData frmSaveProcessedData = new FrmSaveProcessedData(this.User);
                 frmSaveProcessedData.StartPosition = FormStartPosition.CenterScreen;
                 frmSaveProcessedData.ItemId = _itemId;
-                frmSaveProcessedData.ProcessedDataId = _processedDataDbId;
+                frmSaveProcessedData.ProcessedDataId = _processedDataDatabaseId;
                 frmSaveProcessedData.KIndex = "To be continued...";
                 frmSaveProcessedData.DataTable = dataTable;
                 frmSaveProcessedData.Logger = GetCurrentChart().GetLogger();
@@ -163,79 +270,9 @@ namespace Xb2.GUI.M.Val.ProcessedData
             }
         }
 
-        /// <summary>
-        /// 撤销按钮事件
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button1_Click(object sender, EventArgs e)
-        {
-            if (groupBox1.Controls.Count > 0)
-            {
-                var chart = (Chart) groupBox1.Controls[0];
-                chart.WithDraw();
-            }
-        }
+        #endregion
 
-        /// <summary>
-        /// 选测项
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button2_Click(object sender, EventArgs e)
-        {
-            FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.User);
-            frmSelectMItem.StartPosition = FormStartPosition.CenterScreen;
-            var diagRslt = frmSelectMItem.ShowDialog();
-            if (diagRslt == DialogResult.OK)
-            {
-                var result = frmSelectMItem.Result;
-                if (result.Rows.Count == 0)
-                {
-                    MessageBox.Show("未选择测项！");
-                    return;
-                }
-                if (result.Rows.Count > 1)
-                {
-                    MessageBox.Show("最多选择一个测项");
-                    return;
-                }
-                if (result.Rows.Count == 1)
-                {
-                    var dataRow = result.Rows[0];
-                    this.Text = "生成基础数据-" + dataRow["观测单位"]
-                                + "-" + dataRow["地名"] + "-" + dataRow["方法名"] + "-" + dataRow["测项名"];
-                    //在这里设置了_itemId的值
-                    _itemId = Convert.ToInt32(dataRow["编号"]);
-                    _processedDataDbId = 0;
-                    InitializeChart(_itemId);
-                    Debug.Print("图件加载成功！");
-                }
-                else
-                {
-                    MessageBox.Show("选测项失败！");
-                }
-            }
-        }
-
-        /// <summary>
-        /// 加基础数据
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void button3_Click(object sender, EventArgs e)
-        {
-            FrmShowProcessedDataDb frmShowProcessedDataDb = new FrmShowProcessedDataDb(User);
-            frmShowProcessedDataDb.StartPosition = FormStartPosition.CenterScreen;
-            frmShowProcessedDataDb.Text = string.Format("用户【{0}】的基础数据库", User.ID);
-            var confirm = frmShowProcessedDataDb.ShowDialog();
-            if (confirm == DialogResult.OK)
-            {
-                _itemId = frmShowProcessedDataDb.ItemId;
-                _processedDataDbId = frmShowProcessedDataDb.DbId;
-                InitializeChart(_itemId,_processedDataDbId);
-            }
-        }
+        #region 显示操作记录、撤销按钮
 
         /// <summary>
         /// 操作记录
@@ -253,27 +290,20 @@ namespace Xb2.GUI.M.Val.ProcessedData
         }
 
         /// <summary>
-        /// 更改groupbox1中的Chart控件
-        /// 由于需要使用不同的数据处理方法
-        /// 每种数据处理方法绑定的鼠标事件不相同
-        /// 所以就使用了“切换鼠标事件”的方法来切换
-        /// 不同的数据处理方法
+        /// 撤销按钮事件
         /// </summary>
-        /// <param name="chart"></param>
-        private void ChangeChart(Chart chart)
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void button1_Click(object sender, EventArgs e)
         {
-            //获取当前Chart的数据源和堆栈，其中数据源用于传递数据，堆栈用于撤销用户操作
-            var dt = GetCurrentChart().GetTable();
-            var stack = GetCurrentChart().GetStack();
-            var list = GetCurrentChart().GetLogger();
-            //然后赋值给目标Chart
-            ChartHelper.BindChartWithData(chart, dt);
-            chart.ContextMenuStrip = contextMenuStrip1;
-            chart.SetStack(stack);
-            chart.SetLogger(list);
-            groupBox1.Controls.Clear();
-            groupBox1.Controls.Add(chart);
+            if (groupBox1.Controls.Count > 0)
+            {
+                var chart = (Chart) groupBox1.Controls[0];
+                chart.WithDraw();
+            }
         }
+
+        #endregion
 
         #region 处理方法菜单
 
@@ -612,8 +642,6 @@ namespace Xb2.GUI.M.Val.ProcessedData
 
         #endregion
 
-        #endregion
-
         private void 变符号处理ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (groupBox1.Controls.Count > 0)
@@ -647,14 +675,6 @@ namespace Xb2.GUI.M.Val.ProcessedData
             }
         }
 
-        /// <summary>
-        /// 图解拉格朗日插值
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void testToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
+        #endregion
     }
 }

@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Data;
 using System.Drawing;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace Xb2.GUI.M.Item.ToolWindow
 {
+    /// <summary>
+    /// 字段查询的处理流程
+    /// </summary>
     public partial class FrmShowSelectFields : Form
     {
         /// <summary>

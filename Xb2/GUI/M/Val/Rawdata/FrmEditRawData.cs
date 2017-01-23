@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Data;
-using System.Diagnostics;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using Xb2.Entity;
-using Xb2.GUI.Catalog;
 using Xb2.Utils;
 using Xb2.Utils.Database;
 
@@ -56,11 +53,7 @@ namespace Xb2.GUI.M.Val.Rawdata
             this.textBox3.Text = dataRow["备注2"].ToString();
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
-
+        #region 确定按钮、保存或新建原始数据
         private void button1_Click(object sender, EventArgs e)
         {
             #region 输入验证
@@ -78,51 +71,43 @@ namespace Xb2.GUI.M.Val.Rawdata
             var memo2 = textBox3.Text.GetStringOrDBNull();
             if (this._operation == Operation.Create)
             {
-                var sql = "select * from {0} where 测项编号={1}";
-                sql = string.Format(sql, DbHelper.TnRData(), _itemId);
-                var dt = new DataTable();
-                var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
-                var builder = new MySqlCommandBuilder(adapter);
-                adapter.Fill(dt);
-                var row = dt.NewRow();
-                row["测项编号"] = _itemId;
-                row["观测日期"] = date;
-                row["观测值"] = value;
-                row["备注1"] = memo1;
-                row["备注2"] = memo2;
-                dt.Rows.Add(row);
-                var n = adapter.Update(dt);
-                if (n > 0)
+                var isCreated = DaoObject.CreateRawData(_itemId, date, value, memo1, memo2);
+                if (isCreated)
                 {
                     MessageBox.Show("保存成功！");
                     GetOwner().RefreshRawData(_itemId);
                     this.Close();
+                }
+                else
+                {
+                    MessageBox.Show("新建测项原始数据失败！");
                 }
             }
             if (this._operation == Operation.Edit)
             {
-                var sql = "select * from {0} where 编号={1}";
-                var id = Convert.ToInt32(label2.Text);
-                sql = string.Format(sql, DbHelper.TnRData(), id);
-                Debug.Print(sql);
-                var dt = new DataTable();
-                var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
-                var builder = new MySqlCommandBuilder(adapter);
-                adapter.Fill(dt);
-                var row = dt.Rows[0];
-                row["观测日期"] = date;
-                row["观测值"] = value;
-                row["备注1"] = memo1;
-                row["备注2"] = memo2;
-                var n = adapter.Update(dt);
-                if (n > 0)
+                var dataId = Convert.ToInt32(label2.Text);
+                var isEditSaved = DaoObject.EditSaveRawData(_itemId, dataId, date, value, memo1, memo2);
+                if (isEditSaved)
                 {
                     MessageBox.Show("保存成功！");
                     GetOwner().RefreshRawData(_itemId);
                     this.Close();
                 }
+                else
+                {
+                    MessageBox.Show("保存测项原始数据失败！");
+                }
             }
         }
+        #endregion
+
+        #region 关闭按钮
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        #endregion
 
         private FrmRawDataManage GetOwner()
         {

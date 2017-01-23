@@ -571,13 +571,76 @@ namespace Xb2.Utils.Database
         /// <returns></returns>
         public static DataTable GetRawData(int mitemId)
         {
-            var commandText = string.Format("select 编号,观测日期,观测值 from {0} where 测项编号={1} order by 观测日期",
+            var commandText = string.Format("select * from {0} where 测项编号={1} order by 观测日期",
                 DbHelper.TnRData(), mitemId);
-            Debug.Print(commandText);
+            Logger.Debug(commandText);
             var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
             Logger.Info("查询测项 {0} 的原始数据，共返回 {1} 条观测数据", mitemId, dt.Rows.Count);
-            Logger.Debug(commandText);
             return dt;
+        }
+
+        /// <summary>
+        /// 创建某测项的原始数据
+        /// </summary>
+        /// <param name="itemId">测项编号</param>
+        /// <param name="date">观测日期</param>
+        /// <param name="value">观测值</param>
+        /// <param name="memo1">备注1</param>
+        /// <param name="memo2">备注2</param>
+        /// <returns></returns>
+        public static bool CreateRawData(int itemId, DateTime date, double value, object memo1, object memo2)
+        {
+            var commandText = "select * from {0} where 测项编号={1}";
+            commandText = string.Format(commandText, DbHelper.TnRData(), itemId);
+            var dt = new DataTable();
+            var adapter = new MySqlDataAdapter(commandText, DbHelper.ConnectionString);
+            var builder = new MySqlCommandBuilder(adapter);
+            adapter.Fill(dt);
+            var row = dt.NewRow();
+            row["测项编号"] = itemId;
+            row["观测日期"] = date;
+            row["观测值"] = value;
+            row["备注1"] = memo1;
+            row["备注2"] = memo2;
+            dt.Rows.Add(row);
+            Logger.Debug(commandText);
+            var n = adapter.Update(dt);
+            Logger.Info("新建测项 {0} 的原始数据，Date：{1}，Value：{2}，Memo1：{3}，Memo2：{4}，返回：{5}",
+                itemId, date.ToShortDateString(), value, memo1, memo2, n > 0);
+            return n > 0;
+        }
+
+        /// <summary>
+        /// 更新某测项的原始数据
+        /// </summary>
+        /// <param name="itemId">测项编号，BTW，其实只有原始数据编号就够用了</param>
+        /// <param name="dataId">原始数据编号</param>
+        /// <param name="date">观测日期</param>
+        /// <param name="value">观测值</param>
+        /// <param name="memo1">备注1</param>
+        /// <param name="memo2">备注2</param>
+        /// <returns></returns>
+        public static bool EditSaveRawData(int itemId, int dataId, DateTime date, double value, object memo1,
+            object memo2)
+        {
+            var commandText = "select * from {0} where 编号={1}";
+            var id = dataId;
+            commandText = string.Format(commandText, DbHelper.TnRData(), id);
+            Debug.Print(commandText);
+            var dt = new DataTable();
+            var adapter = new MySqlDataAdapter(commandText, DbHelper.ConnectionString);
+            var builder = new MySqlCommandBuilder(adapter);
+            adapter.Fill(dt);
+            var row = dt.Rows[0];
+            row["观测日期"] = date;
+            row["观测值"] = value;
+            row["备注1"] = memo1;
+            row["备注2"] = memo2;
+            var n = adapter.Update(dt);
+            Logger.Debug(commandText);
+            Logger.Info("更新编号为 {0} 的原始数据，Date：{1}，Value：{2}，Memo1：{3}，Memo2：{4}，返回：{5}",
+                dataId, date.ToShortDateString(), value, memo1, memo2, n > 0);
+            return n > 0;
         }
 
         #endregion

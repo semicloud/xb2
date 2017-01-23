@@ -1,18 +1,33 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 using NLog;
+using Xb2.Algorithms.Core.Entity;
 using Xb2.Entity.Business;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
+using Xb2.TestAndDemos;
 
-namespace Xb2.TestAndDemos
+namespace Xb2.GUI.Input
 {
-    public partial class FrmXQSInput : FrmBase
+    public partial class FrmNZBInput : FrmBase
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
+        private List<NZBInput> _nzbInputs;
+
+        /// <summary>
+        /// 获取消趋势输入
+        /// </summary>
+        /// <returns></returns>
+        public List<XQSInput> GetNzbInputs()
+        {
+            throw new NotImplementedException();
+        }
+
         public int ItemId { get; set; }
-        public FrmXQSInput(XbUser user)
+
+        public FrmNZBInput(XbUser user)
         {
             InitializeComponent();
             this.User = user;
@@ -28,11 +43,6 @@ namespace Xb2.TestAndDemos
             if (dialogResult == DialogResult.OK)
             {
                 var dt = frmSelectMItem.Result;
-                if (dt.Rows.Count > 1)
-                {
-                    MessageBox.Show("只能选择一个测项，请重新选择！");
-                    return;
-                }
                 this.ItemId = Convert.ToInt32(dt.Rows[0]["编号"]);
                 Logger.Info("用户选择了测项 {0} ", this.ItemId);
                 button1.Text = "测项编号：" + ItemId;
@@ -53,9 +63,30 @@ namespace Xb2.TestAndDemos
 
         private void button2_Click(object sender, EventArgs e)
         {
-            
+
         }
         
 
+    }
+
+    public class NZBInput
+    {
+        // 选择的测项编号
+        public int ItemId { get; set; }
+
+        // 基础数据库编号
+        public int DatabaseId { get; set; }
+
+        // 用户编号
+        public int UserId { get; set; }
+
+        // 观测数据
+        public DateValueList InputData { get; set; }
+
+        // 窗长
+        public int WLen { get; set; }
+
+        // 步长
+        public int SLen { get; set; }
     }
 }
