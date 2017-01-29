@@ -1,10 +1,13 @@
 ﻿using System.Windows.Forms;
 
-namespace Xb2.TestAndDemos
+namespace Xb2.GUI.Input
 {
-    public partial class FrmInput5 : Form
+    /// <summary>
+    /// 速率合成输入框
+    /// </summary>
+    public partial class FrmSLHCInput : Form
     {
-        public FrmInput5()
+        public FrmSLHCInput()
         {
             InitializeComponent();
         }

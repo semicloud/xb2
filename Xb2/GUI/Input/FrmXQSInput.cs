@@ -46,42 +46,55 @@ namespace Xb2.GUI.Input
                 this.ItemId = Convert.ToInt32(dt.Rows[0]["编号"]);
                 Logger.Info("用户选择了测项 {0} ", this.ItemId);
                 button1.Text = "测项编号：" + ItemId;
+
+                if (this.ItemId == 0)
+                {
+                    MessageBox.Show("没有选择测项！");
+                    return;
+                }
+                Form1 form1 = new Form1(this.User, this.ItemId,
+                    dateTimePicker1.Value, dateTimePicker2.Value);
+                form1.ShowDialog();
             }
         }
 
         private void dateTimePicker2_Leave(object sender, EventArgs e)
         {
-            if (this.ItemId == 0)
-            {
-                MessageBox.Show("没有选择测项！");
-                return;
-            }
-            Form1 form1 = new Form1(this.User, this.ItemId, 
-                dateTimePicker1.Value, dateTimePicker2.Value);
-            form1.ShowDialog();
+
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
 
         }
-        
 
+        private void button3_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 
     // 消趋势算法输入
     public class XQSInput
     {
-        // 选择的测项编号
+        /// <summary>
+        /// 用户编号
+        /// </summary>
+        public int UserId { get; set; }
+        
+        /// <summary>
+        /// 选择的测项编号
+        /// </summary>
         public int ItemId { get; set; }
 
-        // 基础数据库编号
+        /// <summary>
+        /// 基础数据库编号，-1表示原始数据，非0正数表示基础数据库的编号
+        /// </summary>
         public int DatabaseId { get; set; }
 
-        // 用户编号
-        public int UserId { get; set; }
-
-        // 观测数据
+        /// <summary>
+        /// 观测数据，或者来自原始数据，或者来自基础数据
+        /// </summary>
         public DateValueList InputData { get; set; }
 
         // 窗长
@@ -89,5 +102,20 @@ namespace Xb2.GUI.Input
 
         // 步长
         public int SLen { get; set; }
+
+        /// <summary>
+        /// 观测周期
+        /// </summary>
+        public int Freq { get; set; }
+
+        /// <summary>
+        /// 观测周期内的数据格式化方法
+        /// </summary>
+        public FreqDataFormat FreqDataFormat { get; set; }
+    }
+
+    public class XSQOutput
+    {
+        public XQSInput Input { get; set; }
     }
 }

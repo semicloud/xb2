@@ -84,6 +84,7 @@
     <Compile Include="Algorithms\Core\Entity\AbstractInput.cs" />
     <Compile Include="Algorithms\Core\Entity\CalcDescription.cs" />
     <Compile Include="Algorithms\Core\Entity\CalcResult.cs" />
+    <Compile Include="Algorithms\Core\Entity\FreqDataFormat.cs" />
     <Compile Include="Algorithms\Core\Entity\DateRange.cs" />
     <Compile Include="Algorithms\Core\Entity\DateUnit.cs" />
     <Compile Include="Algorithms\Core\Entity\DateValue.cs" />
@@ -243,11 +244,35 @@
     <Compile Include="GUI\Controls\RectQuery.designer.cs">
       <DependentUpon>RectQuery.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Input\FrmDCHZLInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\FrmDCHZLInput.Designer.cs">
+      <DependentUpon>FrmDCHZLInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\FrmSLHCInput.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\FrmSLHCInput.Designer.cs">
+      <DependentUpon>FrmSLHCInput.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Input\FrmNZBInput.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\Input\FrmNZBInput.Designer.cs">
       <DependentUpon>FrmNZBInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\Tool\FrmToolShowFreq.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Tool\FrmToolShowFreq.Designer.cs">
+      <DependentUpon>FrmToolShowFreq.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\Tool\FrmToolShowItemWeights.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Tool\FrmToolShowItemWeights.Designer.cs">
+      <DependentUpon>FrmToolShowItemWeights.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Input\FrmXQSInput.cs">
       <SubType>Form</SubType>
@@ -529,8 +554,20 @@
     <EmbeddedResource Include="GUI\Controls\RectQuery.resx">
       <DependentUpon>RectQuery.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\FrmDCHZLInput.resx">
+      <DependentUpon>FrmDCHZLInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\FrmSLHCInput.resx">
+      <DependentUpon>FrmSLHCInput.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\FrmNZBInput.resx">
       <DependentUpon>FrmNZBInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\Tool\FrmToolShowFreq.resx">
+      <DependentUpon>FrmToolShowFreq.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\Tool\FrmToolShowItemWeights.resx">
+      <DependentUpon>FrmToolShowItemWeights.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\FrmXQSInput.resx">
       <DependentUpon>FrmXQSInput.cs</DependentUpon>

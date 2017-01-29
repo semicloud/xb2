@@ -182,7 +182,7 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(247, 35);
             this.label2.TabIndex = 1;
-            this.label2.Text = "消趋势";
+            this.label2.Text = "年周变";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // label1
