@@ -150,14 +150,14 @@
             // 新建测项ToolStripMenuItem
             // 
             this.新建测项ToolStripMenuItem.Name = "新建测项ToolStripMenuItem";
-            this.新建测项ToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.新建测项ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.新建测项ToolStripMenuItem.Text = "新建测项";
             this.新建测项ToolStripMenuItem.Click += new System.EventHandler(this.新建测项ToolStripMenuItem_Click);
             // 
             // 管理测项ToolStripMenuItem
             // 
             this.管理测项ToolStripMenuItem.Name = "管理测项ToolStripMenuItem";
-            this.管理测项ToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.管理测项ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.管理测项ToolStripMenuItem.Text = "管理测项";
             this.管理测项ToolStripMenuItem.Click += new System.EventHandler(this.管理测项ToolStripMenuItem_Click);
             // 

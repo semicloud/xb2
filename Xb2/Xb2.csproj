@@ -90,6 +90,10 @@
     <Compile Include="Algorithms\Core\Entity\DateValue.cs" />
     <Compile Include="Algorithms\Core\Entity\DateValueList.cs" />
     <Compile Include="Algorithms\Core\Entity\Window.cs" />
+    <Compile Include="Algorithms\Core\Input\BaseInput.cs" />
+    <Compile Include="Algorithms\Core\Input\NZBInput.cs" />
+    <Compile Include="Algorithms\Core\Input\XQSInput.cs" />
+    <Compile Include="Algorithms\Core\Input\XQSOutput.cs" />
     <Compile Include="Algorithms\Core\Methods\AbnormalAmplification\Xb2AbAmplification.cs" />
     <Compile Include="Algorithms\Core\Methods\AbnormalAmplification\Xb2AbAmplificationInput.cs" />
     <Compile Include="Algorithms\Core\Methods\CoreMethodUtils.cs" />
@@ -232,6 +236,12 @@
     <Compile Include="GUI\Controls\CtnlMFieldSelect.designer.cs">
       <DependentUpon>CtnlMFieldSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Controls\SItemConfigControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="GUI\Controls\SItemConfigControl.Designer.cs">
+      <DependentUpon>SItemConfigControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Controls\MItemInput.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -249,6 +259,18 @@
     </Compile>
     <Compile Include="GUI\Input\FrmDCHZLInput.Designer.cs">
       <DependentUpon>FrmDCHZLInput.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\FrmInput4191.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\FrmInput4191.Designer.cs">
+      <DependentUpon>FrmInput4191.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\FrmInputXQS.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\FrmInputXQS.Designer.cs">
+      <DependentUpon>FrmInputXQS.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Input\FrmSLHCInput.cs">
       <SubType>Form</SubType>
@@ -548,6 +570,9 @@
     <EmbeddedResource Include="GUI\Controls\CtnlMFieldSelect.resx">
       <DependentUpon>CtnlMFieldSelect.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Controls\SItemConfigControl.resx">
+      <DependentUpon>SItemConfigControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Controls\MItemInput.resx">
       <DependentUpon>MItemInput.cs</DependentUpon>
     </EmbeddedResource>
@@ -556,6 +581,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\FrmDCHZLInput.resx">
       <DependentUpon>FrmDCHZLInput.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\FrmInput4191.resx">
+      <DependentUpon>FrmInput4191.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\FrmInputXQS.resx">
+      <DependentUpon>FrmInputXQS.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\FrmSLHCInput.resx">
       <DependentUpon>FrmSLHCInput.cs</DependentUpon>

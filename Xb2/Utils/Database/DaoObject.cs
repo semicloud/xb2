@@ -554,6 +554,29 @@ namespace Xb2.Utils.Database
 
         #region 测项相关操作
 
+        /// <summary>
+        /// 查询测项编号，返回测项的字符串表示：
+        /// 测项编号,观测单位,地名,方法名,测项名
+        /// </summary>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        public static string GetMItemDescription(int itemId)
+        {
+            var commandText = "select 编号,观测单位,地名,方法名,测项名 from {0} where 编号={1}";
+            commandText = string.Format(commandText, DbHelper.TnMItem(), itemId);
+            Logger.Debug(commandText);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            if (dt.Rows.Count < 1)
+            {
+                Logger.Error("没有查询到编号为 {0} 的测项信息！", itemId);
+                return "错误！";
+            }
+            var description = dt.Rows[0]["编号"].ToString() + dt.Rows[0]["观测单位"]
+                              + dt.Rows[0]["地名"] + dt.Rows[0]["方法名"] + dt.Rows[0]["测项名"];
+            Logger.Info("测项 {0} 的描述：{1}", itemId, description);
+            return description;
+        }
+
         public static bool SaveMItem()
         {
             throw new NotImplementedException();
@@ -644,7 +667,6 @@ namespace Xb2.Utils.Database
         }
 
         #endregion
-
 
         #region 基础数据库相关
 

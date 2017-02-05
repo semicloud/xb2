@@ -1,6 +1,13 @@
-/Xb2/bin
-/Xb2/obj
+/Xb2
+/bin
+
+/Xb2
+/obj
+
 /packages
+
 *.dll
+
 *.exe
+
 *.suo

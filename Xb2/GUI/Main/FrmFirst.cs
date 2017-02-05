@@ -145,8 +145,8 @@ namespace Xb2.GUI.Main
             //    frmDisplayCharts.AddChart(regression.GetResidualLine());
             //    frmDisplayCharts.AddChart(regression.GetRawLine());
             //}
-            FrmXQSInput frmXqsInput = new FrmXQSInput(this.User);
-            frmXqsInput.ShowDialog();
+            FrmInputXQS frmInputXqs = new FrmInputXQS(this.User);
+            frmInputXqs.ShowDialog();
         }
 
         private FrmDisplayCharts OpenChartForm()

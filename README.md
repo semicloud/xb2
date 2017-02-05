@@ -64,3 +64,9 @@ cross fault data tool for national earthquake response support service of China
 #2017-1-23
 1. 基本完成了软件的重构工作，除了基础数据处理部分外，其他地方都比较完善了；
 2. 目前正在完成核心算法输入接口工作；
+
+#2017-2-5
+1. 完成了DaoObject类中获取测项描述的一个方法；
+2. 重构了输入接口的界面，不再使用tablelayoutpanel控件，丫太不好用了，经常出现莫名其妙的现象；
+3. 对于消趋势算法“多测项选取，单测项执行”设计完成了FrmInput4191类，该类即吴老师文档中描述的419(1)函数；
+4. 重构了输入类代码，提出了公共的基类BaseInput，将算法的输入输出类放在了Algorithms包下；

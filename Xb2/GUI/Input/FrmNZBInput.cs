@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 using NLog;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Algorithms.Core.Input;
 using Xb2.Entity.Business;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
@@ -67,26 +68,5 @@ namespace Xb2.GUI.Input
         }
         
 
-    }
-
-    public class NZBInput
-    {
-        // 选择的测项编号
-        public int ItemId { get; set; }
-
-        // 基础数据库编号
-        public int DatabaseId { get; set; }
-
-        // 用户编号
-        public int UserId { get; set; }
-
-        // 观测数据
-        public DateValueList InputData { get; set; }
-
-        // 窗长
-        public int WLen { get; set; }
-
-        // 步长
-        public int SLen { get; set; }
     }
 }
