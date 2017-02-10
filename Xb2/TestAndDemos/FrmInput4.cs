@@ -14,7 +14,7 @@ namespace Xb2.TestAndDemos
         public int ItemId { get; set; }
         public FrmXQSInput(XbUser user)
         {
-            InitializeComponent();
+            InitializeComponent(); 
             this.User = user;
         }
 
