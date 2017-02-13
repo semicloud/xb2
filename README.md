@@ -70,3 +70,6 @@ cross fault data tool for national earthquake response support service of China
 2. 重构了输入接口的界面，不再使用tablelayoutpanel控件，丫太不好用了，经常出现莫名其妙的现象；
 3. 对于消趋势算法“多测项选取，单测项执行”设计完成了FrmInput4191类，该类即吴老师文档中描述的419(1)函数；
 4. 重构了输入类代码，提出了公共的基类BaseInput，将算法的输入输出类放在了Algorithms包下；
+
+#2017-2-13
+1. 初步完成了4191接口的开发；Winform真蛋疼；

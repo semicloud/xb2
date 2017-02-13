@@ -671,6 +671,39 @@ namespace Xb2.Utils.Database
         #region 基础数据库相关
 
         /// <summary>
+        /// 获得某用户某测项的默认基础数据库编号
+        /// 如果没有默认基础数据库，就使用原始数据库，编号是-1
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="itemId"></param>
+        /// <returns></returns>
+        public static int GetDefaultProcessedDatabaseId(int userId, int itemId)
+        {
+            var databaseId = int.MinValue;
+            var commandText = "select 编号 from {0} where 用户编号={1} and 测项编号={2} and 是否默认=1";
+            commandText = String.Format(commandText, DbHelper.TnProcessedDb(), userId, itemId);
+            Logger.Debug(commandText);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            if (dt.Rows.Count == 1)
+            {
+                databaseId = Convert.ToInt32(dt.Rows[0]["编号"]);
+                Logger.Info("查询用户 {0} 测项编号为 {1} 的默认基础数据库编号为 {2}", userId, itemId, databaseId);
+            }
+            else
+            {
+                Debug.Assert(dt.Rows.Count==0,"dt.Rows.Count should be 0.");
+                databaseId = -1;
+                Logger.Info("未查询到用户 {0} 在测项 {1} 中有基础数据，使用原始数据", userId, itemId);
+            }
+            return databaseId;
+        }
+
+        public static int GetDefaultFreq(int userId, int itemId, int databaseId)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// 根据基础数据库编号获取基础数据
         /// </summary>
         /// <param name="databaseId">基础数据库编号</param>

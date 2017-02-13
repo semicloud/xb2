@@ -91,6 +91,7 @@
     <Compile Include="Algorithms\Core\Entity\DateValueList.cs" />
     <Compile Include="Algorithms\Core\Entity\Window.cs" />
     <Compile Include="Algorithms\Core\Input\BaseInput.cs" />
+    <Compile Include="Algorithms\Core\Input\InterfaceInput.cs" />
     <Compile Include="Algorithms\Core\Input\NZBInput.cs" />
     <Compile Include="Algorithms\Core\Input\XQSInput.cs" />
     <Compile Include="Algorithms\Core\Input\XQSOutput.cs" />
@@ -271,6 +272,12 @@
     </Compile>
     <Compile Include="GUI\Input\FrmInputXQS.Designer.cs">
       <DependentUpon>FrmInputXQS.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\FrmInterface4191.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\FrmInterface4191.Designer.cs">
+      <DependentUpon>FrmInterface4191.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Input\FrmSLHCInput.cs">
       <SubType>Form</SubType>
@@ -587,6 +594,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\FrmInputXQS.resx">
       <DependentUpon>FrmInputXQS.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\FrmInterface4191.resx">
+      <DependentUpon>FrmInterface4191.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\FrmSLHCInput.resx">
       <DependentUpon>FrmSLHCInput.cs</DependentUpon>

@@ -42,6 +42,28 @@ namespace Xb2.Utils
         }
 
         /// <summary>
+        /// 由K指数确定观测周期
+        /// </summary>
+        /// <param name="kIndexes"></param>
+        /// <returns></returns>
+        public static int GetFreq(double[] kIndexes)
+        {
+            var ans = 0;
+            var freq = new[] {1, 2, 3, 6, 12};
+            var indexFirst = kIndexes.ToList().IndexOf(1);
+            if (indexFirst == -1)
+            {
+                ans =  12;
+            }
+            else
+            {
+                ans = freq[indexFirst];
+            }
+            Logger.Info("根据K指数计算观测周期：" + String.Join(",", kIndexes) + "，周期为：" + ans);
+            return ans;
+        }
+
+        /// <summary>
         /// 计算数据的K指数
         /// </summary>
         /// <param name="list">观测数据</param>

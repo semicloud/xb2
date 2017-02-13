@@ -20,6 +20,10 @@
         /// <summary>
         /// 等间距数据生成
         /// </summary>
-        FreqEqual
+        FreqEqual,
+        /// <summary>
+        /// 观测周期内一值化+观测周期内不缺数
+        /// </summary>
+        FreqAveragePlusFreqFullData
     }
 }
