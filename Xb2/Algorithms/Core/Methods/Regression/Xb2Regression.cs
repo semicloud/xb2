@@ -27,12 +27,12 @@ namespace Xb2.Algorithms.Core.Methods.Regression
         {
             this._input = input;
             //构造输入向量
-            this._x = Vector.Build.Dense(_input.List.Select(d => d.Date.ToOADate()).ToArray());
+            this._x = Vector.Build.Dense(_input.InputData.Select(d => d.Date.ToOADate()).ToArray());
             //构造输出向量
-            this._y = Vector.Build.Dense(_input.List.Select(d => d.Value).ToArray());
+            this._y = Vector.Build.Dense(_input.InputData.Select(d => d.Value).ToArray());
             //y_hat
             this._yCap = _x.Map(Fit.LineFunc(_x.ToArray(), _y.ToArray()));
-            this._dates = _input.List.Select(p => p.Date).ToList();
+            this._dates = _input.InputData.Select(p => p.Date).ToList();
             Debug.Print("Linear Regression:");
             Debug.Print("_x:" + String.Join(",",_x));
             Debug.Print("_y:" + String.Join(",", _y));
@@ -42,8 +42,8 @@ namespace Xb2.Algorithms.Core.Methods.Regression
         public CalcResult GetRawLine()
         {
             CalcResult calcResult = new CalcResult();
-            calcResult.NumericalTable = _input.List.ToDataTable();
-            calcResult.Title = _input.MItemStr.Split('，')[1] + "-基础数据";
+            calcResult.NumericalTable = _input.InputData.ToDataTable();
+            calcResult.Title = _input.ItemStr.Split('，')[1] + "-基础数据";
             return calcResult;
         }
 
@@ -51,7 +51,7 @@ namespace Xb2.Algorithms.Core.Methods.Regression
         {
             CalcResult calcResult = new CalcResult();
             calcResult.NumericalTable = DateValueList.FromArrays(_dates, _yCap.ToList()).ToDataTable();
-            calcResult.Title = _input.MItemStr.Split('，')[1] + "-拟合线" + "\n\n" + GetFittingLineFormula();
+            calcResult.Title = _input.ItemStr.Split('，')[1] + "-拟合线" + "\n\n" + GetFittingLineFormula();
             return calcResult;
         }
 
@@ -59,7 +59,7 @@ namespace Xb2.Algorithms.Core.Methods.Regression
         {
             CalcResult calcResult = new CalcResult();
             calcResult.NumericalTable = DateValueList.FromArrays(_dates, (_y - _yCap).ToList()).ToDataTable();
-            calcResult.Title = _input.MItemStr.Split('，')[1] + "-残差线";
+            calcResult.Title = _input.ItemStr.Split('，')[1] + "-残差线";
             return calcResult;
         }
 
@@ -114,7 +114,7 @@ namespace Xb2.Algorithms.Core.Methods.Regression
             Console.WriteLine(String.Join(",", dateValues.Select(p => p.Value)));
             //25659,25689,25720,25750,25781,25812,25842,25873,25903,25934
             //-2203.29,-2203.2,-2203.21,-2203.19,-2203.12,-2203.02,-2203.11,-2203.1,-2203.1,-2203.09
-            input.List = dateValues;
+            input.InputData = dateValues;
             var regression = new Xb2Regression(input);
             Console.WriteLine("R:" + regression.GetR());
             Console.WriteLine("a={0},b={1}", regression.GetCoff().Item1, regression.GetCoff().Item2);

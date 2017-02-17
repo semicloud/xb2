@@ -73,3 +73,6 @@ cross fault data tool for national earthquake response support service of China
 
 #2017-2-13
 1. 初步完成了4191接口的开发；Winform真蛋疼；
+
+#2017-2-17
+1. 消趋势算法已经集成，下一步是重构相关代码；然后集成其他算法；

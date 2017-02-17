@@ -36,9 +36,8 @@ namespace Xb2.GUI.Computing.Input
         private void button1_Click(object sender, EventArgs e)
         {
             flowLayoutPanel1.Controls.Clear();//清理
-            this.RegresInput.MItemId = 0;
+            this.RegresInput.ItemId = 0;
             this.RegresInput.DatabaseId = 0;
-            this.RegresInput.DatabaseName = string.Empty;
 
             FrmSelectMItem frmSelectMItem = new FrmSelectMItem(this.User)
             {
@@ -54,18 +53,18 @@ namespace Xb2.GUI.Computing.Input
                     return;
                 }
                 //获取测项编号
-                this.RegresInput.MItemId = Convert.ToInt32(dt.Rows[0]["编号"]);
+                this.RegresInput.ItemId = Convert.ToInt32(dt.Rows[0]["编号"]);
                 //注意下面这个字符串中的全角逗号，在算法中要使用这个全角逗号来获取测项字符串
-                label3.Text = string.Format("测项编号:{0}，{1}-{2}-{3}-{4}", RegresInput.MItemId,
+                label3.Text = string.Format("测项编号:{0}，{1}-{2}-{3}-{4}", RegresInput.ItemId,
                     dt.Rows[0]["观测单位"], dt.Rows[0]["地名"], dt.Rows[0]["方法名"], dt.Rows[0]["测项名"]);
-                Debug.Print("测项编号：" + RegresInput.MItemId);
+                Debug.Print("测项编号：" + RegresInput.ItemId);
                 //根据测项编号和用户编号查询基础数据库信息
                 var sql = string.Format("select 编号,库名,是否默认 from {0} where 用户编号={1} and 测项编号={2}", DbHelper.TnProcessedDb(),
-                    this.User.ID, this.RegresInput.MItemId);
+                    this.User.ID, this.RegresInput.ItemId);
                 Debug.Print("根据测项编号和用户编号查询基础数据库信息：\n" + sql);
                 dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
                 bool hasDefaultDb = dt.AsEnumerable().Any(r => r.Field<bool>("是否默认"));
-                Debug.Print("用户{0}，测项{1}是否有默认基础数据库？{2}", this.User.ID, this.RegresInput.MItemId, hasDefaultDb);
+                Debug.Print("用户{0}，测项{1}是否有默认基础数据库？{2}", this.User.ID, this.RegresInput.ItemId, hasDefaultDb);
                 //将原始数据加到基础数据里
                 var dr = dt.NewRow();
                 dr["库名"] = "原始数据";
@@ -98,13 +97,10 @@ namespace Xb2.GUI.Computing.Input
                 String[] strs = rb.Text.Split(',');
                 //设置基础数据库ID，基础数据库名称和测项字符串
                 this.RegresInput.DatabaseId = Convert.ToInt32(strs[0]);
-                this.RegresInput.DatabaseName = strs[1];
-                this.RegresInput.MItemStr = label3.Text;
-                Debug.Print("选定的编号：{0}，基础数据库名称：{1}", this.RegresInput.DatabaseId, this.RegresInput.DatabaseName);
                 var sql = "select min(观测日期) as s,max(观测日期) as t from {0} where {1}={2}";
                 if (this.RegresInput.DatabaseId == -1)
                 {
-                    sql = string.Format(sql, DbHelper.TnRData(), "测项编号", this.RegresInput.MItemId);
+                    sql = string.Format(sql, DbHelper.TnRData(), "测项编号", this.RegresInput.ItemId);
                     Debug.Print("从原始数据中查询日期：" + sql);
                 }
                 else
@@ -126,7 +122,7 @@ namespace Xb2.GUI.Computing.Input
             var sql = "select 观测日期,观测值 from {0} where {1}={2} order by 观测日期";
             if (this.RegresInput.DatabaseId == -1)
             {
-                sql = string.Format(sql, DbHelper.TnRData(), "测项编号", this.RegresInput.MItemId);
+                sql = string.Format(sql, DbHelper.TnRData(), "测项编号", this.RegresInput.ItemId);
                 Debug.Print("从原始数据中查询数据：" + sql);
             }
             else
@@ -139,7 +135,7 @@ namespace Xb2.GUI.Computing.Input
             //按照开始日期和结束日期截取数据
             var dateValueList = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0].RetrieveDateValues();
             var dateRange = new DateRange(this.RegresInput.Start, this.RegresInput.End);
-            this.RegresInput.List = dateValueList.Between(dateRange);
+            this.RegresInput.InputData = dateValueList.Between(dateRange);
             //下一步就是调用FrmDisplayChart中的方法来绘制图形
             this.DialogResult = DialogResult.OK;
             this.Close();

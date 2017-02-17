@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using NLog;
 using Xb2.Algorithms.Core.Entity;
 using Xb2.Algorithms.Core.Input;
+using Xb2.Algorithms.Core.Methods.Regression;
 using Xb2.Entity.Business;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
@@ -16,13 +17,13 @@ namespace Xb2.GUI.Input
     {
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-        private List<XQSInput> _xqsInputs;
+        private List<Xb2RegressionInput> _xqsInputs;
 
         /// <summary>
         /// 获取消趋势输入
         /// </summary>
         /// <returns></returns>
-        public List<XQSInput> GetXqsInputs()
+        public List<Xb2RegressionInput> GetXqsInputs()
         {
             throw new NotImplementedException();
         }

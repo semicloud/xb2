@@ -6,7 +6,6 @@ using System.Windows.Forms;
 using Itenso.TimePeriod;
 using MySql.Data.MySqlClient;
 using NLog;
-using NUnit.Framework;
 
 namespace Xb2.Utils.Database
 {
@@ -571,8 +570,8 @@ namespace Xb2.Utils.Database
                 Logger.Error("没有查询到编号为 {0} 的测项信息！", itemId);
                 return "错误！";
             }
-            var description = dt.Rows[0]["编号"].ToString() + dt.Rows[0]["观测单位"]
-                              + dt.Rows[0]["地名"] + dt.Rows[0]["方法名"] + dt.Rows[0]["测项名"];
+            var description = String.Format("{0}，{1}，{2}，{3}，{4}", dt.Rows[0]["编号"].ToString(), dt.Rows[0]["观测单位"],
+                dt.Rows[0]["地名"], dt.Rows[0]["方法名"], dt.Rows[0]["测项名"]);
             Logger.Info("测项 {0} 的描述：{1}", itemId, description);
             return description;
         }
@@ -701,6 +700,18 @@ namespace Xb2.Utils.Database
         public static int GetDefaultFreq(int userId, int itemId, int databaseId)
         {
             throw new NotImplementedException();
+        }
+
+
+        /// <summary>
+        /// 获取参与计算的数据
+        /// </summary>
+        /// <param name="itemId">测项编号</param>
+        /// <param name="databaseId">基础数据库编号，若基础数据库取-1，则取原始数据库数据</param>
+        /// <returns></returns>
+        public static DataTable GetData(int itemId, int databaseId)
+        {
+            return databaseId != -1 ? GetProcessedData(databaseId) : GetRawData(itemId);
         }
 
         /// <summary>

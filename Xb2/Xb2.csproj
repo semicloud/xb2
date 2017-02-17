@@ -90,10 +90,8 @@
     <Compile Include="Algorithms\Core\Entity\DateValue.cs" />
     <Compile Include="Algorithms\Core\Entity\DateValueList.cs" />
     <Compile Include="Algorithms\Core\Entity\Window.cs" />
-    <Compile Include="Algorithms\Core\Input\BaseInput.cs" />
     <Compile Include="Algorithms\Core\Input\InterfaceInput.cs" />
     <Compile Include="Algorithms\Core\Input\NZBInput.cs" />
-    <Compile Include="Algorithms\Core\Input\XQSInput.cs" />
     <Compile Include="Algorithms\Core\Input\XQSOutput.cs" />
     <Compile Include="Algorithms\Core\Methods\AbnormalAmplification\Xb2AbAmplification.cs" />
     <Compile Include="Algorithms\Core\Methods\AbnormalAmplification\Xb2AbAmplificationInput.cs" />

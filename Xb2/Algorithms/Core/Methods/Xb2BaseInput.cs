@@ -27,6 +27,10 @@ namespace Xb2.Algorithms.Core.Methods
         /// </summary>
         public int WLen { get; set; }
         /// <summary>
+        /// 测项描述字符串
+        /// </summary>
+        public String ItemStr { get; set; }
+        /// <summary>
         /// 步长
         /// </summary>
         public int SLen { get; set; }
@@ -34,6 +38,26 @@ namespace Xb2.Algorithms.Core.Methods
         /// 时间间隔
         /// </summary>
         public int Delta { get; set; }
+
+        /// <summary>
+        /// 用户编号
+        /// </summary>
+        public int UserId { get; set; }
+
+        /// <summary>
+        /// 选择的测项编号
+        /// </summary>
+        public int ItemId { get; set; }
+
+        /// <summary>
+        /// 观测周期
+        /// </summary>
+        public int Freq { get; set; }
+
+        /// <summary>
+        /// 基础数据库编号，-1表示原始数据，非0正数表示基础数据库的编号
+        /// </summary>
+        public int DatabaseId { get; set; }
 
         /// <summary>
         /// 获取第一个计算位置

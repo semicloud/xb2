@@ -15,30 +15,17 @@ namespace Xb2.Algorithms.Core.Methods.Regression
     public class Xb2RegressionInput : Xb2BaseInput
     {
         /// <summary>
-        /// 测值序列
+        /// 观测数据，或者来自原始数据，或者来自基础数据
         /// </summary>
-        public DateValueList List { get; set; }
+        public DateValueList InputData { get; set; }
 
         /// <summary>
-        /// 测项编号
+        /// 观测周期内的数据格式化方法
+        /// 
         /// </summary>
-        public int MItemId { get; set; }
+        public FreqDataFormat FreqDataFormat { get; set; }
 
-        /// <summary>
-        /// 测项的字符串表示，观测单位-地名-测项名-方法名-（算法处理名）
-        /// </summary>
-        public string MItemStr { get; set; }
-
-        /// <summary>
-        /// 基础数据库编号
-        /// </summary>
-        public int DatabaseId { get; set; }
-
-        /// <summary>
-        /// 基础数据库名称
-        /// </summary>
-        public string DatabaseName { get; set; }
-
+        
         /// <summary>
         /// 置信因子
         /// </summary>

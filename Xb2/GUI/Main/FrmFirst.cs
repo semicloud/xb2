@@ -122,7 +122,7 @@ namespace Xb2.GUI.Main
                     calcResult.NumericalTable = DateValueList.FromRawData(id).ToDataTable();
                     calcResults.Add(calcResult);
                 }
-                var frmDisplayCharts = OpenChartForm();
+                var frmDisplayCharts = GetChartForm();
                 foreach (var calcResult in calcResults)
                 {
                     frmDisplayCharts.AddChart(calcResult);
@@ -140,16 +140,16 @@ namespace Xb2.GUI.Main
             //{
             //    var input = frmSingleInput.RegresInput;
             //    Xb2Regression regression = new Xb2Regression(input);
-            //    var frmDisplayCharts = OpenChartForm();
+            //    var frmDisplayCharts = GetChartForm();
             //    frmDisplayCharts.AddChart(regression.GetFittingLine());
             //    frmDisplayCharts.AddChart(regression.GetResidualLine());
             //    frmDisplayCharts.AddChart(regression.GetRawLine());
             //}
-            FrmInputXQS frmInputXqs = new FrmInputXQS(this.User);
-            frmInputXqs.ShowDialog();
+            FrmInputXQS frmInputXqs = new FrmInputXQS(this.User) {MdiParent = this};
+            frmInputXqs.Show();
         }
 
-        private FrmDisplayCharts OpenChartForm()
+        public FrmDisplayCharts GetChartForm()
         {
             var title = "分幅图";
             var mdiChildrenTitles = this.MdiChildren.Select(f => f.Text);

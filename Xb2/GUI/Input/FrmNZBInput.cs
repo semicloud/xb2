@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using NLog;
 using Xb2.Algorithms.Core.Entity;
 using Xb2.Algorithms.Core.Input;
+using Xb2.Algorithms.Core.Methods.Regression;
 using Xb2.Entity.Business;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
@@ -21,7 +22,7 @@ namespace Xb2.GUI.Input
         /// 获取消趋势输入
         /// </summary>
         /// <returns></returns>
-        public List<XQSInput> GetNzbInputs()
+        public List<Xb2RegressionInput> GetNzbInputs()
         {
             throw new NotImplementedException();
         }
