@@ -261,21 +261,23 @@ namespace Xb2.GUI.Computing
                 var oldAxisXIntervals = chart.ChartAreas[0].AxisX.Interval;
                 var oldSeriesBorderWidth = chart.Series[0].BorderWidth;
 
-                chart.Size = new Size(chart.Width*times, chart.Height*times);
+                chart.Size = new Size(chart.Width * times, chart.Height * times);
                 chart.BorderDashStyle = ChartDashStyle.NotSet;
-                chart.Titles[0].Font = new Font(oldTitleFont.Name, oldTitleFont.Size*times);
-                chart.ChartAreas[0].AxisX.TitleFont = new Font(oldAxisTitleFont.Name, oldAxisTitleFont.Size*times);
-                chart.ChartAreas[0].AxisY.TitleFont = new Font(oldAxisTitleFont.Name, oldAxisTitleFont.Size*times);
-                chart.ChartAreas[0].AxisX.LabelStyle.Font = new Font(oldAxisLabelFont.Name, oldAxisLabelFont.Size*times);
-                chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font(oldAxisLabelFont.Name, oldAxisLabelFont.Size*times);
-                chart.ChartAreas[0].AxisX.LineWidth = oldAxisLineWidth*times;
-                chart.ChartAreas[0].AxisY.LineWidth = oldAxisLineWidth*times;
-                chart.ChartAreas[0].AxisX.MajorTickMark.LineWidth = oldAxisTickMarkLineWidth*times;
-                chart.ChartAreas[0].AxisY.MajorTickMark.LineWidth = oldAxisTickMarkLineWidth*times;
+                chart.Titles[0].Font = new Font(oldTitleFont.Name, oldTitleFont.Size * times);
+                chart.ChartAreas[0].AxisX.TitleFont = new Font(oldAxisTitleFont.Name, oldAxisTitleFont.Size * times);
+                chart.ChartAreas[0].AxisY.TitleFont = new Font(oldAxisTitleFont.Name, oldAxisTitleFont.Size * times);
+                chart.ChartAreas[0].AxisX.LabelStyle.Font = new Font(oldAxisLabelFont.Name,
+                    oldAxisLabelFont.Size * times);
+                chart.ChartAreas[0].AxisY.LabelStyle.Font = new Font(oldAxisLabelFont.Name,
+                    oldAxisLabelFont.Size * times);
+                chart.ChartAreas[0].AxisX.LineWidth = oldAxisLineWidth * times;
+                chart.ChartAreas[0].AxisY.LineWidth = oldAxisLineWidth * times;
+                chart.ChartAreas[0].AxisX.MajorTickMark.LineWidth = oldAxisTickMarkLineWidth * times;
+                chart.ChartAreas[0].AxisY.MajorTickMark.LineWidth = oldAxisTickMarkLineWidth * times;
                 //坐标轴上的Label间距先不调整了
                 //chart.ChartAreas[0].AxisX.Interval = oldAxisXIntervals/Math.Round(times/3.0);
                 //chart.ChartAreas[0].AxisY.Interval = oldAxisYIntervals/Math.Round(times/3.0);
-                chart.Series[0].BorderWidth = oldSeriesBorderWidth*times;
+                chart.Series[0].BorderWidth = oldSeriesBorderWidth * times;
                 chart.Invalidate();
 
                 #endregion
@@ -313,6 +315,12 @@ namespace Xb2.GUI.Computing
                 chart.Invalidate();
 
                 #endregion
+            }
+            else
+            {
+                // 取消导出，恢复分幅图的复选框
+                chart.BorderDashStyle = ChartDashStyle.Dash;
+                chart.GetCheckBox().Visible = true;
             }
         }
 

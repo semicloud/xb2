@@ -132,21 +132,19 @@ namespace Xb2.GUI.Main
 
         private void 消趋势ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // 这些代码还要
-            //FrmRegressionInput frmSingleInput = new FrmRegressionInput(this.User);
-            //frmSingleInput.StartPosition = FormStartPosition.CenterScreen;
-            //var result = frmSingleInput.ShowDialog();
-            //if (result == DialogResult.OK)
-            //{
-            //    var input = frmSingleInput.RegresInput;
-            //    Xb2Regression regression = new Xb2Regression(input);
-            //    var frmDisplayCharts = GetChartForm();
-            //    frmDisplayCharts.AddChart(regression.GetFittingLine());
-            //    frmDisplayCharts.AddChart(regression.GetResidualLine());
-            //    frmDisplayCharts.AddChart(regression.GetRawLine());
-            //}
-            FrmInputXQS frmInputXqs = new FrmInputXQS(this.User) {MdiParent = this};
-            frmInputXqs.Show();
+            FrmInputXQS frmInputXqs = new FrmInputXQS(this.User);
+            if (frmInputXqs.ShowDialog() == DialogResult.OK)
+            {
+                var chartForm = GetChartForm();
+                var inputs = frmInputXqs.GetXqsInputs();
+                foreach (var input in inputs)
+                {
+                    var regres = new Xb2Regression(input);
+                    chartForm.AddChart(regres.GetFittingLine());
+                    chartForm.AddChart(regres.GetRawLine());
+                    chartForm.AddChart(regres.GetResidualLine());
+                }
+            }
         }
 
         public FrmDisplayCharts GetChartForm()

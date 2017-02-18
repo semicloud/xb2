@@ -76,3 +76,6 @@ cross fault data tool for national earthquake response support service of China
 
 #2017-2-17
 1. 消趋势算法已经集成，下一步是重构相关代码；然后集成其他算法；
+
+#2017-2-18
+1. 消趋势算法已经重构完成；

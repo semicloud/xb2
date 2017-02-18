@@ -238,6 +238,25 @@ namespace Xb2.Utils
             return answer;
         }
 
+        /// <summary>
+        /// 获取数据表中的一列，类型是Int32
+        /// </summary>
+        /// <param name="dt"></param>
+        /// <param name="colName"></param>
+        /// <returns></returns>
+        public static List<Int32> GetColumnOfInt32(this DataTable dt, string colName)
+        {
+            List<Int32> answer = new List<Int32>();
+            if (dt != null && dt.Columns.Contains(colName))
+            {
+                for (int i = 0; i < dt.Rows.Count; i++)
+                {
+                    answer.Add(Convert.ToInt32(dt.Rows[i][colName]));
+                }
+            }
+            return answer;
+        }
+
         #endregion
        
     }
