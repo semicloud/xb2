@@ -14,7 +14,7 @@ using Xb2.Utils;
 
 namespace Xb2.Algorithms.Core.Methods.Strain
 {
-    public class Xb2YB_M2_Input : Xb2BaseInput
+    public class YbM2Input : BaseInput
     {
         public List<DateValue> BaseLine1 { get; set; }
         public List<DateValue> BaseLine2 { get; set; }
@@ -24,10 +24,10 @@ namespace Xb2.Algorithms.Core.Methods.Strain
 
     public class Xb2YbM2 : YbBase
     {
-        public Xb2YB_M2_Input Input { get; set; }
+        public YbM2Input Input { get; set; }
         private List<YingBianOutput> m_outputs;
 
-        public Xb2YbM2(Xb2YB_M2_Input input)
+        public Xb2YbM2(YbM2Input input)
         {
             this.Input = input;
             this.m_outputs = this.GetYingBianM2Outputs();

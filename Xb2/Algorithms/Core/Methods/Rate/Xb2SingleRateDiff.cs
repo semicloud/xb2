@@ -20,13 +20,13 @@ namespace Xb2.Algorithms.Core.Methods.Rate
         /// <summary>
         /// 算法输入
         /// </summary>
-        public Xb2SingleRateDiffInput Input { get; set; }
+        public SingleRateDiffInput Input { get; set; }
 
         /// <summary>
         /// 单测项-速率-差分算法构造函数
         /// </summary>
         /// <param name="input">单测项-速率-差分算法输入</param>
-        public Xb2SingleRateDiff(Xb2SingleRateDiffInput input)
+        public Xb2SingleRateDiff(SingleRateDiffInput input)
         {
             Input = input;
         }

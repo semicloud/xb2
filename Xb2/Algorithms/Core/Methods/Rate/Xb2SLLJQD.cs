@@ -22,13 +22,13 @@ namespace Xb2.Algorithms.Core.Methods.Rate
         /// <summary>
         /// 单测项-速率-累积强度 的输入
         /// </summary>
-        public Xb2SLLJQDInput Input { get; set; }
+        public SlljqdInput Input { get; set; }
 
         /// <summary>
         /// 单测项-速率-累积强度算法的构造函数
         /// </summary>
         /// <param name="input">单测项-速率-累积强度输入</param>
-        public Xb2SLLJQD(Xb2SLLJQDInput input)
+        public Xb2SLLJQD(SlljqdInput input)
         {
             this.Input = input;
         }
@@ -75,7 +75,7 @@ namespace Xb2.Algorithms.Core.Methods.Rate
     /// <summary>
     /// 单测项 速率 累积合成 输入
     /// </summary>
-    public class Xb2SLLJQDInput : Xb2BaseInput
+    public class SlljqdInput : BaseInput
     {
         /// <summary>
         /// 测值序列

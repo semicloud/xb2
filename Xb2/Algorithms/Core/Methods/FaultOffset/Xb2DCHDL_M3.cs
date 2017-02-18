@@ -13,7 +13,7 @@ using Xb2.Utils;
 
 namespace Xb2.Algorithms.Core.Methods.FaultOffset
 {
-    public class Xb2DCHDL_M3_Input : Xb2BaseInput
+    public class DchdlM3Input : BaseInput
     {
         /// <summary>
         /// 基线1
@@ -69,7 +69,7 @@ namespace Xb2.Algorithms.Core.Methods.FaultOffset
         /// 断层活动量 模式3 输入
         /// </summary>
         /// <param name="input"></param>
-        public Xb2DCHDL_M3(Xb2DCHDL_M3_Input input)
+        public Xb2DCHDL_M3(DchdlM3Input input)
         {
             //速率差分函数
             Func<DateValue, DateValue, double> slcf = (m1, m2) => ((m2.Value - m1.Value)*365)/((m2.Date - m1.Date).Days);

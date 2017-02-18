@@ -10,7 +10,7 @@ using Xb2.Algorithms.Core.Entity;
 
 namespace Xb2.Algorithms.Core.Methods.Strain
 {
-    public class Xb2Yb_M1_Input : Xb2BaseInput
+    public class YbM1Input : BaseInput
     {
         /// <summary>
         /// 基线1测值序列
@@ -38,14 +38,14 @@ namespace Xb2.Algorithms.Core.Methods.Strain
     /// </summary>
     public class Xb2YbM1: YbBase
     {
-        public Xb2Yb_M1_Input Input { get; set; }
+        public YbM1Input Input { get; set; }
         private List<YingBianOutput> m_outputs;
  
         /// <summary>
         /// 应变模式1：注意，输入必须截取完成后才能传递给算法处理
         /// </summary>
         /// <param name="input"></param>
-        public Xb2YbM1(Xb2Yb_M1_Input input)
+        public Xb2YbM1(YbM1Input input)
         {
             this.Input = input;
             this.m_outputs = this.GetOutputs();

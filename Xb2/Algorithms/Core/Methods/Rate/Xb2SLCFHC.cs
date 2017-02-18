@@ -42,7 +42,7 @@ namespace Xb2.Algorithms.Core.Methods.Rate
     /// <summary>
     /// 速率合成输入，用于速率合成和速率累积强度合成
     /// </summary>
-    public class Xb2SLHCInput : Xb2BaseInput
+    public class SlhcInput : BaseInput
     {
         public List<SingleInput> InputColl { get; set; }
     }
@@ -84,7 +84,7 @@ namespace Xb2.Algorithms.Core.Methods.Rate
         /// <summary>
         /// 多测项-速率-合成的输入
         /// </summary>
-        public Xb2SLHCInput Input { get; set; }
+        public SlhcInput Input { get; set; }
 
 
         /// <summary>

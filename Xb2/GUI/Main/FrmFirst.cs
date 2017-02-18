@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Algorithms.Core.Methods.Rate;
 using Xb2.Algorithms.Core.Methods.Regression;
+using Xb2.Algorithms.Core.Methods.YearChange;
 using Xb2.Entity;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
 using Xb2.GUI.Computing;
-using Xb2.GUI.Computing.Input;
 using Xb2.GUI.Input;
+using Xb2.GUI.Input.Forms;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.M.Val.ProcessedData;
 using Xb2.GUI.M.Val.Rawdata;
 using Xb2.Utils;
-using Xb2.Utils.Control;
 
 namespace Xb2.GUI.Main
 {
@@ -132,7 +131,7 @@ namespace Xb2.GUI.Main
 
         private void 消趋势ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmInputXQS frmInputXqs = new FrmInputXQS(this.User);
+            FrmInputXqs frmInputXqs = new FrmInputXqs(this.User);
             if (frmInputXqs.ShowDialog() == DialogResult.OK)
             {
                 var chartForm = GetChartForm();
@@ -143,6 +142,37 @@ namespace Xb2.GUI.Main
                     chartForm.AddChart(regres.GetFittingLine());
                     chartForm.AddChart(regres.GetRawLine());
                     chartForm.AddChart(regres.GetResidualLine());
+                }
+            }
+        }
+
+        private void 年周变ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmInputNzb frmInputXqs = new FrmInputNzb(this.User);
+            if (frmInputXqs.ShowDialog() == DialogResult.OK)
+            {
+                var chartForm = GetChartForm();
+                var inputs = frmInputXqs.GetNzbInputs();
+                foreach (var input in inputs)
+                {
+                    var yc = new Xb2YearChange(input);
+                    chartForm.AddChart(yc.GetNianZhouBianLine());
+                    chartForm.AddChart(yc.GetYueJuPingLine());
+                }
+            }
+        }
+
+        private void 速率差分ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmInputSlcf frmInputXqs = new FrmInputSlcf(this.User);
+            if (frmInputXqs.ShowDialog() == DialogResult.OK)
+            {
+                var chartForm = GetChartForm();
+                var inputs = frmInputXqs.GetSlcfInputs();
+                foreach (var input in inputs)
+                {
+                    var yc = new Xb2Slcf(input);
+                    chartForm.AddChart(yc.GetSlcfLine());
                 }
             }
         }
@@ -175,7 +205,5 @@ namespace Xb2.GUI.Main
             frmManageProcessedData.MdiParent = this;
             frmManageProcessedData.Show();
         }
-
-
     }
 }

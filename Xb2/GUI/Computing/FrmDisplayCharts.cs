@@ -350,8 +350,9 @@ namespace Xb2.GUI.Computing
 
         void FrmDisplayCharts_Load(object sender, EventArgs e)
         {
-            var toolStripContainer = this.GetMainForm().toolStripContainer1.TopToolStripPanel;
-            toolStripContainer.Controls.Add(ToolStripHelper.GetChartToolStrip());
+            // 先不显示主屏幕上的工具栏
+            //var toolStripContainer = this.GetMainForm().toolStripContainer1.TopToolStripPanel;
+            //toolStripContainer.Controls.Add(ToolStripHelper.GetChartToolStrip());
 
             panel1.ContextMenuStrip = contextMenuStrip1;
         }

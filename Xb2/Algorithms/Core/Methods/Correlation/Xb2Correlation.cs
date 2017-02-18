@@ -8,7 +8,7 @@ namespace Xb2.Algorithms.Core.Methods.Correlation
     /// </summary>
     public class Xb2Correlation
     {
-        private Xb2CorrelationInput _input;
+        private CorrelationInput _input;
 
         /// <summary>
         /// 未完成
@@ -21,7 +21,7 @@ namespace Xb2.Algorithms.Core.Methods.Correlation
         /// 未完成
         /// </summary>
         /// <param name="input"></param>
-        public Xb2Correlation(Xb2CorrelationInput input)
+        public Xb2Correlation(CorrelationInput input)
         {
             _input = input;
         }

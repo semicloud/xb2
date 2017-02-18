@@ -150,14 +150,14 @@
             // 新建测项ToolStripMenuItem
             // 
             this.新建测项ToolStripMenuItem.Name = "新建测项ToolStripMenuItem";
-            this.新建测项ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.新建测项ToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.新建测项ToolStripMenuItem.Text = "新建测项";
             this.新建测项ToolStripMenuItem.Click += new System.EventHandler(this.新建测项ToolStripMenuItem_Click);
             // 
             // 管理测项ToolStripMenuItem
             // 
             this.管理测项ToolStripMenuItem.Name = "管理测项ToolStripMenuItem";
-            this.管理测项ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.管理测项ToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
             this.管理测项ToolStripMenuItem.Text = "管理测项";
             this.管理测项ToolStripMenuItem.Click += new System.EventHandler(this.管理测项ToolStripMenuItem_Click);
             // 
@@ -229,6 +229,7 @@
             this.年周变ToolStripMenuItem.Name = "年周变ToolStripMenuItem";
             this.年周变ToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.年周变ToolStripMenuItem.Text = "年周变";
+            this.年周变ToolStripMenuItem.Click += new System.EventHandler(this.年周变ToolStripMenuItem_Click);
             // 
             // 相关系数ToolStripMenuItem
             // 
@@ -241,6 +242,7 @@
             this.速率差分ToolStripMenuItem.Name = "速率差分ToolStripMenuItem";
             this.速率差分ToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.速率差分ToolStripMenuItem.Text = "速率差分";
+            this.速率差分ToolStripMenuItem.Click += new System.EventHandler(this.速率差分ToolStripMenuItem_Click);
             // 
             // 速率合成ToolStripMenuItem
             // 

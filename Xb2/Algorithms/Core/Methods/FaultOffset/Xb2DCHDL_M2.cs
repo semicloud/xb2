@@ -14,7 +14,7 @@ using Xb2.Utils;
 
 namespace Xb2.Algorithms.Core.Methods.FaultOffset
 {
-    public class Xb2DCHDL_M2_Input : Xb2BaseInput
+    public class DchdlM2Input : BaseInput
     {
         /// <summary>
         /// 水准1
@@ -53,7 +53,7 @@ namespace Xb2.Algorithms.Core.Methods.FaultOffset
         /// 断层活动量 模式2 构造函数
         /// </summary>
         /// <param name="input"></param>
-        public Xb2DCHDL_M2(Xb2DCHDL_M2_Input input)
+        public Xb2DCHDL_M2(DchdlM2Input input)
         {
             Func<DateValue, DateValue, double> slcf = (m1, m2) => ((m2.Value - m1.Value) * 365) / ((m2.Date - m1.Date).Days);
             _baseline1 = QuShuDebug.GetAverageValues_20150720_v2(input.BaseLine1, input.Start, input.End, input.WLen, input.SLen,

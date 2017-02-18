@@ -13,7 +13,7 @@ namespace Xb2.Algorithms.Core.Methods.Regression
 {
     public class Xb2Regression
     {
-        private Xb2RegressionInput _input;
+        private XqsInput _input;
         //观测日期(数值型)
         private Vector<double> _x;
         //观测值
@@ -23,7 +23,7 @@ namespace Xb2.Algorithms.Core.Methods.Regression
 
         private List<DateTime> _dates;
 
-        public Xb2Regression(Xb2RegressionInput input)
+        public Xb2Regression(XqsInput input)
         {
             this._input = input;
             //构造输入向量
@@ -108,7 +108,7 @@ namespace Xb2.Algorithms.Core.Methods.Regression
         [Test]
         public void Test()
         {
-            var input = new Xb2RegressionInput();
+            var input = new XqsInput();
             var dateValues = DateValueList.FromRawData(39).GetRange(0, 10).ToDateValueList();
             Console.WriteLine(String.Join(",", dateValues.Select(p => p.Date.ToOADate())));
             Console.WriteLine(String.Join(",", dateValues.Select(p => p.Value)));

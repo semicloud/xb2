@@ -19,7 +19,7 @@ namespace Xb2.Algorithms.Core.Methods.Rate
     /// </summary>
     public class Xb2SLLJQDHC
     {
-        public Xb2SLHCInput Input { get; set; }
+        public SlhcInput Input { get; set; }
 
         /// <summary>
         /// 按照测项获得速率的散点，即窗口、速率值集合

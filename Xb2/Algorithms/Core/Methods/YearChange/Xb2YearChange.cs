@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Algorithms.Core.Input;
+using Xb2.Utils;
+
 
 namespace Xb2.Algorithms.Core.Methods.YearChange
 {
@@ -17,13 +20,13 @@ namespace Xb2.Algorithms.Core.Methods.YearChange
     /// </summary>
     public class Xb2YearChange
     {
-        private Xb2YearChangeInput _input;
+        private NzbInput _input;
 
         /// <summary>
         /// 跨断层流动形变资料处理软件-年周变算法 构造函数
         /// </summary>
         /// <param name="input">年周变算法-输入</param>
-        public Xb2YearChange(Xb2YearChangeInput input)
+        public Xb2YearChange(NzbInput input)
         {
             _input = input;
         }
@@ -52,24 +55,48 @@ namespace Xb2.Algorithms.Core.Methods.YearChange
             for (int i = 0; i < dates.Count - 1; i++)
             {
                 int m1 = dates[i].Month, m2 = dates[i + 1].AddDays(-1).Month;
-                var them = _input.DateValueList.FindAll(m => m.Date.Month >= m1 && m.Date.Month <= m2);
+                var them = _input.InputData.FindAll(m => m.Date.Month >= m1 && m.Date.Month <= m2);
                 answer.Add(dates[i + 1].AddDays(-1), them.Average(m => m.Value));
             }
             return answer;
         }
 
         /// <summary>
+        /// 获取月距平线
+        /// </summary>
+        /// <returns></returns>
+        public CalcResult GetYueJuPingLine()
+        {
+            CalcResult cr = new CalcResult();
+            cr.Title = _input.ItemStr + " 月距平";
+            cr.NumericalTable = GetDistanceLineData().ToDataTable();
+            return cr;
+        }
+
+        /// <summary>
+        /// 获取年周变线
+        /// </summary>
+        /// <returns></returns>
+        public CalcResult GetNianZhouBianLine()
+        {
+            CalcResult cr = new CalcResult();
+            cr.Title = _input.ItemStr + " 年周变";
+            cr.NumericalTable = GetYearChangeLineData().ToDataTable();
+            return cr;
+        }
+
+        /// <summary>
         /// 获得月距平线数据
         /// </summary>
         /// <returns></returns>
-        public List<DateValue> GetDistanceLineData()
+        public DateValueList GetDistanceLineData()
         {
-            var answer = new List<DateValue>();
+            var answer = new DateValueList();
             var dates = this.getDateRanges();
             for (int i = 0; i < dates.Count - 1; i++)
             {
                 int m1 = dates[i].Month, m2 = dates[i + 1].AddDays(-1).Month;
-                var them = _input.DateValueList.FindAll(m => m.Date.Month >= m1 && m.Date.Month <= m2);
+                var them = _input.InputData.FindAll(m => m.Date.Month >= m1 && m.Date.Month <= m2);
                 double avg = them.Average(t => t.Value);
                 foreach (var t in them)
                     answer.Add(new DateValue(t.Date, t.Value - avg));
@@ -82,11 +109,11 @@ namespace Xb2.Algorithms.Core.Methods.YearChange
         /// 获得年周变线数据
         /// </summary>
         /// <returns></returns>
-        public List<DateValue> GetYearChangeLineData()
+        public DateValueList GetYearChangeLineData()
         {
-            var answer = new List<DateValue>();
+            var answer = new DateValueList();
             var yearchanges = this.getYearChangeData();
-            var years = _input.DateValueList.Select(m => m.Date.Year).Distinct();
+            var years = _input.InputData.Select(m => m.Date.Year).Distinct();
             foreach (var year in years)
             {
                 foreach (var yearchange in yearchanges)

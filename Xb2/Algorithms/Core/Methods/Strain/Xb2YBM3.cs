@@ -6,12 +6,12 @@ namespace Xb2.Algorithms.Core.Methods.Strain
 {
     public class Xb2YBM3 : YbBase
     {
-        public Xb2YB_M3_Input Input { get; set; }
+        public YbM3Input Input { get; set; }
         private List<YingBianOutput> first_outputs;
         private List<YingBianOutput> second_outputs;
         private List<YingBianOutput> comp_outputs;
 
-        public Xb2YBM3(Xb2YB_M3_Input input)
+        public Xb2YBM3(YbM3Input input)
         {
             this.Input = input;
             this.first_outputs = this.GetOutputsFirst();
@@ -137,7 +137,7 @@ namespace Xb2.Algorithms.Core.Methods.Strain
         }
     }
 
-    public class Xb2YB_M3_Input : Xb2BaseInput
+    public class YbM3Input : BaseInput
     {
         //基线1
         public List<DateValue> BaseLine1 { get; set; }
