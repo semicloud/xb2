@@ -177,6 +177,15 @@ namespace Xb2.GUI.Main
             }
         }
 
+        private void 速率合成ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmInputSlhc frmInputSlhc = new FrmInputSlhc(this.User);
+            if (frmInputSlhc.ShowDialog() == DialogResult.OK)
+            {
+                MessageBox.Show("OK!");
+            }
+        }
+
         public FrmDisplayCharts GetChartForm()
         {
             var title = "分幅图";

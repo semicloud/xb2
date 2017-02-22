@@ -81,3 +81,6 @@ cross fault data tool for national earthquake response support service of China
 1. 消趋势算法已经重构完成；
 2. 年周变算法加入，速率差分算法加入；
 
+#2017-2-22
+1. 正在完成4192函数；
+

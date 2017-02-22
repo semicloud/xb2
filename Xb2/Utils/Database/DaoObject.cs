@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Globalization;
@@ -570,10 +571,25 @@ namespace Xb2.Utils.Database
                 Logger.Error("没有查询到编号为 {0} 的测项信息！", itemId);
                 return "错误！";
             }
-            var description = String.Format("{0}，{1}，{2}，{3}，{4}", dt.Rows[0]["编号"].ToString(), dt.Rows[0]["观测单位"],
+            var description = String.Format("{0}，{1}，{2}，{3}，{4}", dt.Rows[0]["编号"], dt.Rows[0]["观测单位"],
                 dt.Rows[0]["地名"], dt.Rows[0]["方法名"], dt.Rows[0]["测项名"]);
             Logger.Info("测项 {0} 的描述：{1}", itemId, description);
             return description;
+        }
+
+        /// <summary>
+        /// 根据测项编号列表返回测项DataTable
+        /// </summary>
+        /// <param name="itemIdList"></param>
+        /// <returns></returns>
+        public static DataTable GetMItemDataTable(List<int> itemIdList)
+        {
+            var commandText = "select 编号 as 测项编号,观测单位,地名,方法名,测项名 from {0} where 编号 in ({1}) order by 编号";
+            commandText = String.Format(commandText, DbHelper.TnMItem(), String.Join(",", itemIdList));
+            Logger.Info(commandText);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            Logger.Info("查询测项编号为[{0}]的测项信息，返回{1}条数据", String.Join(",", itemIdList), dt.Rows.Count);
+            return dt;
         }
 
         public static bool SaveMItem()

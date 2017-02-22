@@ -32,7 +32,7 @@ namespace Xb2.Algorithms.Core.Methods
         /// <param name="wlen">窗长</param>
         /// <param name="slen">步长</param>
         /// <param name="delta">时间间隔</param>
-        /// <param name="period">观测周期</param>
+        /// <param name="period">观测周期</param>   
         /// <param name="func">速率差分函数</param>
         /// <returns></returns>
         public static DVPS GetAverageValues_20150720_v2(DVPS dvps, DT start, DT end, int wlen, int slen, int delta,

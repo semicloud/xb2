@@ -56,6 +56,10 @@
       <Private>True</Private>
       <HintPath>..\packages\MySql.Data.6.9.9\lib\net45\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
       <HintPath>..\packages\NLog.4.4.1\lib\net45\NLog.dll</HintPath>
       <Private>True</Private>
@@ -245,16 +249,22 @@
     <Compile Include="GUI\Input\Forms\FrmInputSlcf.Designer.cs">
       <DependentUpon>FrmInputSlcf.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\FrmDCHZLInput.cs">
+    <Compile Include="GUI\Input\Forms\FrmInputSlhc.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\FrmDCHZLInput.Designer.cs">
-      <DependentUpon>FrmDCHZLInput.cs</DependentUpon>
+    <Compile Include="GUI\Input\Forms\FrmInputSlhc.Designer.cs">
+      <DependentUpon>FrmInputSlhc.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\FrmInput4191.cs">
+    <Compile Include="GUI\Input\FrmInterface4192.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\FrmInput4191.Designer.cs">
+    <Compile Include="GUI\Input\FrmInterface4192.Designer.cs">
+      <DependentUpon>FrmInterface4192.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestAndDemos\OldCodes\FrmInput4191.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\OldCodes\FrmInput4191.Designer.cs">
       <DependentUpon>FrmInput4191.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Input\Forms\FrmInputXqs.cs">
@@ -268,12 +278,6 @@
     </Compile>
     <Compile Include="GUI\Input\FrmInterface4191.Designer.cs">
       <DependentUpon>FrmInterface4191.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\Input\FrmSLHCInput.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Input\FrmSLHCInput.Designer.cs">
-      <DependentUpon>FrmSLHCInput.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Input\Forms\FrmInputNzb.cs">
       <SubType>Form</SubType>
@@ -499,6 +503,12 @@
     <Compile Include="TestAndDemos\FrmInputInterface1.Designer.cs">
       <DependentUpon>FrmInputInterface1.cs</DependentUpon>
     </Compile>
+    <Compile Include="TestAndDemos\FrmWebService.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmWebService.Designer.cs">
+      <DependentUpon>FrmWebService.cs</DependentUpon>
+    </Compile>
     <Compile Include="TestAndDemos\MathDotNetExamples.cs" />
     <Compile Include="TestAndDemos\RegressionTest.cs" />
     <Compile Include="Utils\Control\ChartHelper.cs" />
@@ -567,10 +577,13 @@
     <EmbeddedResource Include="GUI\Input\Forms\FrmInputSlcf.resx">
       <DependentUpon>FrmInputSlcf.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\FrmDCHZLInput.resx">
-      <DependentUpon>FrmDCHZLInput.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Input\Forms\FrmInputSlhc.resx">
+      <DependentUpon>FrmInputSlhc.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\FrmInput4191.resx">
+    <EmbeddedResource Include="GUI\Input\FrmInterface4192.resx">
+      <DependentUpon>FrmInterface4192.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestAndDemos\OldCodes\FrmInput4191.resx">
       <DependentUpon>FrmInput4191.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\Forms\FrmInputXqs.resx">
@@ -578,9 +591,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\FrmInterface4191.resx">
       <DependentUpon>FrmInterface4191.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\FrmSLHCInput.resx">
-      <DependentUpon>FrmSLHCInput.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\Forms\FrmInputNzb.resx">
       <DependentUpon>FrmInputNzb.cs</DependentUpon>
@@ -705,6 +715,9 @@
     <Content Include="NLog.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <EmbeddedResource Include="TestAndDemos\FrmWebService.resx">
+      <DependentUpon>FrmWebService.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>

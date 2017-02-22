@@ -249,6 +249,7 @@
             this.速率合成ToolStripMenuItem.Name = "速率合成ToolStripMenuItem";
             this.速率合成ToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.速率合成ToolStripMenuItem.Text = "速率合成";
+            this.速率合成ToolStripMenuItem.Click += new System.EventHandler(this.速率合成ToolStripMenuItem_Click);
             // 
             // 速率累积强度ToolStripMenuItem
             // 
