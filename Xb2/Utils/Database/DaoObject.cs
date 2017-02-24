@@ -579,16 +579,18 @@ namespace Xb2.Utils.Database
 
         /// <summary>
         /// 根据测项编号列表返回测项DataTable
+        /// 返回的测项表中应有权重信息
         /// </summary>
         /// <param name="itemIdList"></param>
         /// <returns></returns>
-        public static DataTable GetMItemDataTable(List<int> itemIdList)
+        public static DataTable GetMItemById(List<int> itemIdList)
         {
             var commandText = "select 编号 as 测项编号,观测单位,地名,方法名,测项名 from {0} where 编号 in ({1}) order by 编号";
             commandText = String.Format(commandText, DbHelper.TnMItem(), String.Join(",", itemIdList));
             Logger.Info(commandText);
             var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
-            Logger.Info("查询测项编号为[{0}]的测项信息，返回{1}条数据", String.Join(",", itemIdList), dt.Rows.Count);
+            Logger.Debug(commandText);
+            Logger.Debug("Input: ItemIdList={0}, Returns {1} Records", String.Join(",", itemIdList), dt.Rows.Count);
             return dt;
         }
 
@@ -713,6 +715,34 @@ namespace Xb2.Utils.Database
             return databaseId;
         }
 
+        public static Dictionary<int, string> GetDefaultProcessedDatabaseIdAndName(int userId, int itemId)
+        {
+            var dictionary = new Dictionary<int, string>();
+            var commandText = "select 编号,库名 from {0} where 用户编号={1} and 测项编号={2} and 是否默认=1";
+            commandText = String.Format(commandText, DbHelper.TnProcessedDb(), userId, itemId);
+            Logger.Debug(commandText);
+            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            int databaseId;
+            string databaseName;
+            if (dt.Rows.Count == 1)
+            {
+                databaseId = Convert.ToInt32(dt.Rows[0]["编号"]);
+                databaseName = Convert.ToString(dt.Rows[0]["库名"]);
+                dictionary.Add(databaseId, databaseName);
+            }
+            else
+            {
+                databaseId = -1;
+                databaseName = "原始数据";
+                dictionary.Add(databaseId, databaseName);
+            }
+            Logger.Debug("Input: UserId={0}, ItemId={1},Query Default Db Count={2}, Return: ,DbId={3}, Default Db Name={4}",
+                userId, itemId, dt.Rows.Count, databaseId, databaseName);
+            return dictionary;
+        }
+
+
+
         public static int GetDefaultFreq(int userId, int itemId, int databaseId)
         {
             throw new NotImplementedException();
@@ -769,8 +799,9 @@ namespace Xb2.Utils.Database
             var colNames = string.Join(",", columnNames);
             var commandText = string.Format(sql, colNames, DbHelper.TnProcessedDb(), userId, mitemId);
             var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
-            Logger.Info("查询用户{0}，测项{1}的基础数据库信息共{2}个", userId, mitemId, dt.Rows.Count);
-            Logger.Debug(commandText);
+            Logger.Debug("GetUserProcessedDatabaseInfos,CommandText={0}", commandText);
+            Logger.Debug("GetUserProcessedDatabaseInfos,Input: UserId={0},ItemId={1},ColNames={2},Return {3} Records."
+                , userId, mitemId, String.Join(",", columnNames), dt.Rows.Count);
             return dt;
         }
 

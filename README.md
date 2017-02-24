@@ -84,3 +84,6 @@ cross fault data tool for national earthquake response support service of China
 #2017-2-22
 1. 正在完成4192函数；
 
+#2017-2-24
+1. 基本完成了4192函数；
+

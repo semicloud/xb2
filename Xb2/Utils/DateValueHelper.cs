@@ -50,15 +50,8 @@ namespace Xb2.Utils
         {
             var ans = 0;
             var freq = new[] {1, 2, 3, 6, 12};
-            var indexFirst = kIndexes.ToList().IndexOf(1);
-            if (indexFirst == -1)
-            {
-                ans =  12;
-            }
-            else
-            {
-                ans = freq[indexFirst];
-            }
+            var indexFirst = kIndexes.ToList().IndexOf(1); // K指数第1个取1的作为默认观测周期
+            ans = indexFirst == -1 ? 12 : freq[indexFirst];
             Logger.Info("根据K指数计算观测周期：" + String.Join(",", kIndexes) + "，周期为：" + ans);
             return ans;
         }
