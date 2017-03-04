@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Algorithms.Core.Input;
+using Xb2.Entity.Computing;
 using Xb2.Utils;
 
 namespace Xb2.Algorithms.Core.Methods.FaultOffset
@@ -64,6 +66,50 @@ namespace Xb2.Algorithms.Core.Methods.FaultOffset
             _windows = Window.GetWindows(input.Start.AddMonths(input.Delta), input.End, input.SLen, input.WLen);
             _alpha1 = input.Alpha1;
             _alpha2 = input.Alpha2;
+        }
+
+        public Xb2DCHDL_M2(List<XbDCHDLM2Input> inputs)
+        {
+            var baseline1 = inputs[0];
+            var baseline2 = inputs[1];
+            _alpha1 = inputs[0].Alpha1;
+            _alpha2 = inputs[0].Alpha2;
+            int wlen = inputs[0].WLen;
+            int slen = inputs[0].SLen;
+            int delta = inputs[0].Delta;
+            var start = inputs[0].DateStart;
+            var end = inputs[0].DateEnd;
+            Func<DateValue, DateValue, double> slcf =
+                (m1, m2) => ((m2.Value - m1.Value) * 365) / ((m2.Date - m1.Date).Days);
+            _baseline1 = QuShuDebug.GetAverageValues_20150720_v2(baseline1.FormattedValueList, start, end, wlen, slen,
+                delta, baseline1.Freq, slcf);
+            _baseline2 = QuShuDebug.GetAverageValues_20150720_v2(baseline2.FormattedValueList, start, end, wlen, slen,
+                delta, baseline2.Freq, slcf);
+            _windows = Window.GetWindows(start.AddMonths(delta), end, slen, wlen);
+        }
+
+        public CalcResult GetL1()
+        {
+            return new CalcResult() {Title = "ΔL1", NumericalTable = GetΔL1().ToDateValueList().ToDataTable()};
+        }
+
+        public CalcResult GetL2()
+        {
+            return new CalcResult() {Title = "ΔL2", NumericalTable = GetΔL2().ToDateValueList().ToDataTable()};
+        }
+        public CalcResult GetS()
+        {
+            return new CalcResult() { Title = "ΔS", NumericalTable = GetΔS().ToDateValueList().ToDataTable() };
+        }
+
+        public CalcResult GetR()
+        {
+            return new CalcResult() {Title = "ΔR", NumericalTable = GetΔR().ToDateValueList().ToDataTable()};
+        }
+
+        public CalcResult GetRS()
+        {
+            return new CalcResult() {Title = "ΔRΔS", NumericalTable = GetΔRΔS().ToDateValueList().ToDataTable()};
         }
 
         /// <summary>

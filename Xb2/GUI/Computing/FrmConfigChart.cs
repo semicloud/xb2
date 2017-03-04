@@ -34,13 +34,13 @@ namespace Xb2.GUI.Computing
             chart.Invalidate();
         }
 
-        private Chart GetChart()
+        private System.Windows.Forms.DataVisualization.Charting.Chart GetChart()
         {
             foreach (var control in this.Controls)
             {
-                if (control is Chart)
+                if (control is System.Windows.Forms.DataVisualization.Charting.Chart)
                 {
-                    return (Chart) control;
+                    return (System.Windows.Forms.DataVisualization.Charting.Chart) control;
                 }
             }
             throw new Exception("No Chart");

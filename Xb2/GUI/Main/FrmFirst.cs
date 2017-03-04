@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Algorithms.Core.Methods.FaultOffset;
 using Xb2.Algorithms.Core.Methods.Rate;
 using Xb2.Algorithms.Core.Methods.Regression;
 using Xb2.Algorithms.Core.Methods.YearChange;
@@ -10,7 +11,6 @@ using Xb2.Entity;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
 using Xb2.GUI.Computing;
-using Xb2.GUI.Input;
 using Xb2.GUI.Input.Forms;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.M.Val.ProcessedData;
@@ -179,10 +179,95 @@ namespace Xb2.GUI.Main
 
         private void 速率合成ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmInputSlhc frmInputSlhc = new FrmInputSlhc(this.User);
+            FrmInputSLHC frmInputSlhc = new FrmInputSLHC(this.User);
             if (frmInputSlhc.ShowDialog() == DialogResult.OK)
             {
-                MessageBox.Show("OK!");
+                var inputs = frmInputSlhc.GetInputs();
+                Xb2SLCFHC xb2Slcfhc = new Xb2SLCFHC {Input = inputs};
+                var chartForm = GetChartForm();
+                chartForm.AddChart(xb2Slcfhc.GetSLHCLine());
+            }
+        }
+
+        private void 速率累积强度ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmInputSLLJQD frmInputSlljqd = new FrmInputSLLJQD(this.User);
+            if (frmInputSlljqd.ShowDialog() == DialogResult.OK)
+            {
+                var chartForm = GetChartForm();
+                var inputs = frmInputSlljqd.GetSLLJQDInputs();
+                foreach (var input in inputs)
+                {
+                    var xb2Slljqd = new Xb2SLLJQD(input);
+                    chartForm.AddChart(xb2Slljqd.GetLine());
+                }
+            }
+        }
+
+        private void 速率累积强度合成ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmInputSLHC frmInputSlhc = new FrmInputSLHC(this.User);
+            if (frmInputSlhc.ShowDialog() == DialogResult.OK)
+            {
+                var inputs = frmInputSlhc.GetInputs();
+                Xb2SLLJQDHC xb2Slcfhc = new Xb2SLLJQDHC { Input = inputs };
+                var chartForm = GetChartForm();
+                chartForm.AddChart(xb2Slcfhc.GetLine());
+            }
+        }
+
+        private void 断层活动量ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void 模式1ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmInputDCHDLM1 frmInputDchdlm1 = new FrmInputDCHDLM1(this.User);
+            if (frmInputDchdlm1.ShowDialog() == DialogResult.OK)
+            {
+                var inputs = frmInputDchdlm1.GetInputs();
+                Xb2DCHDL_M1 xb2Slcfhc = new Xb2DCHDL_M1(inputs);
+                var chartForm = GetChartForm();
+                chartForm.AddChart(xb2Slcfhc.GetL());
+                chartForm.AddChart(xb2Slcfhc.GetH());
+                chartForm.AddChart(xb2Slcfhc.GetS());
+                chartForm.AddChart(xb2Slcfhc.GetHS());
+            }
+        }
+
+        private void 模式2ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmInputDCHDLM2 frmInputDchdlm1 = new FrmInputDCHDLM2(this.User);
+            if (frmInputDchdlm1.ShowDialog() == DialogResult.OK)
+            {
+                var inputs = frmInputDchdlm1.GetInputs();
+                Xb2DCHDL_M2 xb2DchdlM2 = new Xb2DCHDL_M2(inputs);
+                var chartForm = GetChartForm();
+                chartForm.AddChart(xb2DchdlM2.GetL1());
+                chartForm.AddChart(xb2DchdlM2.GetL2());
+                chartForm.AddChart(xb2DchdlM2.GetS());
+                chartForm.AddChart(xb2DchdlM2.GetR());
+                chartForm.AddChart(xb2DchdlM2.GetRS());
+            }
+        }
+
+        private void 模式3ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmInputDCHDLM3 frmInputDchdlm1 = new FrmInputDCHDLM3(this.User);
+            if (frmInputDchdlm1.ShowDialog() == DialogResult.OK)
+            {
+                var inputs = frmInputDchdlm1.GetInputs();
+                Xb2DCHDL_M3 dchdlM3 = new Xb2DCHDL_M3(inputs);
+                var chartForm = GetChartForm();
+                chartForm.AddChart(dchdlM3.GetL1());
+                chartForm.AddChart(dchdlM3.GetL2());
+                chartForm.AddChart(dchdlM3.GetH());
+                chartForm.AddChart(dchdlM3.GetS());
+                chartForm.AddChart(dchdlM3.GetR());
+                chartForm.AddChart(dchdlM3.GetRS());
+                chartForm.AddChart(dchdlM3.GetHS());
+                chartForm.AddChart(dchdlM3.GetHR());
             }
         }
 

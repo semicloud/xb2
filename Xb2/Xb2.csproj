@@ -134,6 +134,13 @@
     <Compile Include="Config\Xb2Config.cs" />
     <Compile Include="Entity\Business\Catalog\Q01File.cs" />
     <Compile Include="Entity\Business\XbUser.cs" />
+    <Compile Include="Entity\Computing\XbDCHDLM3Input.cs" />
+    <Compile Include="Entity\Computing\XbDCHDLM2Input.cs" />
+    <Compile Include="Entity\Computing\XbInput.cs" />
+    <Compile Include="Entity\Computing\XbSLHCInput.cs" />
+    <Compile Include="Entity\Computing\XbSLLJQDInput.cs" />
+    <Compile Include="Entity\Computing\XbXQSInput.cs" />
+    <Compile Include="Entity\Computing\XbDCHDLM1Input.cs" />
     <Compile Include="GUI\Catalog\FrmCreateEditRecord.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -189,6 +196,12 @@
     <Compile Include="GUI\Catalog\FrmShowLabelChart.designer.cs">
       <DependentUpon>FrmShowLabelChart.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\ChartModule\FrmShowProportion.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ChartModule\FrmShowProportion.Designer.cs">
+      <DependentUpon>FrmShowProportion.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Computing\FrmConfigChart.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -243,23 +256,71 @@
     <Compile Include="GUI\Controls\RectQuery.designer.cs">
       <DependentUpon>RectQuery.cs</DependentUpon>
     </Compile>
+    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM3.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM3.Designer.cs">
+      <DependentUpon>FrmInputDCHDLM3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM2.Designer.cs">
+      <DependentUpon>FrmInputDCHDLM2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM1.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM1.Designer.cs">
+      <DependentUpon>FrmInputDCHDLM1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\FrmInputSLLJQDHC.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\FrmInputSLLJQDHC.Designer.cs">
+      <DependentUpon>FrmInputSLLJQDHC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\FrmInputSLLJQD.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\Forms\FrmInputSLLJQD.Designer.cs">
+      <DependentUpon>FrmInputSLLJQD.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI\Input\Forms\FrmInputSlcf.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\Input\Forms\FrmInputSlcf.Designer.cs">
       <DependentUpon>FrmInputSlcf.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputSlhc.cs">
+    <Compile Include="GUI\Input\Forms\FrmInputSLHC.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputSlhc.Designer.cs">
-      <DependentUpon>FrmInputSlhc.cs</DependentUpon>
+    <Compile Include="GUI\Input\Forms\FrmInputSLHC.Designer.cs">
+      <DependentUpon>FrmInputSLHC.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\Input\FrmInterface.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\Input\FrmInterface.Designer.cs">
+      <DependentUpon>FrmInterface.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Input\FrmInterface4192.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="GUI\Input\FrmInterface4192.Designer.cs">
       <DependentUpon>FrmInterface4192.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmBeatifulChart.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmBeatifulChart.Designer.cs">
+      <DependentUpon>FrmBeatifulChart.cs</DependentUpon>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmBeatifulChart2.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="TestAndDemos\FrmBeatifulChart2.Designer.cs">
+      <DependentUpon>FrmBeatifulChart2.cs</DependentUpon>
     </Compile>
     <Compile Include="TestAndDemos\OldCodes\FrmInput4191.cs">
       <SubType>Form</SubType>
@@ -511,15 +572,44 @@
     </Compile>
     <Compile Include="TestAndDemos\MathDotNetExamples.cs" />
     <Compile Include="TestAndDemos\RegressionTest.cs" />
+    <Compile Include="GUI\ChartModule\ControlMoverOrResizer.cs" />
     <Compile Include="Utils\Control\ChartHelper.cs" />
     <Compile Include="Utils\Control\ControlHelper.cs" />
     <Compile Include="Utils\Control\ToolStripHelper.cs" />
+    <Compile Include="GUI\ChartModule\CustomToolTip.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Utils\Database\DbHelper.cs" />
     <Compile Include="Utils\Database\DaoObject.cs" />
     <Compile Include="Utils\DataTableHelper.cs" />
     <Compile Include="Utils\DateHelper.cs" />
     <Compile Include="Utils\DateValueHelper.cs" />
+    <Compile Include="Utils\EarthquakeRecord.cs" />
     <Compile Include="Utils\ExtendMethods.cs" />
+    <Compile Include="GUI\ChartModule\FrmSetLineStyle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ChartModule\FrmSetLineStyle.Designer.cs">
+      <DependentUpon>FrmSetLineStyle.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ChartModule\FrmSetLineWidth.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ChartModule\FrmSetLineWidth.Designer.cs">
+      <DependentUpon>FrmSetLineWidth.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ChartModule\FrmSetText.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GUI\ChartModule\FrmSetText.Designer.cs">
+      <DependentUpon>FrmSetText.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GUI\ChartModule\XbChart.cs" />
+    <Compile Include="GUI\ChartModule\XbChartEvents.cs" />
+    <Compile Include="GUI\ChartModule\XbChartMenuStrips.cs" />
+    <Compile Include="GUI\ChartModule\XbChartObjFactory.cs" />
+    <Compile Include="GUI\ChartModule\XbChartSettings.cs" />
+    <Compile Include="GUI\ChartModule\XbChartSize.cs" />
     <EmbeddedResource Include="GUI\Catalog\FrmCreateEditRecord.resx">
       <DependentUpon>FrmCreateEditRecord.cs</DependentUpon>
     </EmbeddedResource>
@@ -546,6 +636,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Catalog\FrmShowLabelChart.resx">
       <DependentUpon>FrmShowLabelChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ChartModule\FrmShowProportion.resx">
+      <DependentUpon>FrmShowProportion.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Computing\FrmConfigChart.resx">
       <DependentUpon>FrmConfigChart.cs</DependentUpon>
@@ -574,14 +667,38 @@
     <EmbeddedResource Include="GUI\Controls\RectQuery.resx">
       <DependentUpon>RectQuery.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\Forms\FrmInputDCHDLM3.resx">
+      <DependentUpon>FrmInputDCHDLM3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\Forms\FrmInputDCHDLM2.resx">
+      <DependentUpon>FrmInputDCHDLM2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\Forms\FrmInputDCHDLM1.resx">
+      <DependentUpon>FrmInputDCHDLM1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\Forms\FrmInputSLLJQDHC.resx">
+      <DependentUpon>FrmInputSLLJQDHC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\Forms\FrmInputSLLJQD.resx">
+      <DependentUpon>FrmInputSLLJQD.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\Forms\FrmInputSlcf.resx">
       <DependentUpon>FrmInputSlcf.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Forms\FrmInputSlhc.resx">
-      <DependentUpon>FrmInputSlhc.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Input\Forms\FrmInputSLHC.resx">
+      <DependentUpon>FrmInputSLHC.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\Input\FrmInterface.resx">
+      <DependentUpon>FrmInterface.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Input\FrmInterface4192.resx">
       <DependentUpon>FrmInterface4192.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestAndDemos\FrmBeatifulChart.resx">
+      <DependentUpon>FrmBeatifulChart.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestAndDemos\FrmBeatifulChart2.resx">
+      <DependentUpon>FrmBeatifulChart2.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestAndDemos\OldCodes\FrmInput4191.resx">
       <DependentUpon>FrmInput4191.cs</DependentUpon>
@@ -718,6 +835,15 @@
     <EmbeddedResource Include="TestAndDemos\FrmWebService.resx">
       <DependentUpon>FrmWebService.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ChartModule\FrmSetLineStyle.resx">
+      <DependentUpon>FrmSetLineStyle.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ChartModule\FrmSetLineWidth.resx">
+      <DependentUpon>FrmSetLineWidth.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GUI\ChartModule\FrmSetText.resx">
+      <DependentUpon>FrmSetText.cs</DependentUpon>
+    </EmbeddedResource>
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
@@ -741,8 +867,6 @@
     <Folder Include="Algorithms\Core\Methods\Strain\M2\" />
     <Folder Include="Algorithms\Core\Methods\Strain\M3\" />
     <Folder Include="Algorithms\Core\Utils\" />
-    <Folder Include="Entity\Computing\" />
-    <Folder Include="GUI\User\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.3.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.3.0\build\Accord.targets')" />

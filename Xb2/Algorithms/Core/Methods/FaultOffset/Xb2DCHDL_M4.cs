@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Algorithms.Core.Input;
 
 namespace Xb2.Algorithms.Core.Methods.FaultOffset
 {

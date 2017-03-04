@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Algorithms.Core.Input;
 using Xb2.Utils;
 
 namespace Xb2.Algorithms.Core.Methods.Strain

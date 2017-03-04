@@ -560,7 +560,7 @@ namespace Xb2.Utils.Database
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
-        public static string GetMItemDescription(int itemId)
+        public static string GetItemStr(int itemId)
         {
             var commandText = "select 编号,观测单位,地名,方法名,测项名 from {0} where 编号={1}";
             commandText = string.Format(commandText, DbHelper.TnMItem(), itemId);
@@ -741,8 +741,6 @@ namespace Xb2.Utils.Database
             return dictionary;
         }
 
-
-
         public static int GetDefaultFreq(int userId, int itemId, int databaseId)
         {
             throw new NotImplementedException();
@@ -803,6 +801,23 @@ namespace Xb2.Utils.Database
             Logger.Debug("GetUserProcessedDatabaseInfos,Input: UserId={0},ItemId={1},ColNames={2},Return {3} Records."
                 , userId, mitemId, String.Join(",", columnNames), dt.Rows.Count);
             return dt;
+        }
+
+        /// <summary>
+        /// 获取基础数据库编号
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="itemId"></param>
+        /// <param name="dbName"></param>
+        /// <returns></returns>
+        public static int GetDatabaseId(int userId, int itemId, string dbName)
+        {
+            if (dbName.Equals("原始数据"))
+                return -1;
+            var sql = "select 编号 from {0} where 用户编号={1} and 测项编号={2} and 库名='{3}'";
+            var commandText = string.Format(sql, DbHelper.TnProcessedDb(), userId, itemId, dbName);
+            int dbId = (int) MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, commandText);
+            return dbId;
         }
 
         /// <summary>

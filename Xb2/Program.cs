@@ -23,7 +23,11 @@ namespace Xb2
             //user.Name = "admin";
             //user.IsAdmin = true;
             //user.Password = "admin";
-            //Application.Run(new FrmInterface4192(user, new List<int> {1, 2, 3, 4, 5}));
+            //Application.Run(new FrmBeatifulChart2());
+
+            //Application.Run(new FrmInterface4192(user, new List<int>() {15,166,32},
+            //    new DateTime(1989, 1, 1),
+            //    new DateTime(2004, 2, 29)));
 
             FrmLogin frmLogin = new FrmLogin();
             frmLogin.ShowDialog();

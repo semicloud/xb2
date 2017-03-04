@@ -54,7 +54,14 @@
             this.速率累积强度ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.速率累积强度合成ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.断层活动量ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.模式1ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.模式2ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.模式3ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.模式4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.应变ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.模式1ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.模式2ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.模式3ToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.异常放大ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripContainer1 = new System.Windows.Forms.ToolStripContainer();
@@ -256,24 +263,81 @@
             this.速率累积强度ToolStripMenuItem.Name = "速率累积强度ToolStripMenuItem";
             this.速率累积强度ToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.速率累积强度ToolStripMenuItem.Text = "速率累积强度";
+            this.速率累积强度ToolStripMenuItem.Click += new System.EventHandler(this.速率累积强度ToolStripMenuItem_Click);
             // 
             // 速率累积强度合成ToolStripMenuItem
             // 
             this.速率累积强度合成ToolStripMenuItem.Name = "速率累积强度合成ToolStripMenuItem";
             this.速率累积强度合成ToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.速率累积强度合成ToolStripMenuItem.Text = "速率累积强度合成";
+            this.速率累积强度合成ToolStripMenuItem.Click += new System.EventHandler(this.速率累积强度合成ToolStripMenuItem_Click);
             // 
             // 断层活动量ToolStripMenuItem
             // 
+            this.断层活动量ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.模式1ToolStripMenuItem,
+            this.模式2ToolStripMenuItem,
+            this.模式3ToolStripMenuItem,
+            this.模式4ToolStripMenuItem});
             this.断层活动量ToolStripMenuItem.Name = "断层活动量ToolStripMenuItem";
             this.断层活动量ToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.断层活动量ToolStripMenuItem.Text = "断层活动量";
+            this.断层活动量ToolStripMenuItem.Click += new System.EventHandler(this.断层活动量ToolStripMenuItem_Click);
+            // 
+            // 模式1ToolStripMenuItem
+            // 
+            this.模式1ToolStripMenuItem.Name = "模式1ToolStripMenuItem";
+            this.模式1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.模式1ToolStripMenuItem.Text = "模式1";
+            this.模式1ToolStripMenuItem.Click += new System.EventHandler(this.模式1ToolStripMenuItem_Click);
+            // 
+            // 模式2ToolStripMenuItem
+            // 
+            this.模式2ToolStripMenuItem.Name = "模式2ToolStripMenuItem";
+            this.模式2ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.模式2ToolStripMenuItem.Text = "模式2";
+            this.模式2ToolStripMenuItem.Click += new System.EventHandler(this.模式2ToolStripMenuItem_Click);
+            // 
+            // 模式3ToolStripMenuItem
+            // 
+            this.模式3ToolStripMenuItem.Name = "模式3ToolStripMenuItem";
+            this.模式3ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.模式3ToolStripMenuItem.Text = "模式3";
+            this.模式3ToolStripMenuItem.Click += new System.EventHandler(this.模式3ToolStripMenuItem_Click);
+            // 
+            // 模式4ToolStripMenuItem
+            // 
+            this.模式4ToolStripMenuItem.Name = "模式4ToolStripMenuItem";
+            this.模式4ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.模式4ToolStripMenuItem.Text = "模式4";
             // 
             // 应变ToolStripMenuItem
             // 
+            this.应变ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.模式1ToolStripMenuItem1,
+            this.模式2ToolStripMenuItem1,
+            this.模式3ToolStripMenuItem1});
             this.应变ToolStripMenuItem.Name = "应变ToolStripMenuItem";
             this.应变ToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.应变ToolStripMenuItem.Text = "应变";
+            // 
+            // 模式1ToolStripMenuItem1
+            // 
+            this.模式1ToolStripMenuItem1.Name = "模式1ToolStripMenuItem1";
+            this.模式1ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.模式1ToolStripMenuItem1.Text = "模式1";
+            // 
+            // 模式2ToolStripMenuItem1
+            // 
+            this.模式2ToolStripMenuItem1.Name = "模式2ToolStripMenuItem1";
+            this.模式2ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.模式2ToolStripMenuItem1.Text = "模式2";
+            // 
+            // 模式3ToolStripMenuItem1
+            // 
+            this.模式3ToolStripMenuItem1.Name = "模式3ToolStripMenuItem1";
+            this.模式3ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.模式3ToolStripMenuItem1.Text = "模式3";
             // 
             // 异常放大ToolStripMenuItem
             // 
@@ -362,6 +426,13 @@
         private System.Windows.Forms.ToolStripMenuItem 应变ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 异常放大ToolStripMenuItem;
         public System.Windows.Forms.ToolStripContainer toolStripContainer1;
+        private System.Windows.Forms.ToolStripMenuItem 模式1ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 模式2ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 模式3ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 模式4ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 模式1ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 模式2ToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem 模式3ToolStripMenuItem1;
 
 
     }

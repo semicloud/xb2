@@ -87,3 +87,10 @@ cross fault data tool for national earthquake response support service of China
 #2017-2-24
 1. 基本完成了4192函数；
 
+#2017-2-25
+1. 完成了分幅图中的拼图功能;
+
+#2017-3-2
+1. 基本完成了单幅图调整；
+2. 算法已集成至断层活动量3；
+

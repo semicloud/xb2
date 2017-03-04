@@ -11,6 +11,9 @@ using System.Diagnostics;
 using System.Linq;
 using Accord.Math;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Algorithms.Core.Input;
+using Xb2.Entity.Computing;
+using Xb2.Utils;
 
 namespace Xb2.Algorithms.Core.Methods.Rate
 {
@@ -22,15 +25,24 @@ namespace Xb2.Algorithms.Core.Methods.Rate
         /// <summary>
         /// 单测项-速率-累积强度 的输入
         /// </summary>
-        public SlljqdInput Input { get; set; }
+        public XbSLLJQDInput Input  { get; set; }
 
         /// <summary>
         /// 单测项-速率-累积强度算法的构造函数
         /// </summary>
         /// <param name="input">单测项-速率-累积强度输入</param>
-        public Xb2SLLJQD(SlljqdInput input)
+        public Xb2SLLJQD(XbSLLJQDInput input)
         {
             this.Input = input;
+        }
+
+        public CalcResult GetLine()
+        {
+            return new CalcResult
+            {
+                Title = Input.ItemStr + ", 累积强度",
+                NumericalTable = GetRateAccStreLineData().ToDateValueList().ToDataTable()
+            };
         }
 
         //计算累积强度
@@ -47,13 +59,13 @@ namespace Xb2.Algorithms.Core.Methods.Rate
         {
             //解析输入
             var answer = new List<DateValue>();
-            var dvps = this.Input.Collection;
-            var start = this.Input.Start;
-            var end = this.Input.End;
+            var dvps = this.Input.FormattedValueList;
+            var start = this.Input.DateStart;
+            var end = this.Input.DateEnd;
             var wlen = this.Input.WLen;
             var slen = this.Input.SLen;
-            var delta = this.Input.SLen;
-            var period = this.Input.Period;
+            var delta = this.Input.Delta;
+            var period = this.Input.Freq;
             //速率差分计算函数
             Func<DateValue, DateValue, double> slcf = (d1, d2) => ((d2.Value - d1.Value)*365)/((d2.Date - d1.Date).Days);
             //累积强度计算函数

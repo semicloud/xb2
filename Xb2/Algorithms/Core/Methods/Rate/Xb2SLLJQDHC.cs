@@ -11,6 +11,8 @@ using System.Diagnostics;
 using System.Linq;
 using Accord.Math;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Entity.Computing;
+using Xb2.Utils;
 
 namespace Xb2.Algorithms.Core.Methods.Rate
 {
@@ -19,7 +21,7 @@ namespace Xb2.Algorithms.Core.Methods.Rate
     /// </summary>
     public class Xb2SLLJQDHC
     {
-        public SlhcInput Input { get; set; }
+        public List<XbSLHCInput> Input { get; set; }
 
         /// <summary>
         /// 按照测项获得速率的散点，即窗口、速率值集合
@@ -29,13 +31,22 @@ namespace Xb2.Algorithms.Core.Methods.Rate
         {
             var answer = new Dictionary<string, List<ScatterValues>>();
             Func<DateValue, DateValue, double> slcf = (m1, m2) => ((m2.Value - m1.Value) * 365) / ((m2.Date - m1.Date).Days);
-            foreach (var sInput in this.Input.InputColl)
+            foreach (var sInput in this.Input)
             {
-                var scatterValueses = QuShuDebug.GetScatterValues_20150720_v2(sInput.Dvps, this.Input.Start, this.Input.End,
-                    this.Input.WLen, this.Input.SLen, this.Input.Delta, sInput.Period, slcf);
-                answer.Add(sInput.Name, scatterValueses);
+                var scatterValueses = QuShuDebug.GetScatterValues_20150720_v2(sInput.FormattedValueList, sInput.DateStart, sInput.DateEnd,
+                    sInput.WLen,sInput.SLen, sInput.Delta, sInput.Freq, slcf);
+                answer.Add(sInput.ItemStr, scatterValueses);
             }
             return answer;
+        }
+
+        public CalcResult GetLine()
+        {
+            return new CalcResult
+            {
+                Title =  "合成结果",
+                NumericalTable = getMerge_20150720().ToDateValueList().ToDataTable()
+            };
         }
 
         /// <summary>
@@ -46,9 +57,11 @@ namespace Xb2.Algorithms.Core.Methods.Rate
         {
             var answer = new List<DateValue>();
             var scatterValuesesByName = getScatterValueses_20150720();
-            var windows = Window.GetWindows(this.Input.Start.AddMonths(this.Input.Delta), this.Input.End, this.Input.SLen, this.Input.WLen);
+            var windows = Window.GetWindows(this.Input[0].DateStart.AddMonths(this.Input[0].Delta),
+                this.Input[0].DateEnd, this.Input[0].SLen, this.Input[0].WLen);
+
             var names = scatterValuesesByName.Keys.ToList();
-            var count = this.Input.InputColl.Count;
+            var count = this.Input.Count;
             foreach (var window in windows)
             {
                 Debug.Print("窗口：{0}", window.Upper.ToShortDateString());
@@ -58,7 +71,7 @@ namespace Xb2.Algorithms.Core.Methods.Rate
                     var scatterValues = scatterValuesesByName[name];
                     var scatterValue = scatterValues.Find(s => s.WinTail == window.Upper);
                     var diffs = scatterValue.Diffs;
-                    var reliability = this.Input.InputColl.Find(p => p.Name == name).Reliability;
+                    var reliability = this.Input.Find(p => p.ItemStr == name).Weight;
                     if (diffs.Count == 0) continue;
                     var tuple = new Tuple<string, List<double>, double>(name, diffs, reliability);
                     list.Add(tuple);

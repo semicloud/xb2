@@ -10,42 +10,45 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Xb2.Algorithms.Core.Entity;
+using Xb2.Algorithms.Core.Input;
+using Xb2.Entity.Computing;
+using Xb2.Utils;
 
 namespace Xb2.Algorithms.Core.Methods.Rate
 {
-    /// <summary>
-    /// 速率差分合成输入
-    /// </summary>
-    public class SingleInput
-    {
-        /// <summary>
-        /// 测项名称
-        /// </summary>
-        public string Name { get; set; }
+    ///// <summary>
+    ///// 速率差分合成输入
+    ///// </summary>
+    //public class SingleInput
+    //{
+    //    /// <summary>
+    //    /// 测项名称
+    //    /// </summary>
+    //    public string Name { get; set; }
 
-        /// <summary>
-        /// 原始数据，即测值集合
-        /// </summary>
-        public List<DateValue> Dvps { get; set; }
+    //    /// <summary>
+    //    /// 原始数据，即测值集合
+    //    /// </summary>
+    //    public List<DateValue> Dvps { get; set; }
 
-        /// <summary>
-        /// 观测信度
-        /// </summary>
-        public double Reliability { get; set; }
+    //    /// <summary>
+    //    /// 观测信度
+    //    /// </summary>
+    //    public double Reliability { get; set; }
 
-        /// <summary>
-        /// 观测周期
-        /// </summary>
-        public int Period { get; set; }
-    }
+    //    /// <summary>
+    //    /// 观测周期
+    //    /// </summary>
+    //    public int Period { get; set; }
+    //}
 
-    /// <summary>
-    /// 速率合成输入，用于速率合成和速率累积强度合成
-    /// </summary>
-    public class SlhcInput : BaseInput
-    {
-        public List<SingleInput> InputColl { get; set; }
-    }
+    ///// <summary>
+    ///// 速率合成输入，用于速率合成和速率累积强度合成
+    ///// </summary>
+    //public class SlhcInput : BaseInput
+    //{
+    //    public List<SingleInput> InputColl { get; set; }
+    //}
 
     public class DiffInfo
     {
@@ -84,7 +87,16 @@ namespace Xb2.Algorithms.Core.Methods.Rate
         /// <summary>
         /// 多测项-速率-合成的输入
         /// </summary>
-        public SlhcInput Input { get; set; }
+        public List<XbSLHCInput> Input { get; set; }
+
+        public CalcResult GetSLHCLine()
+        {
+            return new CalcResult()
+            {
+                Title = Input.Count + "测项 速率差分",
+                NumericalTable = getMerge_20150720().ToDateValueList().ToDataTable()
+            };
+        }
 
 
         /// <summary>
@@ -95,11 +107,11 @@ namespace Xb2.Algorithms.Core.Methods.Rate
         {
             var answer = new List<DateValue>();
             var diffInfos = getDiffInfos();
-            var start = this.Input.Start;
-            var end = this.Input.End;
-            var wlen = this.Input.WLen;
-            var slen = this.Input.SLen;
-            var delta = this.Input.Delta;
+            var start = this.Input[0].DateStart;
+            var end = this.Input[0].DateEnd;
+            var wlen = this.Input[0].WLen;
+            var slen = this.Input[0].SLen;
+            var delta = this.Input[0].Delta;
             var windows = Window.GetWindows(start.AddMonths(wlen), end, slen, wlen);
             var names = diffInfos.Select(q => q.Name).ToList();
             Debug.Print("-------开始速率合成---------");
@@ -132,17 +144,17 @@ namespace Xb2.Algorithms.Core.Methods.Rate
         private List<DiffInfo> getDiffInfos()
         {
             var answer = new List<DiffInfo>();
-            var start = this.Input.Start;
-            var end = this.Input.End;
-            var wlen = this.Input.WLen;
-            var slen = this.Input.SLen;
-            var delta = this.Input.SLen;
+            var start = this.Input[0].DateStart;
+            var end = this.Input[0].DateEnd;
+            var wlen = this.Input[0].WLen;
+            var slen = this.Input[0].SLen;
+            var delta = this.Input[0].Delta;
             Func<DateValue, DateValue, double> slcf = (d1, d2) => ((d2.Value - d1.Value) * 365) / ((d2.Date - d1.Date).Days);
-            foreach (var input in this.Input.InputColl)
+            foreach (XbSLHCInput input in this.Input)
             {
-                Debug.Print("以下开始计算【{0}】的速率差分,观测周期{1},信度{2}", input.Name, input.Period,input.Reliability);
-                var diffValues = QuShuDebug.GetAverageValues_20150720_v2(input.Dvps,start,end, wlen, slen, delta, input.Period, slcf);
-                answer.Add(new DiffInfo(name: input.Name, diffValues: diffValues, reliability: input.Reliability));
+                Debug.Print("以下开始计算【{0}】的速率差分,观测周期{1},信度{2}", input.ItemStr, input.Freq,input.Weight);
+                var diffValues = QuShuDebug.GetAverageValues_20150720_v2(input.FormattedValueList,start,end, wlen, slen, delta, input.Freq, slcf);
+                answer.Add(new DiffInfo(name: input.ItemStr, diffValues: diffValues, reliability: input.Weight));
             }
             return answer;
         }
