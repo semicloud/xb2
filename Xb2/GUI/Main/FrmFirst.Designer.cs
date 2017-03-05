@@ -287,29 +287,30 @@
             // 模式1ToolStripMenuItem
             // 
             this.模式1ToolStripMenuItem.Name = "模式1ToolStripMenuItem";
-            this.模式1ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.模式1ToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.模式1ToolStripMenuItem.Text = "模式1";
             this.模式1ToolStripMenuItem.Click += new System.EventHandler(this.模式1ToolStripMenuItem_Click);
             // 
             // 模式2ToolStripMenuItem
             // 
             this.模式2ToolStripMenuItem.Name = "模式2ToolStripMenuItem";
-            this.模式2ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.模式2ToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.模式2ToolStripMenuItem.Text = "模式2";
             this.模式2ToolStripMenuItem.Click += new System.EventHandler(this.模式2ToolStripMenuItem_Click);
             // 
             // 模式3ToolStripMenuItem
             // 
             this.模式3ToolStripMenuItem.Name = "模式3ToolStripMenuItem";
-            this.模式3ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.模式3ToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.模式3ToolStripMenuItem.Text = "模式3";
             this.模式3ToolStripMenuItem.Click += new System.EventHandler(this.模式3ToolStripMenuItem_Click);
             // 
             // 模式4ToolStripMenuItem
             // 
             this.模式4ToolStripMenuItem.Name = "模式4ToolStripMenuItem";
-            this.模式4ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.模式4ToolStripMenuItem.Size = new System.Drawing.Size(116, 22);
             this.模式4ToolStripMenuItem.Text = "模式4";
+            this.模式4ToolStripMenuItem.Click += new System.EventHandler(this.模式4ToolStripMenuItem_Click);
             // 
             // 应变ToolStripMenuItem
             // 
@@ -324,26 +325,30 @@
             // 模式1ToolStripMenuItem1
             // 
             this.模式1ToolStripMenuItem1.Name = "模式1ToolStripMenuItem1";
-            this.模式1ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.模式1ToolStripMenuItem1.Size = new System.Drawing.Size(116, 22);
             this.模式1ToolStripMenuItem1.Text = "模式1";
+            this.模式1ToolStripMenuItem1.Click += new System.EventHandler(this.应变模式1ToolStripMenuItem1_Click);
             // 
             // 模式2ToolStripMenuItem1
             // 
             this.模式2ToolStripMenuItem1.Name = "模式2ToolStripMenuItem1";
-            this.模式2ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.模式2ToolStripMenuItem1.Size = new System.Drawing.Size(116, 22);
             this.模式2ToolStripMenuItem1.Text = "模式2";
+            this.模式2ToolStripMenuItem1.Click += new System.EventHandler(this.应变模式2ToolStripMenuItem1_Click);
             // 
             // 模式3ToolStripMenuItem1
             // 
             this.模式3ToolStripMenuItem1.Name = "模式3ToolStripMenuItem1";
-            this.模式3ToolStripMenuItem1.Size = new System.Drawing.Size(152, 22);
+            this.模式3ToolStripMenuItem1.Size = new System.Drawing.Size(116, 22);
             this.模式3ToolStripMenuItem1.Text = "模式3";
+            this.模式3ToolStripMenuItem1.Click += new System.EventHandler(this.应变模式3ToolStripMenuItem1_Click);
             // 
             // 异常放大ToolStripMenuItem
             // 
             this.异常放大ToolStripMenuItem.Name = "异常放大ToolStripMenuItem";
             this.异常放大ToolStripMenuItem.Size = new System.Drawing.Size(204, 22);
             this.异常放大ToolStripMenuItem.Text = "异常放大";
+            this.异常放大ToolStripMenuItem.Click += new System.EventHandler(this.异常放大ToolStripMenuItem_Click);
             // 
             // statusStrip1
             // 

@@ -10,6 +10,7 @@ using Xb2.Entity.Business;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using ExtendMethodDataTable = Xb2.Utils.ExtendMethod.ExtendMethodDataTable;
 
 namespace Xb2.GUI.Catalog
 {
@@ -162,7 +163,7 @@ namespace Xb2.GUI.Catalog
                               + "经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点"
                               + " from {0} inner join {1} on {0}.编号={1}.子库编号"
                               + " where 子库名称='{2}' and 用户编号={3}";
-                commandText = string.Format(commandText, DbHelper.TnSubDb(), DbHelper.TnSubDbData(), databaseName, User.ID);
+                commandText = string.Format(commandText, DaoObject.TnSubDb(), DaoObject.TnSubDbData(), databaseName, User.ID);
             }
             //使用内连接查询标注库数据
             if (databaseType.Equals("标注库"))
@@ -171,17 +172,17 @@ namespace Xb2.GUI.Catalog
                               + "经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点"
                               + " from {0} inner join {1} on {0}.编号={1}.标注库编号"
                               + " where 标注库名称='{2}' and 用户编号={3}";
-                commandText = string.Format(commandText, DbHelper.TnLabelDb(), DbHelper.TnLabelDbData(), databaseName, User.ID);
+                commandText = string.Format(commandText, DaoObject.TnLabelDb(), DaoObject.TnLabelDbData(), databaseName, User.ID);
             }
             if (databaseType.Equals("地震目录"))
             {
                 //直接从地震目录中查询出记录
                 commandText = "select date(发震日期) as 发震日期,time(发震时间) as 发震时间,"
                               + "经度,纬度,震级单位,round(震级值,1) as 震级值,定位参数,参考地点 from {0}";
-                commandText = string.Format(commandText, DbHelper.TnCategory());
+                commandText = string.Format(commandText, DaoObject.TnCategory());
             }
             Logger.Debug(commandText);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, commandText).Tables[0];
             Logger.Info("从 {0} 中查询 地震目录 {1}，返回 {2} 条记录", databaseType, databaseName, dt.Rows.Count);
             return dt;
         }
@@ -284,7 +285,7 @@ namespace Xb2.GUI.Catalog
                 Logger.Info("选定的数据库名：{0}，类型：{1}", databaseName, databaseType);
                 var dt = GetCategories(databaseName, databaseType);
                 //查询出来的记录默认选中
-                dt = DataTableHelper.BuildChooseColumn(dt);
+                dt = ExtendMethodDataTable.AddCheckColumn(dt);
                 RefreshDataGridView(dt);
                 //从查询出的数据中找到日期、震级的最大最小值
                 var minDate = Convert.ToDateTime(dt.AsEnumerable().Min(r => r["发震日期"]));

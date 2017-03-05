@@ -13,10 +13,13 @@ using Xb2.Entity;
 using Xb2.Entity.Business;
 using Xb2.GUI.Catalog;
 using Xb2.GUI.Controls;
+using Xb2.GUI.Controls.User;
 using Xb2.GUI.M.Item.ToolWindow;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using Xb2.Utils.ExtendMethod;
+using ExtendMethodDataTable = Xb2.Utils.ExtendMethod.ExtendMethodDataTable;
 
 namespace Xb2.GUI.M.Item
 {
@@ -50,7 +53,7 @@ namespace Xb2.GUI.M.Item
             this.CommandText = string.Empty;
             this.User = user;
             // 默认视图为查询测项总表
-            this.m_viewName = DbHelper.TnMItem();
+            this.m_viewName = DaoObject.TnMItem();
         }
 
         private void FrmSelectMItem_Load(object sender, System.EventArgs e)
@@ -72,7 +75,7 @@ namespace Xb2.GUI.M.Item
                 this.CommandText = String.Empty;
                 //从数据视图中查询数据
                 commandText = "select * from " + this.m_viewName;
-                var emptyDt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0].Clone();
+                var emptyDt = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, commandText).Tables[0].Clone();
                 this.RefreshDataGridView(emptyDt);
                 return;
             }
@@ -82,7 +85,7 @@ namespace Xb2.GUI.M.Item
             //这里重新生成一个带排序的SQL语句，因为在下面需要使用不带排序的sql
             var sortSql = commandText + " order by 观测单位,地名,方法名";
             //用sortSql更新DataGridView
-            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sortSql).Tables[0];
+            var dataTable = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, sortSql).Tables[0];
             this.CommandText = commandText;
             this.RefreshDataGridView(dataTable);
             #endregion
@@ -98,9 +101,9 @@ namespace Xb2.GUI.M.Item
                 {
                     for (int i = 0; i < this.flowLayoutPanel1.Controls.Count; i++)
                     {
-                        if (this.flowLayoutPanel1.Controls[i] is CtnlMFieldSelect)
+                        if (this.flowLayoutPanel1.Controls[i] is FilterItemFieldControl)
                         {
-                            var control = (CtnlMFieldSelect) this.flowLayoutPanel1.Controls[i];
+                            var control = (FilterItemFieldControl) this.flowLayoutPanel1.Controls[i];
                             //根据SQL语句，更新那些还未查询的字段的值
                             if (!existedFields.Contains(control.FieldName))
                             {
@@ -129,7 +132,7 @@ namespace Xb2.GUI.M.Item
         /// <param name="fieldName">字段名</param>
         public void AddSelectField(string fieldName)
         {
-            var control = new CtnlMFieldSelect(fieldName, this.m_viewName);
+            var control = new FilterItemFieldControl(fieldName, this.m_viewName);
             control.Width = flowLayoutPanel1.Width - m_distToFlowLayoutPanel;
             this.flowLayoutPanel1.Controls.Add(control);
         }
@@ -142,9 +145,9 @@ namespace Xb2.GUI.M.Item
         {
             for (int i = 0; i < flowLayoutPanel1.Controls.Count; i++)
             {
-                if (flowLayoutPanel1.Controls[i] is CtnlMFieldSelect)
+                if (flowLayoutPanel1.Controls[i] is FilterItemFieldControl)
                 {
-                    var fieldSelect = (CtnlMFieldSelect) flowLayoutPanel1.Controls[i];
+                    var fieldSelect = (FilterItemFieldControl) flowLayoutPanel1.Controls[i];
                     if (fieldSelect.FieldName.Equals(fieldName))
                     {
                         flowLayoutPanel1.Controls.Remove(flowLayoutPanel1.Controls[i]);
@@ -168,9 +171,9 @@ namespace Xb2.GUI.M.Item
             {
                 for (int i = 0; i < this.flowLayoutPanel1.Controls.Count; i++)
                 {
-                    if (this.flowLayoutPanel1.Controls[i] is CtnlMFieldSelect)
+                    if (this.flowLayoutPanel1.Controls[i] is FilterItemFieldControl)
                     {
-                        var fieldQueryControl = this.flowLayoutPanel1.Controls[i] as CtnlMFieldSelect;
+                        var fieldQueryControl = this.flowLayoutPanel1.Controls[i] as FilterItemFieldControl;
                         existFields.Add(fieldQueryControl.FieldName);
                     }
                 }
@@ -192,9 +195,9 @@ namespace Xb2.GUI.M.Item
                 //遍历界面中的检索控件，将控件中已经Check的项连同字段名取出来
                 for (int i = 0; i < this.flowLayoutPanel1.Controls.Count; i++)
                 {
-                    if (this.flowLayoutPanel1.Controls[i] is CtnlMFieldSelect)
+                    if (this.flowLayoutPanel1.Controls[i] is FilterItemFieldControl)
                     {
-                        var fieldControl = (CtnlMFieldSelect) this.flowLayoutPanel1.Controls[i];
+                        var fieldControl = (FilterItemFieldControl) this.flowLayoutPanel1.Controls[i];
                         //如果该查询字段有选中的项
                         var chkBoxList = fieldControl.checkedListBox1;
                         if (chkBoxList.CheckedItems.Count > 0)
@@ -292,7 +295,7 @@ namespace Xb2.GUI.M.Item
             var dialogResult = frmQueryCmd.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, frmQueryCmd.Command).Tables[0];
+                var dt = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, frmQueryCmd.Command).Tables[0];
                 this.RefreshDataGridView(dt);
             }
         }
@@ -368,7 +371,7 @@ namespace Xb2.GUI.M.Item
                     var extension = Path.GetExtension(saveFileDialog.FileName);
                     if (extension != null && extension.Equals(".txt"))
                     {
-                        DataTableHelper.Export(saveFileDialog.FileName, dt);
+                        dt.Export(saveFileDialog.FileName);
                     }
                 }
             }
@@ -384,7 +387,7 @@ namespace Xb2.GUI.M.Item
                 for (int i = 0; i < this.flowLayoutPanel1.Controls.Count; i++)
                 {
                     var control = this.flowLayoutPanel1.Controls[i];
-                    if (control is CtnlMFieldSelect)
+                    if (control is FilterItemFieldControl)
                     {
                         control.Width = this.flowLayoutPanel1.Width - m_distToFlowLayoutPanel;
                     }
@@ -396,7 +399,7 @@ namespace Xb2.GUI.M.Item
 
         private void flowLayoutPanel1_ControlAdded(object sender, ControlEventArgs e)
         {
-            if (e.Control is CtnlMFieldSelect)
+            if (e.Control is FilterItemFieldControl)
             {
                 e.Control.Width = this.flowLayoutPanel1.Width - 30;
             }
@@ -608,7 +611,7 @@ namespace Xb2.GUI.M.Item
         public void RefreshDataGridView(DataTable dataTable)
         {
             this.dataGridView1.DataSource = null;
-            this.dataGridView1.DataSource = DataTableHelper.BuildChooseColumn(dataTable);
+            this.dataGridView1.DataSource = ExtendMethodDataTable.AddCheckColumn(dataTable);
             this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.MultiSelect = true;
             this.dataGridView1.SelectionMode = DataGridViewSelectionMode.FullRowSelect;

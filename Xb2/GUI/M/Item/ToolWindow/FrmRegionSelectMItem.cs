@@ -8,9 +8,11 @@ using MySql.Data.MySqlClient;
 using NLog;
 using Xb2.Entity.Business;
 using Xb2.GUI.Controls;
+using Xb2.GUI.Controls.User;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using ExtendMethodDataTable = Xb2.Utils.ExtendMethod.ExtendMethodDataTable;
 
 namespace Xb2.GUI.M.Item.ToolWindow
 {
@@ -47,10 +49,10 @@ namespace Xb2.GUI.M.Item.ToolWindow
         /// <param name="e"></param>
         private void button8_Click(object sender, System.EventArgs e)
         {
-            CircleQuery circleQuery = new CircleQuery();
-            circleQuery.Tag = Convert.ToInt32(flowLayoutPanel2.Tag) + 1;
-            flowLayoutPanel2.Controls.Add(circleQuery);
-            flowLayoutPanel2.Tag = circleQuery.Tag;
+            QueryCircleControl queryCircleControl = new QueryCircleControl();
+            queryCircleControl.Tag = Convert.ToInt32(flowLayoutPanel2.Tag) + 1;
+            flowLayoutPanel2.Controls.Add(queryCircleControl);
+            flowLayoutPanel2.Tag = queryCircleControl.Tag;
         }
 
         /// <summary>
@@ -62,8 +64,8 @@ namespace Xb2.GUI.M.Item.ToolWindow
         {
             if (flowLayoutPanel2.Controls.Count > 0)
             {
-                var controls = flowLayoutPanel2.Controls.Cast<Control>().ToList();
-                var circleQueries = controls.FindAll(c => c.GetType() == typeof(CircleQuery));
+                var controls = flowLayoutPanel2.Controls.Cast<System.Windows.Forms.Control>().ToList();
+                var circleQueries = controls.FindAll(c => c.GetType() == typeof(QueryCircleControl));
                 var circleQuery =
                     circleQueries.Find(
                         cq => Convert.ToInt32(cq.Tag) == Convert.ToInt32(flowLayoutPanel2.Tag));
@@ -79,10 +81,10 @@ namespace Xb2.GUI.M.Item.ToolWindow
         /// <param name="e"></param>
         private void button10_Click(object sender, EventArgs e)
         {
-            RectQuery rectQuery = new RectQuery();
-            rectQuery.Tag = Convert.ToInt32(flowLayoutPanel3.Tag) + 1;
-            flowLayoutPanel3.Controls.Add(rectQuery);
-            flowLayoutPanel3.Tag = rectQuery.Tag;
+            QueryRectangleControl queryRectangleControl = new QueryRectangleControl();
+            queryRectangleControl.Tag = Convert.ToInt32(flowLayoutPanel3.Tag) + 1;
+            flowLayoutPanel3.Controls.Add(queryRectangleControl);
+            flowLayoutPanel3.Tag = queryRectangleControl.Tag;
         }
 
         /// <summary>
@@ -94,8 +96,8 @@ namespace Xb2.GUI.M.Item.ToolWindow
         {
             if (flowLayoutPanel3.Controls.Count > 0)
             {
-                var controls = flowLayoutPanel3.Controls.Cast<Control>().ToList();
-                var rectQueries = controls.FindAll(c => c.GetType() == typeof(RectQuery));
+                var controls = flowLayoutPanel3.Controls.Cast<System.Windows.Forms.Control>().ToList();
+                var rectQueries = controls.FindAll(c => c.GetType() == typeof(QueryRectangleControl));
                 var circleQuery =
                     rectQueries.Find(
                         rq => Convert.ToInt32(rq.Tag) == Convert.ToInt32(flowLayoutPanel3.Tag));
@@ -155,9 +157,9 @@ namespace Xb2.GUI.M.Item.ToolWindow
 
             // 是否有重名的区域查询条件？
             var commandText = "select count(*) from {0} where 用户编号={1} and 视图名称='{2}'";
-            commandText = string.Format(commandText, DbHelper.TnRQMItem(), this.User.ID, viewDisplayName);
+            commandText = string.Format(commandText, DaoObject.TnRQMItem(), this.User.ID, viewDisplayName);
             Logger.Debug(commandText);
-            var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, commandText));
+            var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(DaoObject.ConnectionString, commandText));
             Logger.Info("查询是否存在名为 {0} 的视图 ？ {1}", viewDisplayName, n > 0);
             if (n > 0)
             {
@@ -170,16 +172,16 @@ namespace Xb2.GUI.M.Item.ToolWindow
             var viewName = this.User.Name + "_" + Guid.NewGuid().ToString().Replace('-', '_');
             Logger.Info("视图名：" + viewName);
             var viewCommandText = string.Format("create view {0} as " + this.GetCommandText(), viewName);
-            MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, viewCommandText);
+            MySqlHelper.ExecuteNonQuery(DaoObject.ConnectionString, viewCommandText);
             Logger.Debug("视图创建语句：" + viewCommandText);
 
             // 视图如果创建成功了，向数据库中写入记录
-            if (DbHelper.HasView(viewName))
+            if (DaoObject.HasView(viewName))
             {
                 commandText = "insert into {0}(用户编号,视图名称,视图体) values ({1},'{2}','{3}')";
-                commandText = string.Format(commandText, DbHelper.TnRQMItem(), this.User.ID, viewDisplayName, viewName);
+                commandText = string.Format(commandText, DaoObject.TnRQMItem(), this.User.ID, viewDisplayName, viewName);
                 Logger.Debug(commandText);
-                n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, commandText);
+                n = MySqlHelper.ExecuteNonQuery(DaoObject.ConnectionString, commandText);
                 Logger.Info("保存视图记录 " + (n > 0));
                 if (n > 0)
                 {
@@ -201,22 +203,22 @@ namespace Xb2.GUI.M.Item.ToolWindow
         /// 获取圆域查询控件
         /// </summary>
         /// <returns></returns>
-        private List<CircleQuery> GetCircleQueries()
+        private List<QueryCircleControl> GetCircleQueries()
         {
-            var f2Controls = flowLayoutPanel2.Controls.Cast<Control>().ToList();
-            var circleQueries = f2Controls.FindAll(c => c.GetType() == typeof(CircleQuery));
-            return circleQueries.Cast<CircleQuery>().ToList();
+            var f2Controls = flowLayoutPanel2.Controls.Cast<System.Windows.Forms.Control>().ToList();
+            var circleQueries = f2Controls.FindAll(c => c.GetType() == typeof(QueryCircleControl));
+            return circleQueries.Cast<QueryCircleControl>().ToList();
         }
 
         /// <summary>
         /// 获取矩形域查询控件
         /// </summary>
         /// <returns></returns>
-        private List<RectQuery> GetRectQueries()
+        private List<QueryRectangleControl> GetRectQueries()
         {
-            var f2Controls = flowLayoutPanel3.Controls.Cast<Control>().ToList();
-            var circleQueries = f2Controls.FindAll(c => c.GetType() == typeof(RectQuery));
-            return circleQueries.Cast<RectQuery>().ToList();
+            var f2Controls = flowLayoutPanel3.Controls.Cast<System.Windows.Forms.Control>().ToList();
+            var circleQueries = f2Controls.FindAll(c => c.GetType() == typeof(QueryRectangleControl));
+            return circleQueries.Cast<QueryRectangleControl>().ToList();
         }
 
         #endregion
@@ -318,7 +320,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
         /// <returns></returns>
         private string GetCommandText()
         {
-            var stringBuilder = new StringBuilder(string.Format("select * from {0} where ", DbHelper.TnMItem()));
+            var stringBuilder = new StringBuilder(string.Format("select * from {0} where ", DaoObject.TnMItem()));
             Logger.Debug("拼接区域查询SQL语句，基本查询语句：" + stringBuilder);
             stringBuilder.Append(GetCircleQueryClause());
             stringBuilder.Append(GetRectQueryClause());
@@ -343,17 +345,17 @@ namespace Xb2.GUI.M.Item.ToolWindow
         private void RefreshDataGridView()
         {
             var commandText = "select 编号,视图名称 as 名称,视图体 from {0} where 用户编号={1}";
-            commandText = string.Format(commandText, DbHelper.TnRQMItem(), this.User.ID);
+            commandText = string.Format(commandText, DaoObject.TnRQMItem(), this.User.ID);
             Logger.Debug(commandText);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, commandText).Tables[0];
             Logger.Info("查询用户 {0} 的区域查询视图信息， 共返回 {1} 条", this.User.ID, dt.Rows.Count);
             
             //加入测项表，即不使用区域查询
             var dr = dt.NewRow();
             dr["名称"] = "测项";
-            dr["视图体"] = DbHelper.TnMItem();
+            dr["视图体"] = DaoObject.TnMItem();
             dt.Rows.InsertAt(dr, 0);
-            dt = DataTableHelper.IdentifyDataTable(dt);
+            dt = ExtendMethodDataTable.IdentifyDataTable(dt);
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = dt;
             dataGridView1.MultiSelect = false;
@@ -433,7 +435,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
                 var row = dataGridView1.SelectedRows[0];
                 var viewName = row.Cells["视图体"].Value.ToString();
                 //测项表不能删除
-                if (viewName.Equals(DbHelper.TnMItem()))
+                if (viewName.Equals(DaoObject.TnMItem()))
                 {
                     MessageBox.Show("测项表不可删除！");
                     return;
@@ -442,13 +444,13 @@ namespace Xb2.GUI.M.Item.ToolWindow
                 Logger.Info("要删除的区域查询视图：{0}，视图体:{1}", id, viewName);
                 var commandText = "drop view " + viewName;
                 Logger.Debug(commandText);
-                MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, commandText);
-                if (!DbHelper.HasView(viewName))
+                MySqlHelper.ExecuteNonQuery(DaoObject.ConnectionString, commandText);
+                if (!DaoObject.HasView(viewName))
                 {
                     commandText = "delete from {0} where 编号={1}";
-                    commandText = string.Format(commandText, DbHelper.TnRQMItem(), id);
+                    commandText = string.Format(commandText, DaoObject.TnRQMItem(), id);
                     Logger.Debug(commandText);
-                    var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, commandText);
+                    var n = MySqlHelper.ExecuteNonQuery(DaoObject.ConnectionString, commandText);
                     Logger.Info("删除视图记录，编号=" + id + "，" + (n > 0));
                     if (n > 0)
                     {

@@ -2,9 +2,10 @@
 using System.Drawing;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
-using Xb2.Algorithms.Core.Entity;
+using Xb2.Computing.CoreAlgorithms.Entities;
+using Xb2.Computing.CoreAlgorithms.Entities.Number;
 using Xb2.Utils;
-using Xb2.Utils.Control;
+using Xb2.Utils.Database;
 
 namespace Xb2.TestAndDemos
 {
@@ -18,7 +19,7 @@ namespace Xb2.TestAndDemos
         private void FrmExportChartDemo_Load(object sender, EventArgs e)
         {
             var calcResult = new CalcResult();
-            calcResult.NumericalTable = DateValueList.FromRawData(17).ToDataTable();
+            calcResult.NumericalTable = DaoObject.GetRawData(17);
             calcResult.Title = "石景山区玉泉西街1号院";
             var chart = ChartHelper.BuildChart(calcResult);
             chart.Size = new Size(500, 260);

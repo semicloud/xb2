@@ -7,6 +7,7 @@ using Xb2.GUI.Catalog;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using ExtendMethodDataTable = Xb2.Utils.ExtendMethod.ExtendMethodDataTable;
 
 namespace Xb2.GUI.M.Item.ToolWindow
 {
@@ -51,8 +52,8 @@ namespace Xb2.GUI.M.Item.ToolWindow
                 var userId = this.User.ID;
                 //命令名是否重复查询
                 var sql = "select count(*) from {0} where 用户编号={1} and 命令名称='{2}'";
-                sql = string.Format(sql, DbHelper.TnQMItem(), this.User.ID, cmdName);
-                var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql));
+                sql = string.Format(sql, DaoObject.TnQMItem(), this.User.ID, cmdName);
+                var n = Convert.ToInt32(MySqlHelper.ExecuteScalar(DaoObject.ConnectionString, sql));
                 if (n > 0)
                 {
                     MessageBox.Show("已存在名为【" + cmdName + "】的查询！");
@@ -77,9 +78,9 @@ namespace Xb2.GUI.M.Item.ToolWindow
         private void RefreshDataGridView()
         {
             var sql = "select 编号,命令名称,命令文本 from {0} where 用户编号={1}";
-            sql = string.Format(sql, DbHelper.TnQMItem(), this.User.ID);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
-            var identifiedTable = DataTableHelper.IdentifyDataTable(dt);
+            sql = string.Format(sql, DaoObject.TnQMItem(), this.User.ID);
+            var dt = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, sql).Tables[0];
+            var identifiedTable = ExtendMethodDataTable.IdentifyDataTable(dt);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = identifiedTable;
             this.dataGridView1.Columns["编号"].Visible = false;
@@ -94,14 +95,14 @@ namespace Xb2.GUI.M.Item.ToolWindow
         //保存查询条件至数据库
         private bool SaveCmd(int userId, string cmdName, string cmd)
         {
-            var sql = "select * from " + DbHelper.TnQMItem();
-            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString,sql).Tables[0];
+            var sql = "select * from " + DaoObject.TnQMItem();
+            var dataTable = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString,sql).Tables[0];
             var dataRow = dataTable.NewRow();
             dataRow["用户编号"] = userId;
             dataRow["命令名称"] = cmdName;
             dataRow["命令文本"] = cmd;
             dataTable.Rows.Add(dataRow);
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
+            var adapter = new MySqlDataAdapter(sql, DaoObject.ConnectionString);
             var commandBuilder = new MySqlCommandBuilder(adapter);
             return adapter.Update(dataTable) > 0;
         }
@@ -133,8 +134,8 @@ namespace Xb2.GUI.M.Item.ToolWindow
                     if (confirm == DialogResult.OK)
                     {
                         var sql = "delete from {0} where 编号={1} and 用户编号={2}";
-                        sql = string.Format(sql, DbHelper.TnQMItem(), id, User.ID);
-                        var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql);
+                        sql = string.Format(sql, DaoObject.TnQMItem(), id, User.ID);
+                        var n = MySqlHelper.ExecuteNonQuery(DaoObject.ConnectionString, sql);
                         Debug.Print("sql:{0},returns:{1}", sql, n);
                         RefreshDataGridView();
                     }

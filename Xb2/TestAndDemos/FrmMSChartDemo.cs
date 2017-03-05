@@ -7,10 +7,10 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using Accord.Math;
 using MySql.Data.MySqlClient;
-using Xb2.Algorithms.Numberical;
+using Xb2.Computing.Numerical;
 using Xb2.Utils;
-using Xb2.Utils.Control;
 using Xb2.Utils.Database;
+using Xb2.Utils.ExtendMethod;
 
 namespace Xb2.TestAndDemos
 {
@@ -101,7 +101,7 @@ namespace Xb2.TestAndDemos
         private void FrmMSChartDemo_Load(object sender, System.EventArgs e)
         {
             var sql = "select 观测日期,观测值 from 系统_原始数据 where 测项编号=16 order by 观测日期";
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, sql).Tables[0];
             chart1.DataSource = dt;
             chart1.ChartAreas[0].AxisY.Minimum = (double) dt.Compute("min(观测值)", "") - 1;
             chart1.ChartAreas[0].AxisY.Maximum = (double) dt.Compute("max(观测值)", "") + 1;
@@ -111,7 +111,7 @@ namespace Xb2.TestAndDemos
             chart1.ChartAreas[0].AxisY.LabelStyle.Format = "#0.00";
             chart1.ChartAreas[0].AxisX.ScaleView.Zoomable = true;
             chart1.Series[0].Points.DataBind(dt.AsEnumerable(), "观测日期", "观测值","");
-            chart1.Series[0].Points.Apply(p => p.ToolTip = DateTime.FromOADate(p.XValue).SStr() + "," + p.YValues[0]);
+            chart1.Series[0].Points.Apply(p => p.ToolTip = DateTime.FromOADate(p.XValue).ShortStr() + "," + p.YValues[0]);
             chart1.Series[0].MarkerSize = 8;
             chart1.Series[0].MarkerStyle = MarkerStyle.Circle;
             chart1.Series[0].MarkerColor = Color.Blue;

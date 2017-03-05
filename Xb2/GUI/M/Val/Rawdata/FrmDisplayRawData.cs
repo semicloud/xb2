@@ -3,6 +3,7 @@ using System.Data;
 using System.Globalization;
 using System.Windows.Forms;
 using Xb2.Utils;
+using ExtendMethodDataTable = Xb2.Utils.ExtendMethod.ExtendMethodDataTable;
 
 namespace Xb2.GUI.M.Val.Rawdata
 {
@@ -42,7 +43,7 @@ namespace Xb2.GUI.M.Val.Rawdata
                 dataRow["观测值"] = value;
                 _dataTable.Rows.Add(dataRow);
             }
-            var dt = DataTableHelper.IdentifyDataTable(_dataTable);
+            var dt = ExtendMethodDataTable.IdentifyDataTable(_dataTable);
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = dt;
             dataGridView1.RowHeadersVisible = false;

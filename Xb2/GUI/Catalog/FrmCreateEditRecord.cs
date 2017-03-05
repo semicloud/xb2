@@ -163,8 +163,8 @@ namespace Xb2.Entity
 
             var labelDatabaseId = DaoObject.GetLabelDbId(m_labelDatabaseName, User.ID);
             var commandText = "select * from {0} where ±ê×¢¿â±àºÅ={1}";
-            commandText = string.Format(commandText, DbHelper.TnLabelDbData(), labelDatabaseId);
-            var adapter = new MySqlDataAdapter(commandText, DbHelper.ConnectionString);
+            commandText = string.Format(commandText, DaoObject.TnLabelDbData(), labelDatabaseId);
+            var adapter = new MySqlDataAdapter(commandText, DaoObject.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             builder.ConflictOption = ConflictOption.OverwriteChanges;
             var dataTable = new DataTable();

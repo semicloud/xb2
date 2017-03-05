@@ -3,7 +3,6 @@ using MathNet.Numerics.Distributions;
 using MathNet.Numerics.LinearAlgebra;
 using MathNet.Numerics.Statistics;
 using NUnit.Framework;
-using Xb2.Algorithms.Core.Entity;
 
 namespace Xb2.TestAndDemos
 {

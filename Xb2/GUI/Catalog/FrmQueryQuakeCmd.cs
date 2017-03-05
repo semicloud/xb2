@@ -4,6 +4,7 @@ using Xb2.Entity.Business;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using ExtendMethodDataTable = Xb2.Utils.ExtendMethod.ExtendMethodDataTable;
 
 namespace Xb2.GUI.Catalog
 {
@@ -59,9 +60,9 @@ namespace Xb2.GUI.Catalog
         private void RefreshDataGridView()
         {
             var sql = "select 命令名称,命令文本 from {0} where 用户编号={1}";
-            sql = string.Format(sql, DbHelper.TnQCategory(), this.User.ID);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
-            var identifiedTable = DataTableHelper.IdentifyDataTable(dt);
+            sql = string.Format(sql, DaoObject.TnQCategory(), this.User.ID);
+            var dt = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, sql).Tables[0];
+            var identifiedTable = ExtendMethodDataTable.IdentifyDataTable(dt);
             this.dataGridView1.DataSource = null;
             this.dataGridView1.DataSource = identifiedTable;
             this.dataGridView1.Columns["命令文本"].Visible = false;
@@ -75,14 +76,14 @@ namespace Xb2.GUI.Catalog
         //保存查询条件至数据库
         private bool SaveCmd(int userId, string cmdName, string cmd)
         {
-            var sql = "select * from " + DbHelper.TnQCategory();
-            var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString,sql).Tables[0];
+            var sql = "select * from " + DaoObject.TnQCategory();
+            var dataTable = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString,sql).Tables[0];
             var dataRow = dataTable.NewRow();
             dataRow["用户编号"] = userId;
             dataRow["命令名称"] = cmdName;
             dataRow["命令文本"] = cmd;
             dataTable.Rows.Add(dataRow);
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
+            var adapter = new MySqlDataAdapter(sql, DaoObject.ConnectionString);
             var commandBuilder = new MySqlCommandBuilder(adapter);
             return adapter.Update(dataTable) > 0;
         }

@@ -94,3 +94,7 @@ cross fault data tool for national earthquake response support service of China
 1. 基本完成了单幅图调整；
 2. 算法已集成至断层活动量3；
 
+#2017-3-6
+1. 所有算法集成完毕；
+2. 完成了第1轮重构工作；
+

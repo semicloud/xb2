@@ -6,14 +6,14 @@ using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using MySql.Data.MySqlClient;
 using NLog;
-using Xb2.Algorithms.Numberical;
-using Xb2.Config;
+using Xb2.Computing.CoreAlgorithms.Utils;
+using Xb2.Computing.Numerical;
 using Xb2.Entity.Business;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
 using Xb2.Utils;
-using Xb2.Utils.Control;
 using Xb2.Utils.Database;
+using Xb2.Utils.ExtendMethod;
 using XbApp.View.M.Value.ProcessedData;
 
 namespace Xb2.GUI.M.Val.ProcessedData
@@ -148,16 +148,16 @@ namespace Xb2.GUI.M.Val.ProcessedData
         private void InitializeChart(int itemId, int dbId)
         {
             var sql = "select 观测日期,观测值 from {0} where 测项编号={1} order by 观测日期";
-            sql = string.Format(sql, DbHelper.TnRData(), itemId);
-            var dtSource = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
+            sql = string.Format(sql, DaoObject.TnRData(), itemId);
+            var dtSource = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, sql).Tables[0];
 
             var sql2 = "select 观测日期,观测值 from {0} where 库编号={1} order by 观测日期";
-            sql2 = string.Format(sql2, DbHelper.TnProcessedDbData(), _processedDataDatabaseId);
-            var dtProcessed = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql2).Tables[0];
+            sql2 = string.Format(sql2, DaoObject.TnProcessedDbData(), _processedDataDatabaseId);
+            var dtProcessed = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, sql2).Tables[0];
 
             var sql3 = "select 操作记录 from {0} where 编号={1}";
-            sql3 = string.Format(sql3, DbHelper.TnProcessedDb(), _processedDataDatabaseId);
-            var strLog = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql3);
+            sql3 = string.Format(sql3, DaoObject.TnProcessedDb(), _processedDataDatabaseId);
+            var strLog = MySqlHelper.ExecuteScalar(DaoObject.ConnectionString, sql3);
 
             //初始化Chart控件
             groupBox1.Controls.Add(ChartHelper.GetOrdinaryChart());
@@ -514,11 +514,11 @@ namespace Xb2.GUI.M.Val.ProcessedData
                     var allDate = dataPoints.Select(p => DateTime.FromOADate(p.XValue)).ToList();
                     if (allDate.Contains(date))
                     {
-                        MessageBox.Show("观测值中已存在" + date.SStr() + "的观测值，取消插值！");
+                        MessageBox.Show("观测值中已存在" + date.ShortStr() + "的观测值，取消插值！");
                         return;
                     }
                     var value = Processmethod.GetLagrangeInterpolationResult(dataPoints, date);
-                    value = Math.Round(value, Xb2Config.GetPrecision());
+                    value = Math.Round(value, Percision.Get());
                     Debug.Print("interpolation date:{0}, value:{1}", date.ToShortDateString(), value);
                     //在这里将插值的数据入栈了，用于撤销
                     if (this.GetCurrentChart().Interpolation(date, value, "缺数处理→朗格朗日插值"))

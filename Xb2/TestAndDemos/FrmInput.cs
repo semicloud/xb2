@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Windows.Forms;
 using Xb2.Entity.Business;
 using Xb2.GUI.Controls;
+using Xb2.GUI.Controls.User;
 using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
 
@@ -18,7 +19,7 @@ namespace Xb2.TestAndDemos
 
         private void FrmInput_Load(object sender, EventArgs e)
         {
-            //MItemInput mItemInput = new MItemInput(this.User, 15);
+            //DemoMItemInput mItemInput = new DemoMItemInput(this.User, 15);
             //this.flowLayoutPanel1.Controls.Add(mItemInput);
         }
 
@@ -39,7 +40,7 @@ namespace Xb2.TestAndDemos
                 for (int i = 0; i < dt.Rows.Count; i++)
                 {
                     var mItemId = Convert.ToInt32(dt.Rows[i]["编号"]);
-                    var inputForm = new MItemInput(this.User, mItemId);
+                    var inputForm = new DemoMItemInput(this.User, mItemId);
                     inputForm.Width = panel1.Width - 25;
                     inputForm.Location = new Point(x, panel1.Controls.Count * (inputForm.Height + 5));
                     this.panel1.Controls.Add(inputForm);

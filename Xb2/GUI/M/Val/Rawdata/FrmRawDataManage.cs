@@ -10,6 +10,8 @@ using Xb2.GUI.M.Item;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using Xb2.Utils.ExtendMethod;
+using ExtendMethodDataTable = Xb2.Utils.ExtendMethod.ExtendMethodDataTable;
 
 namespace Xb2.GUI.M.Val.Rawdata
 {
@@ -122,8 +124,8 @@ namespace Xb2.GUI.M.Val.Rawdata
                     if (answ == DialogResult.OK)
                     {
                         var sql = "select * from {0} where 测项编号={1}";
-                        sql = string.Format(sql, DbHelper.TnRData(), itemId);
-                        var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
+                        sql = string.Format(sql, DaoObject.TnRData(), itemId);
+                        var adapter = new MySqlDataAdapter(sql, DaoObject.ConnectionString);
                         var builder = new MySqlCommandBuilder(adapter);
                         var dt = new DataTable();
                         adapter.Fill(dt);
@@ -162,15 +164,15 @@ namespace Xb2.GUI.M.Val.Rawdata
                     if (form.ShowDialog() == DialogResult.OK)
                     {
                         //获取数据查看窗口的数据，去掉“序号”列
-                        var dataTable = DataTableHelper.UnIdentifyDataTable(form.DataTable);
+                        var dataTable = ExtendMethodDataTable.UnIdentifyDataTable(form.DataTable);
                         //加入“测项编号”列，并填入测项编号
                         dataTable.Columns.Add("测项编号", typeof(int));
-                        dataTable.FillColumn("测项编号", itemId);
+                        dataTable.FillColumnByFixedValue("测项编号", itemId);
                         //从数据库中查询到这个测项的数据
                         var dt = new DataTable();
                         var sql = "select * from {0} where 测项编号={1}";
-                        sql = string.Format(sql, DbHelper.TnRData(), itemId);
-                        var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
+                        sql = string.Format(sql, DaoObject.TnRData(), itemId);
+                        var adapter = new MySqlDataAdapter(sql, DaoObject.ConnectionString);
                         var builder=  new MySqlCommandBuilder(adapter);
                         adapter.Fill(dt);
                         //数据表合并

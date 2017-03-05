@@ -9,6 +9,7 @@ using Xb2.Entity.Business;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using ExtendMethodDataTable = Xb2.Utils.ExtendMethod.ExtendMethodDataTable;
 
 namespace Xb2.GUI.Catalog
 {
@@ -31,7 +32,7 @@ namespace Xb2.GUI.Catalog
         {
             // 根据用户编号查询地震标注库信息
             var dt = DaoObject.GetLabelDatabasesInfo(this.User.ID);
-            RefreshDataGridView1(DataTableHelper.IdentifyDataTable(dt));
+            RefreshDataGridView1(ExtendMethodDataTable.IdentifyDataTable(dt));
         }
 
         #region DataGridView相关
@@ -149,14 +150,14 @@ namespace Xb2.GUI.Catalog
             if (ans == DialogResult.OK)
             {
                 var sql = "delete from {0} where 用户编号={1} and 标注库名称='{2}'";
-                sql = string.Format(sql, DbHelper.TnLabelDb(), User.ID, dbname);
-                var n = MySqlHelper.ExecuteNonQuery(DbHelper.ConnectionString, sql);
+                sql = string.Format(sql, DaoObject.TnLabelDb(), User.ID, dbname);
+                var n = MySqlHelper.ExecuteNonQuery(DaoObject.ConnectionString, sql);
                 if (n > 0)
                 {
                     MessageBox.Show("删除成功！");
                     // 删除成功后需要重新绑定数据，以表明数据已删除
                     var dt = DaoObject.GetLabelDatabasesInfo(this.User.ID);
-                    RefreshDataGridView1(DataTableHelper.IdentifyDataTable(dt));
+                    RefreshDataGridView1(ExtendMethodDataTable.IdentifyDataTable(dt));
                     // 从表数据源设为空
                     RefreshDataGridView2(new DataTable());
                 }

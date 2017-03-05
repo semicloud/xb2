@@ -7,10 +7,11 @@ using System.Windows.Forms;
 using MySql.Data.MySqlClient;
 using NLog;
 using Xb2.Entity.Business;
-using Xb2.GUI.Controls;
+using Xb2.GUI.Controls.User;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using Xb2.Utils.ExtendMethod;
 
 namespace Xb2.GUI.Catalog
 {
@@ -39,8 +40,8 @@ namespace Xb2.GUI.Catalog
 
         private void FrmGenSubDatabase_Load(object sender, EventArgs e)
         {
-            var dateRange = DaoObject.GetEarthquakeDateRange(DbHelper.TnCategory());
-            var magnitudeRange = DaoObject.GetEarthquakeMagnitudeRange(DbHelper.TnCategory());
+            var dateRange = DaoObject.GetEarthquakeDateRange(DaoObject.TnCategory());
+            var magnitudeRange = DaoObject.GetEarthquakeMagnitudeRange(DaoObject.TnCategory());
             dateTimePicker1.Value = dateRange.Start;
             dateTimePicker2.Value = dateRange.End;
             textBox1.Text = magnitudeRange[0].ToString();
@@ -75,10 +76,10 @@ namespace Xb2.GUI.Catalog
             #region 圆形区域输入条件的验证
 
             var circleQueries =
-                flowLayoutPanel2.Controls.Cast<Control>().ToList().FindAll(c => c.GetType() == typeof(CircleQuery));
+                flowLayoutPanel2.Controls.Cast<System.Windows.Forms.Control>().ToList().FindAll(c => c.GetType() == typeof(QueryCircleControl));
             foreach (var control in circleQueries)
             {
-                var circleQuery = (CircleQuery) control;
+                var circleQuery = (QueryCircleControl) control;
                 if (!circleQuery.IsLegalInput())
                 {
                     MessageBox.Show("圆形查询条件输入不完整！");
@@ -91,10 +92,10 @@ namespace Xb2.GUI.Catalog
             #region 矩形区域输入验证
 
             var rectQueries =
-                flowLayoutPanel3.Controls.Cast<Control>().ToList().FindAll(c => c.GetType() == typeof(RectQuery));
+                flowLayoutPanel3.Controls.Cast<System.Windows.Forms.Control>().ToList().FindAll(c => c.GetType() == typeof(QueryRectangleControl));
             foreach (var control in rectQueries)
             {
-                var rectQuery = (RectQuery) control;
+                var rectQuery = (QueryRectangleControl) control;
                 if (!rectQuery.IsLegalInput())
                 {
                     MessageBox.Show("矩形查询条件输入不完整！");
@@ -107,7 +108,7 @@ namespace Xb2.GUI.Catalog
             #region 按照查询条件拼接Select语句
 
             m_stringBuilder = new StringBuilder(this.m_commandTemplate);
-            m_stringBuilder.AppendFormat("(发震日期 between \'{0}\' and \'{1}\' ) ", startDate.SStr(), endDate.SStr());
+            m_stringBuilder.AppendFormat("(发震日期 between \'{0}\' and \'{1}\' ) ", startDate.ShortStr(), endDate.ShortStr());
             //加入发震日期的约束条件
             m_stringBuilder.AppendFormat("and (震级值 between {0} and {1}) ", lowerMagnitude, upperMagnitude); //加入震级值约束条件
             m_stringBuilder.Append(GetLocationNameClause()); //加入参考地点约束条件
@@ -116,7 +117,7 @@ namespace Xb2.GUI.Catalog
             m_stringBuilder.AppendLine("order by 发震日期, 参考地点");
             var commandText = m_stringBuilder.ToString();
             Logger.Debug(commandText);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, commandText).Tables[0];
+            var dt = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, commandText).Tables[0];
             RefreshDataGridView(dt);
 
             #endregion
@@ -129,9 +130,9 @@ namespace Xb2.GUI.Catalog
         /// <returns></returns>
         private string GetRectQueryClause()
         {
-            var rectQueryControls = flowLayoutPanel3.Controls.Cast<Control>()
-                .ToList().FindAll(p => p.GetType() == typeof(RectQuery))
-                .Cast<RectQuery>().ToList();
+            var rectQueryControls = flowLayoutPanel3.Controls.Cast<System.Windows.Forms.Control>()
+                .ToList().FindAll(p => p.GetType() == typeof(QueryRectangleControl))
+                .Cast<QueryRectangleControl>().ToList();
             Logger.Debug("共获取到 {0} 个矩形域查询空间", rectQueryControls.Count);
             var commandTextBuilder = new StringBuilder();
             if (rectQueryControls.Count > 0)
@@ -182,8 +183,8 @@ namespace Xb2.GUI.Catalog
         /// <returns></returns>
         private string GetCircleQueryClause()
         {
-            var circleQueryControls = flowLayoutPanel2.Controls.Cast<Control>().ToList()
-                .FindAll(c => c.GetType() == typeof(CircleQuery)).Cast<CircleQuery>().ToList();
+            var circleQueryControls = flowLayoutPanel2.Controls.Cast<System.Windows.Forms.Control>().ToList()
+                .FindAll(c => c.GetType() == typeof(QueryCircleControl)).Cast<QueryCircleControl>().ToList();
             Logger.Debug("共获取到 {0} 个圆域查询空间", circleQueryControls.Count);
             var commandTextBuilder = new StringBuilder();
             if (circleQueryControls.Count > 0)
@@ -223,7 +224,7 @@ namespace Xb2.GUI.Catalog
         private string GetLocationNameClause()
         {
             var locations = new List<string>();
-            var controls = flowLayoutPanel1.Controls.Cast<Control>().ToList();
+            var controls = flowLayoutPanel1.Controls.Cast<System.Windows.Forms.Control>().ToList();
             var textBoxs = controls.FindAll(c => c.GetType() == typeof(TextBox));
             textBoxs.ForEach(t => locations.Add(t.Text.Trim()));
             var builder = new StringBuilder();
@@ -299,8 +300,8 @@ namespace Xb2.GUI.Catalog
             }
             //不能有重名的子库
             var sql = "select count(*) from {0} where 用户编号={1} and 子库名称='{2}'";
-            sql = string.Format(sql, DbHelper.TnSubDb(), this.User.ID, databaseName);
-            if (Convert.ToInt32(MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql)) > 0)
+            sql = string.Format(sql, DaoObject.TnSubDb(), this.User.ID, databaseName);
+            if (Convert.ToInt32(MySqlHelper.ExecuteScalar(DaoObject.ConnectionString, sql)) > 0)
             {
                 MessageBox.Show("已经存在名为【" + databaseName + "】的子库，请换个名字");
                 return;
@@ -346,7 +347,7 @@ namespace Xb2.GUI.Catalog
         {
             if (flowLayoutPanel1.Controls.Count > 0)
             {
-                var controls = flowLayoutPanel1.Controls.Cast<Control>().ToList();
+                var controls = flowLayoutPanel1.Controls.Cast<System.Windows.Forms.Control>().ToList();
                 var textBoxs = controls.FindAll(c => c.GetType() == typeof(TextBox));
                 var textBox = textBoxs.Find(t => Convert.ToInt32(t.Tag) == Convert.ToInt32(flowLayoutPanel1.Tag));
                 flowLayoutPanel1.Controls.Remove(textBox);
@@ -361,10 +362,10 @@ namespace Xb2.GUI.Catalog
         /// <param name="e"></param>
         private void button8_Click(object sender, EventArgs e)
         {
-            CircleQuery circleQuery = new CircleQuery();
-            circleQuery.Tag = Convert.ToInt32(flowLayoutPanel2.Tag) + 1;
-            flowLayoutPanel2.Controls.Add(circleQuery);
-            flowLayoutPanel2.Tag = circleQuery.Tag;
+            QueryCircleControl queryCircleControl = new QueryCircleControl();
+            queryCircleControl.Tag = Convert.ToInt32(flowLayoutPanel2.Tag) + 1;
+            flowLayoutPanel2.Controls.Add(queryCircleControl);
+            flowLayoutPanel2.Tag = queryCircleControl.Tag;
         }
 
         /// <summary>
@@ -376,8 +377,8 @@ namespace Xb2.GUI.Catalog
         {
             if (flowLayoutPanel2.Controls.Count > 0)
             {
-                var controls = flowLayoutPanel2.Controls.Cast<Control>().ToList();
-                var circleQueries = controls.FindAll(c => c.GetType() == typeof(CircleQuery));
+                var controls = flowLayoutPanel2.Controls.Cast<System.Windows.Forms.Control>().ToList();
+                var circleQueries = controls.FindAll(c => c.GetType() == typeof(QueryCircleControl));
                 var circleQuery =
                     circleQueries.Find(cq => Convert.ToInt32(cq.Tag) == Convert.ToInt32(flowLayoutPanel2.Tag));
                 flowLayoutPanel2.Controls.Remove(circleQuery);
@@ -392,10 +393,10 @@ namespace Xb2.GUI.Catalog
         /// <param name="e"></param>
         private void button10_Click(object sender, EventArgs e)
         {
-            RectQuery rectQuery = new RectQuery();
-            rectQuery.Tag = Convert.ToInt32(flowLayoutPanel3.Tag) + 1;
-            flowLayoutPanel3.Controls.Add(rectQuery);
-            flowLayoutPanel3.Tag = rectQuery.Tag;
+            QueryRectangleControl queryRectangleControl = new QueryRectangleControl();
+            queryRectangleControl.Tag = Convert.ToInt32(flowLayoutPanel3.Tag) + 1;
+            flowLayoutPanel3.Controls.Add(queryRectangleControl);
+            flowLayoutPanel3.Tag = queryRectangleControl.Tag;
         }
 
         /// <summary>
@@ -407,8 +408,8 @@ namespace Xb2.GUI.Catalog
         {
             if (flowLayoutPanel3.Controls.Count > 0)
             {
-                var controls = flowLayoutPanel3.Controls.Cast<Control>().ToList();
-                var rectQueries = controls.FindAll(c => c.GetType() == typeof(RectQuery));
+                var controls = flowLayoutPanel3.Controls.Cast<System.Windows.Forms.Control>().ToList();
+                var rectQueries = controls.FindAll(c => c.GetType() == typeof(QueryRectangleControl));
                 var circleQuery =
                     rectQueries.Find(rq => Convert.ToInt32(rq.Tag) == Convert.ToInt32(flowLayoutPanel3.Tag));
                 flowLayoutPanel3.Controls.Remove(circleQuery);
@@ -432,7 +433,7 @@ namespace Xb2.GUI.Catalog
             var dialogResult = frmQueryCmd.ShowDialog();
             if (dialogResult == DialogResult.OK)
             {
-                RefreshDataGridView(MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, frmQueryCmd.Command).Tables[0]);
+                RefreshDataGridView(MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, frmQueryCmd.Command).Tables[0]);
             }
         }
 

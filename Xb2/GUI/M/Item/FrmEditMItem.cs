@@ -9,6 +9,7 @@ using Xb2.GUI.Catalog;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using Xb2.Utils.ExtendMethod;
 
 namespace Xb2.GUI.M.Item
 {
@@ -89,27 +90,27 @@ namespace Xb2.GUI.M.Item
         /// <returns></returns>
         private bool CreateMItem()
         {
-            var sql = "select * from " + DbHelper.TnMItem();
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
+            var sql = "select * from " + DaoObject.TnMItem();
+            var adapter = new MySqlDataAdapter(sql, DaoObject.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             var dt = new DataTable();
             adapter.Fill(dt);
             var dr = dt.NewRow();
-            dr["观测单位"] = textBox1.Text.Trim().GetStringOrDBNull();
-            dr["地名"] = textBox2.Text.Trim().GetStringOrDBNull();
-            dr["方法名"] = textBox3.Text.Trim().GetStringOrDBNull();
-            dr["测项名"] = textBox4.Text.Trim().GetStringOrDBNull();
-            dr["经度"] = textBox5.Text.Trim().GetDoubleOrDBNull();
-            dr["纬度"] = textBox6.Text.Trim().GetDoubleOrDBNull();
-            dr["数据单位"] = textBox7.Text.Trim().GetStringOrDBNull();
-            dr["观测信度"] = textBox8.Text.Trim().GetDoubleOrDBNull();
-            dr["倾向"] = textBox9.Text.Trim().GetStringOrDBNull();
-            dr["倾角"] = textBox10.Text.Trim().GetStringOrDBNull();
-            dr["测线与断层交角"] = textBox11.Text.Trim().GetStringOrDBNull();
-            dr["点位图名"] = textBox12.Text.Trim().GetStringOrDBNull();
-            dr["备注1"] = textBox13.Text.Trim().GetStringOrDBNull();
-            dr["备注2"] = textBox14.Text.Trim().GetStringOrDBNull();
-            dr["备注3"] = textBox15.Text.Trim().GetStringOrDBNull();
+            dr["观测单位"] = textBox1.Text.Trim().GetStringOrDbNull();
+            dr["地名"] = textBox2.Text.Trim().GetStringOrDbNull();
+            dr["方法名"] = textBox3.Text.Trim().GetStringOrDbNull();
+            dr["测项名"] = textBox4.Text.Trim().GetStringOrDbNull();
+            dr["经度"] = textBox5.Text.Trim().GetDoubleOrDbNull();
+            dr["纬度"] = textBox6.Text.Trim().GetDoubleOrDbNull();
+            dr["数据单位"] = textBox7.Text.Trim().GetStringOrDbNull();
+            dr["观测信度"] = textBox8.Text.Trim().GetDoubleOrDbNull();
+            dr["倾向"] = textBox9.Text.Trim().GetStringOrDbNull();
+            dr["倾角"] = textBox10.Text.Trim().GetStringOrDbNull();
+            dr["测线与断层交角"] = textBox11.Text.Trim().GetStringOrDbNull();
+            dr["点位图名"] = textBox12.Text.Trim().GetStringOrDbNull();
+            dr["备注1"] = textBox13.Text.Trim().GetStringOrDbNull();
+            dr["备注2"] = textBox14.Text.Trim().GetStringOrDbNull();
+            dr["备注3"] = textBox15.Text.Trim().GetStringOrDbNull();
             dt.Rows.Add(dr);
             var n = adapter.Update(dt);
             return n > 0;
@@ -123,10 +124,10 @@ namespace Xb2.GUI.M.Item
         {
             var sql = "select * from {0} where 编号={1}";
             var id = Convert.ToInt32(label2.Text.Trim());
-            sql = string.Format(sql, DbHelper.TnMItem(), id);
+            sql = string.Format(sql, DaoObject.TnMItem(), id);
             Debug.Print(sql);
             //生成adapter对象，省的写那么长的update语句了
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
+            var adapter = new MySqlDataAdapter(sql, DaoObject.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             var dt = new DataTable();
             adapter.Fill(dt);
@@ -136,21 +137,21 @@ namespace Xb2.GUI.M.Item
                 return false;
             }
             var dr = dt.Rows[0];
-            dr["观测单位"] = textBox1.Text.Trim().GetStringOrDBNull();
-            dr["地名"] = textBox2.Text.Trim().GetStringOrDBNull();
-            dr["方法名"] = textBox3.Text.Trim().GetStringOrDBNull();
-            dr["测项名"] = textBox4.Text.Trim().GetStringOrDBNull();
-            dr["经度"] = textBox5.Text.Trim().GetDoubleOrDBNull();
-            dr["纬度"] = textBox6.Text.Trim().GetDoubleOrDBNull();
-            dr["数据单位"] = textBox7.Text.Trim().GetStringOrDBNull();
-            dr["观测信度"] = textBox8.Text.Trim().GetDoubleOrDBNull();
-            dr["倾向"] = textBox9.Text.Trim().GetStringOrDBNull();
-            dr["倾角"] = textBox10.Text.Trim().GetStringOrDBNull();
-            dr["测线与断层交角"] = textBox11.Text.Trim().GetStringOrDBNull();
-            dr["点位图名"] = textBox12.Text.Trim().GetStringOrDBNull();
-            dr["备注1"] = textBox13.Text.Trim().GetStringOrDBNull();
-            dr["备注2"] = textBox14.Text.Trim().GetStringOrDBNull();
-            dr["备注3"] = textBox15.Text.Trim().GetStringOrDBNull();
+            dr["观测单位"] = textBox1.Text.Trim().GetStringOrDbNull();
+            dr["地名"] = textBox2.Text.Trim().GetStringOrDbNull();
+            dr["方法名"] = textBox3.Text.Trim().GetStringOrDbNull();
+            dr["测项名"] = textBox4.Text.Trim().GetStringOrDbNull();
+            dr["经度"] = textBox5.Text.Trim().GetDoubleOrDbNull();
+            dr["纬度"] = textBox6.Text.Trim().GetDoubleOrDbNull();
+            dr["数据单位"] = textBox7.Text.Trim().GetStringOrDbNull();
+            dr["观测信度"] = textBox8.Text.Trim().GetDoubleOrDbNull();
+            dr["倾向"] = textBox9.Text.Trim().GetStringOrDbNull();
+            dr["倾角"] = textBox10.Text.Trim().GetStringOrDbNull();
+            dr["测线与断层交角"] = textBox11.Text.Trim().GetStringOrDbNull();
+            dr["点位图名"] = textBox12.Text.Trim().GetStringOrDbNull();
+            dr["备注1"] = textBox13.Text.Trim().GetStringOrDbNull();
+            dr["备注2"] = textBox14.Text.Trim().GetStringOrDbNull();
+            dr["备注3"] = textBox15.Text.Trim().GetStringOrDbNull();
             var n = adapter.Update(dt);
             return n > 0;
         }

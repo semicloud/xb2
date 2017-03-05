@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using NLog;
-using Xb2.Algorithms.Core.Entity;
+using Xb2.Computing.CoreAlgorithms.Entities;
+using Xb2.Computing.CoreAlgorithms.Entities.Number;
+using Xb2.Computing.CoreAlgorithms.Methods._0Base.Freq;
 using Xb2.Entity.Business;
 using Xb2.GUI.Main;
 using Xb2.Utils;
@@ -35,7 +37,7 @@ namespace Xb2.TestAndDemos
 
         private void FrmSingleInput_Load(object sender, EventArgs e)
         {
-            var kIndexes = DateValueHelper.GetKIndexes(this.InputDateValueList, this.StartDate, this.EndDate);
+            var kIndexes = FreqHelper.GetKIndexes(this.InputDateValueList, this.StartDate, this.EndDate);
             dataGridView1.Rows.Clear();
             dataGridView1.Rows.Add();
             Enumerable.Range(0, kIndexes.Length)

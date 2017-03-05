@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows.Forms;
 using Xb2.Utils;
+using Xb2.Utils.ExtendMethod;
 
 namespace Xb2.GUI.M.Val.ProcessedData
 {

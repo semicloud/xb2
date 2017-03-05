@@ -4,6 +4,7 @@ using System.Windows.Forms;
 using Xb2.Entity;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using Xb2.Utils.ExtendMethod;
 
 namespace Xb2.GUI.M.Val.Rawdata
 {
@@ -67,8 +68,8 @@ namespace Xb2.GUI.M.Val.Rawdata
             #endregion
             var date = dateTimePicker1.Value.Date;
             var value = Convert.ToDouble(textBox1.Text.Trim());
-            var memo1 = textBox2.Text.GetStringOrDBNull();
-            var memo2 = textBox3.Text.GetStringOrDBNull();
+            var memo1 = textBox2.Text.GetStringOrDbNull();
+            var memo2 = textBox3.Text.GetStringOrDbNull();
             if (this._operation == Operation.Create)
             {
                 var isCreated = DaoObject.CreateRawData(_itemId, date, value, memo1, memo2);

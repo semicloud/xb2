@@ -16,7 +16,7 @@ namespace Xb2.GUI.M.Item.ToolWindow
         {
             //var sql = "select 观测日期,观测值 from 测值_测试 order by 观测日期";
             //var dataTable = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString(), sql).Tables[0];
-            //var dateValues = DtUtils.RetrieveDateValues(dataTable);
+            //var dateValues = DtUtils.ToListOfDateValue(dataTable);
             //var xz = this.GetXAxis(dateValues.Select(d => d.Date).Min(), dateValues.Select(d => d.Date).Max());
             //var yz = this.GetYAxis();
             //var line = new LineSeries {DataFieldX = "Date", DataFieldY = "Value", ItemsSource = dateValues, StrokeThickness = 1, Color = Color.Black.ToOxyColor()};

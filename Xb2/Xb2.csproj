@@ -85,62 +85,62 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Algorithms\Core\Entity\CalcDescription.cs" />
-    <Compile Include="Algorithms\Core\Entity\CalcResult.cs" />
-    <Compile Include="Algorithms\Core\Entity\FreqDataFormat.cs" />
-    <Compile Include="Algorithms\Core\Entity\DateRange.cs" />
-    <Compile Include="Algorithms\Core\Entity\DateUnit.cs" />
-    <Compile Include="Algorithms\Core\Entity\DateValue.cs" />
-    <Compile Include="Algorithms\Core\Entity\DateValueList.cs" />
-    <Compile Include="Algorithms\Core\Entity\Window.cs" />
-    <Compile Include="Algorithms\Core\Entity\InterfaceInput.cs" />
-    <Compile Include="Algorithms\Core\Methods\AbnormalAmplification\Xb2AbAmplification.cs" />
-    <Compile Include="Algorithms\Core\Methods\AbnormalAmplification\Xb2AbAmplificationInput.cs" />
-    <Compile Include="Algorithms\Core\Methods\CoreMethodUtils.cs" />
-    <Compile Include="Algorithms\Core\Methods\Correlation\Xb2Correlation.cs" />
-    <Compile Include="Algorithms\Core\Methods\Correlation\CorrelationInput.cs" />
-    <Compile Include="Algorithms\Core\Methods\FaultOffset\Xb2DCHDL_M1.cs" />
-    <Compile Include="Algorithms\Core\Methods\FaultOffset\Xb2DCHDL_M2.cs" />
-    <Compile Include="Algorithms\Core\Methods\FaultOffset\Xb2DCHDL_M3.cs" />
-    <Compile Include="Algorithms\Core\Methods\FaultOffset\Xb2DCHDL_M4.cs" />
-    <Compile Include="Algorithms\Core\Methods\PeriodComputer.cs" />
-    <Compile Include="Algorithms\Core\Methods\PeriodComputer2.cs" />
-    <Compile Include="Algorithms\Core\Methods\QuShuDebug.cs" />
-    <Compile Include="Algorithms\Core\Input\SlcfInput.cs" />
-    <Compile Include="Algorithms\Core\Methods\Rate\Xb2SingleRateDiff.cs" />
-    <Compile Include="Algorithms\Core\Methods\Rate\SingleRateDiffInput.cs" />
-    <Compile Include="Algorithms\Core\Methods\Rate\Xb2Slcf.cs" />
-    <Compile Include="Algorithms\Core\Methods\Rate\Xb2SLCFHC.cs" />
-    <Compile Include="Algorithms\Core\Methods\Rate\Xb2SLLJQD.cs" />
-    <Compile Include="Algorithms\Core\Methods\Rate\Xb2SLLJQDHC.cs" />
-    <Compile Include="Algorithms\Core\Methods\Strain\StrainValueUnit\StrainValueUnitFirst.cs" />
-    <Compile Include="Algorithms\Core\Methods\Strain\StrainValueUnit\StrainValueUnitSecond.cs" />
-    <Compile Include="Algorithms\Core\Methods\Strain\TriangleCalculator\TriangleCalculatorBase.cs" />
-    <Compile Include="Algorithms\Core\Methods\Strain\TriangleCalculator\TriangleCalculatorFirst.cs" />
-    <Compile Include="Algorithms\Core\Methods\Strain\TriangleCalculator\TriangleCalculatorSecond.cs" />
-    <Compile Include="Algorithms\Core\Methods\Strain\Xb2StrainBase.cs" />
-    <Compile Include="Algorithms\Core\Methods\Strain\Xb2YbM1.cs" />
-    <Compile Include="Algorithms\Core\Methods\Strain\Xb2YbM2.cs" />
-    <Compile Include="Algorithms\Core\Methods\Strain\Xb2YBM3.cs" />
-    <Compile Include="Algorithms\Core\Methods\Strain\YbBase.cs" />
-    <Compile Include="Algorithms\Core\Input\BaseInput.cs" />
-    <Compile Include="Algorithms\Core\Methods\Regression\Xb2Regression.cs" />
-    <Compile Include="Algorithms\Core\Input\XqsInput.cs" />
-    <Compile Include="Algorithms\Core\Methods\YearChange\Xb2YearChange.cs" />
-    <Compile Include="Algorithms\Core\Input\NzbInput.cs" />
-    <Compile Include="Algorithms\Core\Methods\ScatterValues.cs" />
-    <Compile Include="Algorithms\Numberical\ProcessLogger.cs" />
-    <Compile Include="Algorithms\Numberical\Processmethod.cs" />
-    <Compile Include="Config\Xb2Config.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\CalcDescription.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\CalcResult.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\Freq\FreqDataFormatMehtod.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\Freq\FreqDataFormat.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\Range\DateRange.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\Number\DateValue.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\Range\RangeHelper.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\Range\Window.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\InterfaceInput.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\Freq\FreqHelper.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\11YCFD\Xb2YCFD.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\2NZB\Xb2NZBInput.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\4SLCF\Xb2SLCFInput.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\7SLLJQDHC\Xb2SLLJQDHCInput.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Utils\CoreMethodUtils.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\3XGXS\Xb2XGXS.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\3XGXS\Xb2XGXSInput.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M1\Xb2DCHDL_M1.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M2\Xb2DCHDL_M2.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M3\Xb2DCHDL_M3.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M4\Xb2DCHDL_M4.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Utils\Percision.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Utils\PeriodComputer.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Utils\PeriodComputer2.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Utils\QuShuDebug.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\4SLCF\Xb2SLCF.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\5SLCFHC\Xb2SLCFHC.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\6SLLJQD\Xb2SLLJQD.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\7SLLJQDHC\Xb2SLLJQDHC.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB\StrainValueUnit\StrainValueUnitFirst.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB\StrainValueUnit\StrainValueUnitSecond.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB\TriangleCalculator\TriangleCalculatorBase.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB\TriangleCalculator\TriangleCalculatorFirst.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB\TriangleCalculator\TriangleCalculatorSecond.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M1\Xb2Yb_M1.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M2\Xb2YB_M2.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M3\Xb2YB_M3.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB\YbBase.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\1XQS\Xb2XQS.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\2NZB\Xb2NZB.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Entities\ScatterValues.cs" />
+    <Compile Include="Computing\Numerical\Processmethod.cs" />
     <Compile Include="Entity\Business\Catalog\Q01File.cs" />
     <Compile Include="Entity\Business\XbUser.cs" />
-    <Compile Include="Entity\Computing\XbDCHDLM3Input.cs" />
-    <Compile Include="Entity\Computing\XbDCHDLM2Input.cs" />
-    <Compile Include="Entity\Computing\XbInput.cs" />
-    <Compile Include="Entity\Computing\XbSLHCInput.cs" />
-    <Compile Include="Entity\Computing\XbSLLJQDInput.cs" />
-    <Compile Include="Entity\Computing\XbXQSInput.cs" />
-    <Compile Include="Entity\Computing\XbDCHDLM1Input.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M4\Xb2DCHDL_M4Input.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M3\Xb2DCHDL_M3Input.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M2\Xb2DCHDL_M2Input.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\0Base\Xb2Input.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\5SLCFHC\Xb2SLCFHCInput.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\6SLLJQD\Xb2SLLJQDInput.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\1XQS\Xb2XQSInput.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M1\Xb2DCHDL_M1Input.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M2\Xb2YB_M2Input.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M1\Xb2YB_M1Input.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M3\Xb2YB_M3Input.cs" />
+    <Compile Include="Computing\CoreAlgorithms\Methods\11YCFD\Xb2YCFDInput.cs" />
     <Compile Include="GUI\Catalog\FrmCreateEditRecord.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -202,112 +202,142 @@
     <Compile Include="GUI\ChartModule\FrmShowProportion.Designer.cs">
       <DependentUpon>FrmShowProportion.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Computing\FrmConfigChart.cs">
+    <Compile Include="GUI\Charting\FrmConfigChart.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Computing\FrmConfigChart.Designer.cs">
+    <Compile Include="GUI\Charting\FrmConfigChart.Designer.cs">
       <DependentUpon>FrmConfigChart.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Computing\FrmDisplayCharts.cs">
+    <Compile Include="GUI\Charting\FrmDisplayCharts.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Computing\FrmDisplayCharts.Designer.cs">
+    <Compile Include="GUI\Charting\FrmDisplayCharts.Designer.cs">
       <DependentUpon>FrmDisplayCharts.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Computing\FrmInputSize.cs">
+    <Compile Include="GUI\Charting\FrmInputSize.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Computing\FrmInputSize.Designer.cs">
+    <Compile Include="GUI\Charting\FrmInputSize.Designer.cs">
       <DependentUpon>FrmInputSize.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Computing\FrmResizeCharts.cs">
+    <Compile Include="GUI\Charting\FrmResizeCharts.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Computing\FrmResizeCharts.Designer.cs">
+    <Compile Include="GUI\Charting\FrmResizeCharts.Designer.cs">
       <DependentUpon>FrmResizeCharts.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Controls\CircleQuery.cs">
+    <Compile Include="GUI\Controls\User\QueryCircleControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\CircleQuery.designer.cs">
-      <DependentUpon>CircleQuery.cs</DependentUpon>
+    <Compile Include="GUI\Controls\User\QueryCircleControl.designer.cs">
+      <DependentUpon>QueryCircleControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Controls\CtnlMFieldSelect.cs">
+    <Compile Include="GUI\Controls\User\FilterItemFieldControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\CtnlMFieldSelect.designer.cs">
-      <DependentUpon>CtnlMFieldSelect.cs</DependentUpon>
+    <Compile Include="GUI\Controls\User\FilterItemFieldControl.designer.cs">
+      <DependentUpon>FilterItemFieldControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Controls\SItemConfigControl.cs">
+    <Compile Include="GUI\Controls\User\DemoSingleItemConfigControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\SItemConfigControl.Designer.cs">
-      <DependentUpon>SItemConfigControl.cs</DependentUpon>
+    <Compile Include="GUI\Controls\User\DemoSingleItemConfigControl.Designer.cs">
+      <DependentUpon>DemoSingleItemConfigControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Controls\MItemInput.cs">
+    <Compile Include="GUI\Controls\User\DemoMItemInput.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\MItemInput.Designer.cs">
-      <DependentUpon>MItemInput.cs</DependentUpon>
+    <Compile Include="GUI\Controls\User\DemoMItemInput.Designer.cs">
+      <DependentUpon>DemoMItemInput.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Controls\RectQuery.cs">
+    <Compile Include="GUI\Controls\User\QueryRectangleControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="GUI\Controls\RectQuery.designer.cs">
-      <DependentUpon>RectQuery.cs</DependentUpon>
+    <Compile Include="GUI\Controls\User\QueryRectangleControl.designer.cs">
+      <DependentUpon>QueryRectangleControl.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM3.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\11YCFD\Xb2YCFDInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM3.Designer.cs">
-      <DependentUpon>FrmInputDCHDLM3.cs</DependentUpon>
+    <Compile Include="Computing\CoreAlgorithms\Methods\11YCFD\Xb2YCFDInputForm.Designer.cs">
+      <DependentUpon>Xb2YCFDInputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM2.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M3\Xb2YB_M3InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM2.Designer.cs">
-      <DependentUpon>FrmInputDCHDLM2.cs</DependentUpon>
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M3\Xb2YB_M3InputForm.Designer.cs">
+      <DependentUpon>Xb2YB_M3InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM1.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M2\Xb2YB2InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputDCHDLM1.Designer.cs">
-      <DependentUpon>FrmInputDCHDLM1.cs</DependentUpon>
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M2\Xb2YB2InputForm.Designer.cs">
+      <DependentUpon>Xb2YB2InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputSLLJQDHC.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M1\Xb2YB_M1InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputSLLJQDHC.Designer.cs">
-      <DependentUpon>FrmInputSLLJQDHC.cs</DependentUpon>
+    <Compile Include="Computing\CoreAlgorithms\Methods\9YB_M1\Xb2YB_M1InputForm.Designer.cs">
+      <DependentUpon>Xb2YB_M1InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputSLLJQD.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M4\Xb2DCHDL_M4InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputSLLJQD.Designer.cs">
-      <DependentUpon>FrmInputSLLJQD.cs</DependentUpon>
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M4\Xb2DCHDL_M4InputForm.Designer.cs">
+      <DependentUpon>Xb2DCHDL_M4InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputSlcf.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M3\Xb2DCHDL_M3InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputSlcf.Designer.cs">
-      <DependentUpon>FrmInputSlcf.cs</DependentUpon>
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M3\Xb2DCHDL_M3InputForm.Designer.cs">
+      <DependentUpon>Xb2DCHDL_M3InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputSLHC.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M2\Xb2DCHDL_M2InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputSLHC.Designer.cs">
-      <DependentUpon>FrmInputSLHC.cs</DependentUpon>
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M2\Xb2DCHDL_M2InputForm.Designer.cs">
+      <DependentUpon>Xb2DCHDL_M2InputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\FrmInterface.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M1\Xb2DCHDL_M1InputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\FrmInterface.Designer.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\8DCHDL_M1\Xb2DCHDL_M1InputForm.Designer.cs">
+      <DependentUpon>Xb2DCHDL_M1InputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Computing\CoreAlgorithms\Methods\7SLLJQDHC\Xb2SLLJQDHCInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Computing\CoreAlgorithms\Methods\7SLLJQDHC\Xb2SLLJQDHCInputForm.Designer.cs">
+      <DependentUpon>Xb2SLLJQDHCInputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Computing\CoreAlgorithms\Methods\6SLLJQD\Xb2SLLJQDInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Computing\CoreAlgorithms\Methods\6SLLJQD\Xb2SLLJQDInputForm.Designer.cs">
+      <DependentUpon>Xb2SLLJQDInputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Computing\CoreAlgorithms\Methods\4SLCF\Xb2SLCFInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Computing\CoreAlgorithms\Methods\4SLCF\Xb2SLCFInputForm.Designer.cs">
+      <DependentUpon>Xb2SLCFInputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Computing\CoreAlgorithms\Methods\5SLCFHC\Xb2SLCFHCInputForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Computing\CoreAlgorithms\Methods\5SLCFHC\Xb2SLCFHCInputForm.Designer.cs">
+      <DependentUpon>Xb2SLCFHCInputForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Computing\CoreAlgorithms\Methods\0Base\FrmInterface.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Computing\CoreAlgorithms\Methods\0Base\FrmInterface.Designer.cs">
       <DependentUpon>FrmInterface.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\FrmInterface4192.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\0Base\FrmInterface4192.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\FrmInterface4192.Designer.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\0Base\FrmInterface4192.Designer.cs">
       <DependentUpon>FrmInterface4192.cs</DependentUpon>
     </Compile>
     <Compile Include="TestAndDemos\FrmBeatifulChart.cs">
@@ -328,35 +358,23 @@
     <Compile Include="TestAndDemos\OldCodes\FrmInput4191.Designer.cs">
       <DependentUpon>FrmInput4191.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputXqs.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\1XQS\Xb2XQSInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputXqs.Designer.cs">
-      <DependentUpon>FrmInputXqs.cs</DependentUpon>
+    <Compile Include="Computing\CoreAlgorithms\Methods\1XQS\FrmXb2XQSInput.Designer.cs">
+      <DependentUpon>Xb2XQSInputForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\FrmInterface4191.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\0Base\FrmInterface4191.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\FrmInterface4191.Designer.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\0Base\FrmInterface4191.Designer.cs">
       <DependentUpon>FrmInterface4191.cs</DependentUpon>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputNzb.cs">
+    <Compile Include="Computing\CoreAlgorithms\Methods\2NZB\Xb2NZBInputForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="GUI\Input\Forms\FrmInputNzb.Designer.cs">
-      <DependentUpon>FrmInputNzb.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\Input\Tool\FrmToolShowFreq.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Input\Tool\FrmToolShowFreq.Designer.cs">
-      <DependentUpon>FrmToolShowFreq.cs</DependentUpon>
-    </Compile>
-    <Compile Include="GUI\Input\Tool\FrmToolShowItemWeights.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="GUI\Input\Tool\FrmToolShowItemWeights.Designer.cs">
-      <DependentUpon>FrmToolShowItemWeights.cs</DependentUpon>
+    <Compile Include="Computing\CoreAlgorithms\Methods\2NZB\Xb2NZBInputForm.Designer.cs">
+      <DependentUpon>Xb2NZBInputForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GUI\Main\FrmBase.cs">
       <SubType>Form</SubType>
@@ -573,19 +591,14 @@
     <Compile Include="TestAndDemos\MathDotNetExamples.cs" />
     <Compile Include="TestAndDemos\RegressionTest.cs" />
     <Compile Include="GUI\ChartModule\ControlMoverOrResizer.cs" />
-    <Compile Include="Utils\Control\ChartHelper.cs" />
-    <Compile Include="Utils\Control\ControlHelper.cs" />
-    <Compile Include="Utils\Control\ToolStripHelper.cs" />
-    <Compile Include="GUI\ChartModule\CustomToolTip.cs">
+    <Compile Include="Utils\ChartHelper.cs" />
+    <Compile Include="GUI\Controls\Extend\ChartCustomToolTip.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Utils\Database\DbHelper.cs" />
-    <Compile Include="Utils\Database\DaoObject.cs" />
-    <Compile Include="Utils\DataTableHelper.cs" />
-    <Compile Include="Utils\DateHelper.cs" />
-    <Compile Include="Utils\DateValueHelper.cs" />
-    <Compile Include="Utils\EarthquakeRecord.cs" />
-    <Compile Include="Utils\ExtendMethods.cs" />
+    <Compile Include="Utils\DaoObject.cs" />
+    <Compile Include="Entity\Business\EarthquakeRecord.cs" />
+    <Compile Include="Utils\ExtendMethod\ExtendMethodDataTable.cs" />
+    <Compile Include="Utils\ExtendMethod\ExtendMethodCompute.cs" />
     <Compile Include="GUI\ChartModule\FrmSetLineStyle.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -610,6 +623,10 @@
     <Compile Include="GUI\ChartModule\XbChartObjFactory.cs" />
     <Compile Include="GUI\ChartModule\XbChartSettings.cs" />
     <Compile Include="GUI\ChartModule\XbChartSize.cs" />
+    <Compile Include="Utils\ExtendMethod\ExtendMethodComputeDate.cs" />
+    <Compile Include="Utils\ExtendMethod\ExtendMethodComputeDateValue.cs" />
+    <Compile Include="Utils\ExtendMethod\ExtendMethodControl.cs" />
+    <Compile Include="Utils\ExtendMethod\ExtendMethodLang.cs" />
     <EmbeddedResource Include="GUI\Catalog\FrmCreateEditRecord.resx">
       <DependentUpon>FrmCreateEditRecord.cs</DependentUpon>
     </EmbeddedResource>
@@ -640,58 +657,73 @@
     <EmbeddedResource Include="GUI\ChartModule\FrmShowProportion.resx">
       <DependentUpon>FrmShowProportion.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Computing\FrmConfigChart.resx">
+    <EmbeddedResource Include="GUI\Charting\FrmConfigChart.resx">
       <DependentUpon>FrmConfigChart.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Computing\FrmDisplayCharts.resx">
+    <EmbeddedResource Include="GUI\Charting\FrmDisplayCharts.resx">
       <DependentUpon>FrmDisplayCharts.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Computing\FrmInputSize.resx">
+    <EmbeddedResource Include="GUI\Charting\FrmInputSize.resx">
       <DependentUpon>FrmInputSize.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Computing\FrmResizeCharts.resx">
+    <EmbeddedResource Include="GUI\Charting\FrmResizeCharts.resx">
       <DependentUpon>FrmResizeCharts.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\CircleQuery.resx">
-      <DependentUpon>CircleQuery.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Controls\User\QueryCircleControl.resx">
+      <DependentUpon>QueryCircleControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\CtnlMFieldSelect.resx">
-      <DependentUpon>CtnlMFieldSelect.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Controls\User\FilterItemFieldControl.resx">
+      <DependentUpon>FilterItemFieldControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\SItemConfigControl.resx">
-      <DependentUpon>SItemConfigControl.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Controls\User\DemoSingleItemConfigControl.resx">
+      <DependentUpon>DemoSingleItemConfigControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\MItemInput.resx">
-      <DependentUpon>MItemInput.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Controls\User\DemoMItemInput.resx">
+      <DependentUpon>DemoMItemInput.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Controls\RectQuery.resx">
-      <DependentUpon>RectQuery.cs</DependentUpon>
+    <EmbeddedResource Include="GUI\Controls\User\QueryRectangleControl.resx">
+      <DependentUpon>QueryRectangleControl.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Forms\FrmInputDCHDLM3.resx">
-      <DependentUpon>FrmInputDCHDLM3.cs</DependentUpon>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\11YCFD\Xb2YCFDInputForm.resx">
+      <DependentUpon>Xb2YCFDInputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Forms\FrmInputDCHDLM2.resx">
-      <DependentUpon>FrmInputDCHDLM2.cs</DependentUpon>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\9YB_M3\Xb2YB_M3InputForm.resx">
+      <DependentUpon>Xb2YB_M3InputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Forms\FrmInputDCHDLM1.resx">
-      <DependentUpon>FrmInputDCHDLM1.cs</DependentUpon>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\9YB_M2\Xb2YB2InputForm.resx">
+      <DependentUpon>Xb2YB2InputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Forms\FrmInputSLLJQDHC.resx">
-      <DependentUpon>FrmInputSLLJQDHC.cs</DependentUpon>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\9YB_M1\Xb2YB_M1InputForm.resx">
+      <DependentUpon>Xb2YB_M1InputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Forms\FrmInputSLLJQD.resx">
-      <DependentUpon>FrmInputSLLJQD.cs</DependentUpon>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\8DCHDL_M4\Xb2DCHDL_M4InputForm.resx">
+      <DependentUpon>Xb2DCHDL_M4InputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Forms\FrmInputSlcf.resx">
-      <DependentUpon>FrmInputSlcf.cs</DependentUpon>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\8DCHDL_M3\Xb2DCHDL_M3InputForm.resx">
+      <DependentUpon>Xb2DCHDL_M3InputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Forms\FrmInputSLHC.resx">
-      <DependentUpon>FrmInputSLHC.cs</DependentUpon>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\8DCHDL_M2\Xb2DCHDL_M2InputForm.resx">
+      <DependentUpon>Xb2DCHDL_M2InputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\FrmInterface.resx">
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\8DCHDL_M1\Xb2DCHDL_M1InputForm.resx">
+      <DependentUpon>Xb2DCHDL_M1InputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\7SLLJQDHC\Xb2SLLJQDHCInputForm.resx">
+      <DependentUpon>Xb2SLLJQDHCInputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\6SLLJQD\Xb2SLLJQDInputForm.resx">
+      <DependentUpon>Xb2SLLJQDInputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\4SLCF\Xb2SLCFInputForm.resx">
+      <DependentUpon>Xb2SLCFInputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\5SLCFHC\Xb2SLCFHCInputForm.resx">
+      <DependentUpon>Xb2SLCFHCInputForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\0Base\FrmInterface.resx">
       <DependentUpon>FrmInterface.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\FrmInterface4192.resx">
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\0Base\FrmInterface4192.resx">
       <DependentUpon>FrmInterface4192.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TestAndDemos\FrmBeatifulChart.resx">
@@ -703,20 +735,14 @@
     <EmbeddedResource Include="TestAndDemos\OldCodes\FrmInput4191.resx">
       <DependentUpon>FrmInput4191.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Forms\FrmInputXqs.resx">
-      <DependentUpon>FrmInputXqs.cs</DependentUpon>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\1XQS\FrmXb2XQSInput.resx">
+      <DependentUpon>Xb2XQSInputForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\FrmInterface4191.resx">
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\0Base\FrmInterface4191.resx">
       <DependentUpon>FrmInterface4191.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Forms\FrmInputNzb.resx">
-      <DependentUpon>FrmInputNzb.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Tool\FrmToolShowFreq.resx">
-      <DependentUpon>FrmToolShowFreq.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="GUI\Input\Tool\FrmToolShowItemWeights.resx">
-      <DependentUpon>FrmToolShowItemWeights.cs</DependentUpon>
+    <EmbeddedResource Include="Computing\CoreAlgorithms\Methods\2NZB\Xb2NZBInputForm.resx">
+      <DependentUpon>Xb2NZBInputForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="GUI\Main\FrmBase.resx">
       <DependentUpon>FrmBase.cs</DependentUpon>
@@ -863,11 +889,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Algorithms\Core\Methods\Strain\M2\" />
-    <Folder Include="Algorithms\Core\Methods\Strain\M3\" />
-    <Folder Include="Algorithms\Core\Utils\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.3.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.3.0\build\Accord.targets')" />
   <PropertyGroup>

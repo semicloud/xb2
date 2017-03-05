@@ -8,6 +8,7 @@ using Xb2.Entity.Business;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using Xb2.Utils.ExtendMethod;
 
 namespace Xb2.GUI.M.Val.ProcessedData
 {
@@ -71,8 +72,8 @@ namespace Xb2.GUI.M.Val.ProcessedData
 
                 //自动生成基础数据库名，注意日期的格式化
                 var sql = "select 观测单位,地名,方法名,测项名 from {0} where 编号={1}";
-                sql = string.Format(sql, DbHelper.TnMItem(), this.ItemId);
-                var dr = MySqlHelper.ExecuteDataRow(DbHelper.ConnectionString, sql);
+                sql = string.Format(sql, DaoObject.TnMItem(), this.ItemId);
+                var dr = MySqlHelper.ExecuteDataRow(DaoObject.ConnectionString, sql);
                 Debug.Print("sql:{0}, returns:{1}", sql, dr);
                 if (dr != null)
                 {
@@ -104,8 +105,8 @@ namespace Xb2.GUI.M.Val.ProcessedData
         private static bool HasProcessedDataDb(int userId, int itemId, string dbName)
         {
             var sql = string.Format("select 编号 from {0} where 用户编号={1} and 测项编号={2} and 库名='{3}'",
-                DbHelper.TnProcessedDb(), userId, itemId, dbName);
-            var dt = MySqlHelper.ExecuteDataset(DbHelper.ConnectionString, sql).Tables[0];
+                DaoObject.TnProcessedDb(), userId, itemId, dbName);
+            var dt = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, sql).Tables[0];
             return dt.Rows.Count > 0;
         }
 
@@ -113,9 +114,9 @@ namespace Xb2.GUI.M.Val.ProcessedData
             string logger)
         {
             var sql = string.Format("select * from {0} where 用户编号={1} and 测项编号={2}",
-                DbHelper.TnProcessedDb(), userId, itemId);
+                DaoObject.TnProcessedDb(), userId, itemId);
             var dt = new DataTable();
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
+            var adapter = new MySqlDataAdapter(sql, DaoObject.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             adapter.Fill(dt);
             var dr = dt.NewRow();
@@ -133,12 +134,12 @@ namespace Xb2.GUI.M.Val.ProcessedData
         private static bool SaveProcessedDataDbData(int userId, int itemId, string dbName, DataTable dataTable)
         {
             var sql = string.Format("select 编号 from {0} where 用户编号={1} and 测项编号={2} and 库名='{3}'",
-                DbHelper.TnProcessedDb(), userId, itemId, dbName);
-            var dbId = MySqlHelper.ExecuteScalar(DbHelper.ConnectionString, sql);
+                DaoObject.TnProcessedDb(), userId, itemId, dbName);
+            var dbId = MySqlHelper.ExecuteScalar(DaoObject.ConnectionString, sql);
             Debug.Print("基础数据库编号：" + dbId);
-            sql = string.Format("select * from {0} where 库编号={1}", DbHelper.TnProcessedDbData(), dbId);
+            sql = string.Format("select * from {0} where 库编号={1}", DaoObject.TnProcessedDbData(), dbId);
             var dt = new DataTable();
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
+            var adapter = new MySqlDataAdapter(sql, DaoObject.ConnectionString);
             var builder = new MySqlCommandBuilder(adapter);
             adapter.Fill(dt);
             for (int i = 0; i < dataTable.Rows.Count; i++)
@@ -157,7 +158,7 @@ namespace Xb2.GUI.M.Val.ProcessedData
             //基础数据库名
             var dbName = this.textBox3.Text.Trim();
             //K指数
-            var k = this.textBox4.Text.Trim().GetStringOrDBNull();
+            var k = this.textBox4.Text.Trim().GetStringOrDbNull();
             //观测周期
             var period = this.textBox6.Text.Trim().GetInt32OrDbNull();
             //操作步骤

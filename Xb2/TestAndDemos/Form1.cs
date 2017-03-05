@@ -4,11 +4,14 @@ using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using NLog;
-using Xb2.Algorithms.Core.Entity;
+using Xb2.Computing.CoreAlgorithms.Entities;
+using Xb2.Computing.CoreAlgorithms.Entities.Number;
+using Xb2.Computing.CoreAlgorithms.Methods._0Base.Freq;
 using Xb2.Entity.Business;
 using Xb2.GUI.Main;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using Xb2.Utils.ExtendMethod;
 
 namespace Xb2.TestAndDemos
 {
@@ -66,7 +69,7 @@ namespace Xb2.TestAndDemos
             }
             this.dataGridView1.Rows.Clear();
             this.dataGridView1.Rows.Add();
-            var kIndexs = DateValueHelper.GetKIndexes(this.FinalDateValueList, m_startDate, m_endDate);
+            var kIndexs = FreqHelper.GetKIndexes(this.FinalDateValueList, m_startDate, m_endDate);
             for (int i = 0; i < kIndexs.Length; i++)
             {
                 dataGridView1.Rows[0].Cells[i].Value = kIndexs[i];
@@ -83,12 +86,12 @@ namespace Xb2.TestAndDemos
                 this.ProcessedDatabaseName = array[1];
                 if (this.ProcessedDatabaseId == -1)
                 {
-                    this.FinalDateValueList = DaoObject.GetRawData(m_itemId).RetrieveDateValues();
+                    this.FinalDateValueList = DaoObject.GetRawData(m_itemId).ToListOfDateValue();
                 }
                 else
                 {
                     this.FinalDateValueList =
-                        DaoObject.GetProcessedData(this.ProcessedDatabaseId).RetrieveDateValues();
+                        DaoObject.GetProcessedData(this.ProcessedDatabaseId).ToListOfDateValue();
                 }
                 Logger.Info("用户选择了编号为 {0} 的基础数据库 {1},共 {2} 条观测数据",
                     this.ProcessedDatabaseId, this.ProcessedDatabaseName, this.FinalDateValueList.Count);

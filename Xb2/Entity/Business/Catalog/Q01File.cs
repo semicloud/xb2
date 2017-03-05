@@ -6,9 +6,9 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using Xb2.Config;
 using Xb2.Utils;
 using Xb2.Utils.Database;
+using Xb2.Utils.ExtendMethod;
 
 namespace Xb2.Entity.Business.Catalog
 {
@@ -83,7 +83,7 @@ namespace Xb2.Entity.Business.Catalog
         {
             var sql = "select * from q01文件";
             var dt = new DataTable();
-            var adapter = new MySqlDataAdapter(sql, DbHelper.ConnectionString);
+            var adapter = new MySqlDataAdapter(sql, DaoObject.ConnectionString);
             var commandBuilder = new MySqlCommandBuilder(adapter);
             adapter.Fill(dt);
             var dr = dt.NewRow();
@@ -107,7 +107,7 @@ namespace Xb2.Entity.Business.Catalog
         private static DataTable GetDataTableFromFile(string fileName)
         {
             string sql = "select * from 地震目录";
-            DataTable dataTable = MySqlHelper.ExecuteDataset(Xb2Config.GetConnStr(), sql).Tables[0];
+            DataTable dataTable = MySqlHelper.ExecuteDataset(DaoObject.ConnectionString, sql).Tables[0];
             //只需要DataTable的架构，数据行丢掉
             dataTable = dataTable.Clone();
             if (File.Exists(fileName))
@@ -168,7 +168,7 @@ namespace Xb2.Entity.Business.Catalog
                 File.Delete(fullFileName);
                 Debug.Print("delete {0}", fullFileName);
                 string sql = "delete from Q01文件 where 文件名='" + fileName + "'";
-                isSaved = MySqlHelper.ExecuteNonQuery(Xb2Config.GetConnStr(),  sql) > 0;
+                isSaved = MySqlHelper.ExecuteNonQuery(DaoObject.ConnectionString,  sql) > 0;
                 Debug.Print("delete q01 file record in database, {0}", isSaved);
                 isDeleted = !File.Exists(fullFileName);
                 return isSaved & isDeleted;
@@ -198,16 +198,16 @@ namespace Xb2.Entity.Business.Catalog
                 }
                 Debug.Print("lower date:{0}, upper date:{1}", lower.Date.ToShortDateString(), upper.Date.ToShortDateString());
                 String sql = "select count(*) from 地震目录 where 发震时间 between #" + lower.ToString("yyyy-MM-dd HH:mm:ss") + "# and #" + upper.ToString("yyyy-MM-dd HH:mm:ss") + "#";
-                var count = MySqlHelper.ExecuteScalar(Xb2Config.GetConnStr(),  sql);
+                var count = MySqlHelper.ExecuteScalar(DaoObject.ConnectionString,  sql);
                 Debug.Print("will delete {0} rows", count);
                 sql = "delete from 地震目录 where 发震时间 between #" + lower.ToString("yyyy-MM-dd HH:mm:ss") + "# and #" + upper.ToString("yyyy-MM-dd HH:mm:ss") + "#";
                 Debug.Print(sql);
-                var affectedRows = MySqlHelper.ExecuteNonQuery(Xb2Config.GetConnStr(),  sql);
+                var affectedRows = MySqlHelper.ExecuteNonQuery(DaoObject.ConnectionString, sql);
                 isRemovedFromDb = affectedRows > 0;
                 if (isRemovedFromDb)
                 {
                     sql = "update Q01文件 set 已导入数据库=0 where 文件名='" + fileName + "'";
-                    isSaved = MySqlHelper.ExecuteNonQuery(Xb2Config.GetConnStr(), sql) > 0;
+                    isSaved = MySqlHelper.ExecuteNonQuery(DaoObject.ConnectionString, sql) > 0;
                 }
                 return isRemovedFromDb & isSaved;
             }
@@ -227,7 +227,7 @@ namespace Xb2.Entity.Business.Catalog
                 File.Copy(oldy, newy, true);
                 File.Delete(oldy);
                 String sql = "update Q01文件 set 文件名='" + newer + "' where 编号=" + id;
-                isChanged = MySqlHelper.ExecuteNonQuery(Xb2Config.GetConnStr(), sql) > 0;
+                isChanged = MySqlHelper.ExecuteNonQuery(DaoObject.ConnectionString, sql) > 0;
                 return isChanged;
             }
             else

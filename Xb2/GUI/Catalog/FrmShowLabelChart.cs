@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Windows.Forms.DataVisualization.Charting;
 using Xb2.GUI.Main;
 using Xb2.Utils;
+using Xb2.Utils.ExtendMethod;
 
 namespace Xb2.GUI.Catalog
 {
@@ -83,7 +84,7 @@ namespace Xb2.GUI.Catalog
             var maxx = (DateTime) _dataTable.Compute("max(发震日期)", "");
             var miny = (double) _dataTable.Compute("min(震级值)", "") - 1;
             var maxy = (double) _dataTable.Compute("max(震级值)", "") + 1;
-            Debug.Print("min date:{0}, max date:{1}", minx.SStr(), maxx.ToShortDateString());
+            Debug.Print("min date:{0}, max date:{1}", minx.ShortStr(), maxx.ToShortDateString());
             Debug.Print("min magnitude:{0}, max magnitude:{1}", miny, maxy);
 
             chart1.Legends.Clear();
